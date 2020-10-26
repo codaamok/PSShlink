@@ -1,0 +1,2 @@
+☐ look in to more object orientated way to build uri with parameters and queries for InvokeRestMethod
+☐ need to select & expand shortUrls/data if no parameter/query is passed for InvokeRestMethod, and omit if parameter/query is passed
