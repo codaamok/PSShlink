@@ -122,12 +122,22 @@ task GetVersionToBuild {
         # If module isn't yet published in the PowerShell gallery, and there is a Released section in the change log, update version
         elseif ($Script:PSGalleryModuleInfo.Version -eq "0.0" -And $Script:ChangeLog.Released.Count -ge 1) {
             $CurrentVersion        = [System.Version]$Script:ChangeLog.Released[0].Version
-            $Script:VersionToBuild = [System.Version]::New($CurrentVersion.Major, $CurrentVersion.Minor + 1, $Date, 0)
+            $Script:VersionToBuild = [System.Version]::New(
+                $CurrentVersion.Major,
+                $CurrentVersion.Minor + 1,
+                $Date,
+                0
+            )
         }
         # If the last Released verison in the change log and currently latest verison in the PowerShell gallery are in harmony, update version
         elseif ($Script:ChangeLog.Released[0].Version -eq $Script:PSGalleryModuleInfo.Version) {
             $CurrentVersion        = [System.Version]$Script:PSGalleryModuleInfo.Version
-            $Script:VersionToBuild = [System.Version]::New($CurrentVersion.Major, $CurrentVersion.Minor + 1, $Date, 0)
+            $Script:VersionToBuild = [System.Version]::New(
+                $CurrentVersion.Major,
+                $CurrentVersion.Minor + 1,
+                $Date,
+                0
+            )
         }
         else {
             Write-Output ("Latest release version from change log: {0}" -f $Script:ChangeLog.Released[0].Version)
@@ -144,7 +154,11 @@ task GetVersionToBuild {
             try {
                 $Script:PSGalleryModuleInfo = Find-Module -Name $Script:ModuleName -RequiredVersion $Script:VersionToBuild
                 if ($Script:PSGalleryModuleInfo) {
-                    $Script:VersionToBuild = [System.Version]::New($Script:VersionToBuild.Major, $Script:VersionToBuild.Minor, $Script:VersionToBuild.Build, $i)
+                    $Script:VersionToBuild = [System.Version]::New(
+                        $Script:VersionToBuild.Major,
+                        $Script:VersionToBuild.Minor,
+                        $Script:VersionToBuild.Build, $i
+                    )
                 }
                 else {
                     throw "Unusual no object or exception caught from Find-Module"
@@ -163,7 +177,12 @@ task GetVersionToBuild {
     }
     else {
         if ($Script:PSGalleryModuleInfo.Version -eq "0.0" -Or $Script:ChangeLog.Released[0].Version -eq $ModuleManifest.ModuleVersion) {
-            $Script:VersionToBuild = [System.Version]::New(([System.Version]$ModuleManifest.ModuleVersion).Major, ([System.Version]$ModuleManifest.ModuleVersion).Minor, ([System.Version]$ModuleManifest.ModuleVersion).Build, ([System.Version]$ModuleManifest.ModuleVersion).Revision + 1)
+            $Script:VersionToBuild = [System.Version]::New(
+                ([System.Version]$ModuleManifest.ModuleVersion).Major, 
+                ([System.Version]$ModuleManifest.ModuleVersion).Minor, 
+                ([System.Version]$ModuleManifest.ModuleVersion).Build, 
+                ([System.Version]$ModuleManifest.ModuleVersion).Revision + 1
+            )
         }
         else {
             Write-Output ("Latest release version from module manifest: {0}" -f $Script:ModuleManifest.Version)
