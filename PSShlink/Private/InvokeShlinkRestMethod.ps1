@@ -16,6 +16,7 @@ function InvokeShlinkRestMethod {
         [Parameter()]
         [String]$Path,
 
+        # Default value set where no Query parameter is passed but still need the object for pagination later
         [Parameter()]
         [System.Collections.Specialized.NameValueCollection]$Query = [System.Web.HttpUtility]::ParseQueryString(''),
 
