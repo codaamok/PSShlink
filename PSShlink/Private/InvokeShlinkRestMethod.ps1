@@ -16,7 +16,7 @@ function InvokeShlinkRestMethod {
         [Parameter()]
         [String]$Path,
 
-        # Default value set where no Query parameter is passed but still need the object for pagination later
+        # Default value set where no Query parameter is passed because we still need the object for pagination later
         [Parameter()]
         [System.Collections.Specialized.NameValueCollection]$Query = [System.Web.HttpUtility]::ParseQueryString(''),
 
@@ -50,22 +50,30 @@ function InvokeShlinkRestMethod {
 
         $Result = do {
             $Data = Invoke-RestMethod @Params
-            $PaginationData = GetPaginationData -Object $Data -ChildPropertyName $ChildPropertyName
+
+            $PaginationData = if ($ChildPropertyName) {
+                Write-Output $Data.$ChildPropertyName.pagination
+            }
+            else {
+                Write-Output $Data.pagination
+            }
+            
             if ($PaginationData) {
                 $Query["page"] = $PaginationData.currentPage + 1
                 $Params["Uri"] = "{0}?{1}" -f $QuerylessUri, $Query.ToString()
             }
-        } while ($PaginationData.currentPage -ne $PaginationData.pagesCount -Or "None" -ne $PaginationData)
-        # TODO: I was working out the pagination handling. Can't quite work out how to the loop
-        # where there is no pagination data returned in the API call
+
+            Write-Output $Data
+        } while ($PaginationData.currentPage -ne $PaginationData.pagesCount -And $PaginationData.pagesCount -ne 0)
+        # TODO: Why is this loop not breaking out when PaginationData.currentPage is 0? (when no result was found and response was http 200)
         
+        # A "data" child property only exists when $ChildPropertyName is defined
         if ($ChildPropertyName) {
-            $Result.$ChildPropertyName.data
+            Write-Output $Result.$ChildPropertyName.data
         }
         else {
-            $Result
+            Write-Output $Result
         }
-        
     }
     end {
         [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)

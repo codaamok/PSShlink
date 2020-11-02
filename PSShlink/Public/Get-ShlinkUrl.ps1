@@ -7,7 +7,7 @@ function Get-ShlinkUrl {
         [Parameter()]
         [SecureString]$ShlinkApiKey,
 
-        [Parameter(ParameterSetName="ParseShortCode")]
+        [Parameter(Mandatory, ParameterSetName="ParseShortCode")]
         [String]$ShortCode,
 
         [Parameter(ParameterSetName="ParseShortCode")]
@@ -40,25 +40,41 @@ function Get-ShlinkUrl {
 
         switch ($PSCmdlet.ParameterSetName) {
             "ParseShortCode" {
-                if ($ShortCode) {
-                    $Params["Path"] = $ShortCode
-                }
-
-                if ($Domain) {
-                    $QueryString.Add("domain", $Domain)
-                    $Params["Query"] = $QueryString
+                switch ($PSBoundParameters.Keys) {
+                    "ShortCode" {
+                        $Params["Path"] = $ShortCode
+                    }
+                    "Domain" {
+                        $QueryString.Add("domain", $Domain)
+                    }
                 }
             }
             "ListShortUrls" {
                 $Params["ChildPropertyName"] = "shortUrls"
 
-                foreach ($Tag in $Tags) {
-                    $QueryString.Add("tags[]", $Tag)
-                    $Params["Query"] = $QueryString
+                switch ($PSBoundParameters.Keys) {
+                    "Tags" {
+                        foreach ($Tag in $Tags) {
+                            $QueryString.Add("tags[]", $Tag)
+                        }
+                    }
+                    "SearchTerm" {
+                        $QueryString.Add("searchTerm", $SearchTerm)
+                    }
+                    "OrderBy" {
+                        $QueryString.Add("orderBy", $OrderBy)
+                    }
+                    "StartDate" {
+                        $QueryString.Add("startDate", (Get-Date $StartDate -Format 0))
+                    }
+                    "EndDate" {
+                        $QueryString.Add("endDate", (Get-Date $EndDate -Format 0))
+                    }
                 }
             }
         }
 
+        $Params["Query"] = $QueryString
         InvokeShlinkRestMethod @Params
     }
     end {

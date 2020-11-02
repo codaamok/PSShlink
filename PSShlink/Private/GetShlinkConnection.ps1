@@ -2,6 +2,7 @@ function GetShlinkConnection {
     param (
         [Parameter()]
         [String]$Server,
+        
         [Parameter()]
         [SecureString]$ApiKey
     )
