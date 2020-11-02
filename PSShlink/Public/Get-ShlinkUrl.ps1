@@ -65,10 +65,10 @@ function Get-ShlinkUrl {
                         $QueryString.Add("orderBy", $OrderBy)
                     }
                     "StartDate" {
-                        $QueryString.Add("startDate", (Get-Date $StartDate -Format 0))
+                        $QueryString.Add("startDate", (Get-Date $StartDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
                     }
                     "EndDate" {
-                        $QueryString.Add("endDate", (Get-Date $EndDate -Format 0))
+                        $QueryString.Add("endDate", (Get-Date $EndDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
                     }
                 }
             }
