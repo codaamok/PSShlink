@@ -24,6 +24,9 @@ function InvokeShlinkRestMethod {
         [String]$ChildPropertyName,
 
         [Parameter()]
+        [String[]]$PropertyTree,
+
+        [Parameter()]
         [Int]$Page
     )
     begin {
@@ -66,6 +69,12 @@ function InvokeShlinkRestMethod {
             Write-Output $Data
         } while ($PaginationData.currentPage -ne $PaginationData.pagesCount -And $PaginationData.pagesCount -ne 0)
     
+        # Walk down the object's properties to return the desired property
+        # e.g. sometimes the data is burried in tags.data or shortUrls.data etc
+        foreach ($Property in $PropertyTree) {
+            $Result = $Result.$Property
+        }
+
         Write-Output $Result
     }
     end {

@@ -19,31 +19,21 @@ function Get-ShlinkTag {
         $Params = @{
             Endpoint = "tags"
             ChildPropertyName = "tags"
+            PropertyTree = @("tags")
         }
 
         if ($WithStats.IsPresent) {
             $QueryString.Add("withStats", "true")
-            $PropertyTree = @(
-                $Params["ChildPropertyName"]
-                "stats"
-            )
+            $Params["PropertyTree"] += "stats"
         }
         else {
-            $PropertyTree = @(
-                $Params["ChildPropertyName"]
-                "data"
-            )
+            $Params["PropertyTree"] += "data"
         }
 
         $Params["Query"] = $QueryString
 
-        $Result = InvokeShlinkRestMethod @Params
-        foreach ($Property in $PropertyTree) {
-            $Result = $Result.$Property
-        }
-        Write-Output $Result
+        InvokeShlinkRestMethod @Params
     }
     end {
-
     }
 }

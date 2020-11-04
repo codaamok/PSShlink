@@ -7,12 +7,6 @@ function Get-ShlinkUrl {
         [Parameter()]
         [SecureString]$ShlinkApiKey,
 
-        [Parameter(Mandatory, ParameterSetName="ParseShortCode")]
-        [String]$ShortCode,
-
-        [Parameter(ParameterSetName="ParseShortCode")]
-        [String]$Domain,
-
         [Parameter(ParameterSetName="ListShortUrls")]
         [String]$SearchTerm,
 
@@ -27,7 +21,13 @@ function Get-ShlinkUrl {
         [datetime]$StartDate,
 
         [Parameter(ParameterSetName="ListShortUrls")]
-        [datetime]$EndDate
+        [datetime]$EndDate,
+
+        [Parameter(Mandatory, ParameterSetName="ParseShortCode")]
+        [String]$ShortCode,
+
+        [Parameter(ParameterSetName="ParseShortCode")]
+        [String]$Domain
     )
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
@@ -52,8 +52,8 @@ function Get-ShlinkUrl {
             "ListShortUrls" {
                 $Params["ChildPropertyName"] = "shortUrls"
 
-                $PropertyTree = @(
-                    $Params["ChildPropertyName"]
+                $Params["PropertyTree"] = @(
+                    "shortUrls"
                     "data"
                 )
 
@@ -81,11 +81,7 @@ function Get-ShlinkUrl {
 
         $Params["Query"] = $QueryString
 
-        $Result = InvokeShlinkRestMethod @Params
-        foreach ($Property in $PropertyTree) {
-            $Result = $Result.$Property
-        }
-        Write-Output $Result
+        InvokeShlinkRestMethod @Params
     }
     end {
     }
