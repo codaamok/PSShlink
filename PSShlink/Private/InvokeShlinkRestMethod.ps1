@@ -58,22 +58,15 @@ function InvokeShlinkRestMethod {
                 Write-Output $Data.pagination
             }
             
-            if ($PaginationData) {
+            if ($PaginationData) {  
                 $Query["page"] = $PaginationData.currentPage + 1
                 $Params["Uri"] = "{0}?{1}" -f $QuerylessUri, $Query.ToString()
             }
 
             Write-Output $Data
         } while ($PaginationData.currentPage -ne $PaginationData.pagesCount -And $PaginationData.pagesCount -ne 0)
-        # TODO: Why is this loop not breaking out when PaginationData.currentPage is 0? (when no result was found and response was http 200)
-        
-        # A "data" child property only exists when $ChildPropertyName is defined
-        if ($ChildPropertyName) {
-            Write-Output $Result.$ChildPropertyName.data
-        }
-        else {
-            Write-Output $Result
-        }
+    
+        Write-Output $Result
     }
     end {
         [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)

@@ -52,6 +52,11 @@ function Get-ShlinkUrl {
             "ListShortUrls" {
                 $Params["ChildPropertyName"] = "shortUrls"
 
+                $PropertyTree = @(
+                    $Params["ChildPropertyName"]
+                    "data"
+                )
+
                 switch ($PSBoundParameters.Keys) {
                     "Tags" {
                         foreach ($Tag in $Tags) {
@@ -75,7 +80,12 @@ function Get-ShlinkUrl {
         }
 
         $Params["Query"] = $QueryString
-        InvokeShlinkRestMethod @Params
+
+        $Result = InvokeShlinkRestMethod @Params
+        foreach ($Property in $PropertyTree) {
+            $Result = $Result.$Property
+        }
+        Write-Output $Result
     }
     end {
     }
