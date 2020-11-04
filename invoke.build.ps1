@@ -28,7 +28,7 @@ task Clean {
 
     foreach ($Path in $Paths) {
         if (Test-Path $Path) {
-            Remove-Item -Path $Path\* -Recurse -Force
+            Remove-Item -Path $Path\* -Exclude ".gitkeep" -Recurse -Force
         }
         else {
             $null = New-Item -Path $Path -ItemType "Directory" -Force
