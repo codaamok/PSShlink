@@ -21,6 +21,9 @@ function InvokeShlinkRestMethod {
         [System.Collections.Specialized.NameValueCollection]$Query = [System.Web.HttpUtility]::ParseQueryString(''),
 
         [Parameter()]
+        [hashtable]$Body,
+
+        [Parameter()]
         [String]$ChildPropertyName,
 
         [Parameter()]
@@ -49,6 +52,10 @@ function InvokeShlinkRestMethod {
 
         if ($PSBoundParameters.ContainsKey("Query")) {
             $Params["Uri"] = "{0}?{1}" -f $Params["Uri"], $Query.ToString()
+        }
+
+        if ($PSBoundParameters.ContainsKey("Body")) {
+            $Params["Body"] = $Body | ConvertTo-Json
         }
 
         $Result = do {

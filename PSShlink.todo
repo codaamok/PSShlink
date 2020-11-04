@@ -1,2 +1,7 @@
-☐ look in to more object orientated way to build uri with parameters and queries for InvokeRestMethod
-☐ need to select & expand shortUrls/data if no parameter/query is passed for InvokeRestMethod, and omit if parameter/query is passed
+✔ look in to more object orientated way to build uri with parameters and queries for InvokeRestMethod @done (04/11/2020, 21:14:27)
+✔ need to select & expand shortUrls/data if no parameter/query is passed for InvokeRestMethod, and omit if parameter/query is passed @done (04/11/2020, 21:14:21)
+☐ create format data file
+☐ create comment based help
+☐ flesh out the read me
+☐ decide whether to make 5.1 or 7 the minimum powershell verison
+☐ would be cool to save QR code to file, maybe with Get-ShlinkUrl ?

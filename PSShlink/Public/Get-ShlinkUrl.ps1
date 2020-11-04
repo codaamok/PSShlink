@@ -7,6 +7,12 @@ function Get-ShlinkUrl {
         [Parameter()]
         [SecureString]$ShlinkApiKey,
 
+        [Parameter(Mandatory, ParameterSetName="ParseShortCode")]
+        [String]$ShortCode,
+
+        [Parameter(ParameterSetName="ParseShortCode")]
+        [String]$Domain,
+
         [Parameter(ParameterSetName="ListShortUrls")]
         [String]$SearchTerm,
 
@@ -21,13 +27,7 @@ function Get-ShlinkUrl {
         [datetime]$StartDate,
 
         [Parameter(ParameterSetName="ListShortUrls")]
-        [datetime]$EndDate,
-
-        [Parameter(Mandatory, ParameterSetName="ParseShortCode")]
-        [String]$ShortCode,
-
-        [Parameter(ParameterSetName="ParseShortCode")]
-        [String]$Domain
+        [datetime]$EndDate        
     )
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
