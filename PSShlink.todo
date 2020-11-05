@@ -5,3 +5,4 @@
 ☐ flesh out the read me
 ☐ decide whether to make 5.1 or 7 the minimum powershell verison
 ☐ would be cool to save QR code to file, maybe with Get-ShlinkUrl ?
+☐ consider dropping begin{} process{} end{} blocks

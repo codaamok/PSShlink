@@ -4,7 +4,10 @@ function GetShlinkConnection {
         [String]$Server,
         
         [Parameter()]
-        [SecureString]$ApiKey
+        [SecureString]$ApiKey,
+
+        [Parameter()]
+        [Switch]$ServerOnly
     )
     if (-not $Script:ShlinkServer) {
         if ([String]::IsNullOrWhitespace($Server)) {
@@ -14,7 +17,7 @@ function GetShlinkConnection {
             $Script:ShlinkServer = $Server
         }
     }
-    if (-not $Script:ShlinkApiKey) {
+    if (-not $Script:ShlinkApiKey -And -not $ServerOnly.IsPresent) {
         if ([String]::IsNullOrWhitespace($ApiKey)) {
             $Script:ShlinkApiKey = Read-Host -Prompt "Enter your Shlink server API key" -AsSecureString
         }
