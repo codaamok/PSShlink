@@ -1,14 +1,6 @@
 function Get-ShlinkVists {
     [CmdletBinding(DefaultParameterSetName="Server")]
     param (
-        [Parameter(ParameterSetName="Server")]
-        [Parameter(ParameterSetName="ShortCode")]
-        [String]$ShlinkServer,
-
-        [Parameter(ParameterSetName="Server")]
-        [Parameter(ParameterSetName="ShortCode")]
-        [SecureString]$ShlinkApiKey,
-
         [Parameter(Mandatory, ParameterSetName="ShortCode")]
         [String]$ShortCode,
 
@@ -25,7 +17,13 @@ function Get-ShlinkVists {
 
         [Parameter(ParameterSetName="ShortCode")]
         [Parameter(ParameterSetName="Tag")]
-        [datetime]$EndDate
+        [datetime]$EndDate,
+
+        [Parameter()]
+        [String]$ShlinkServer,
+
+        [Parameter()]
+        [SecureString]$ShlinkApiKey
     )
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey

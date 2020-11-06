@@ -2,14 +2,13 @@ function Get-ShlinkTag {
     [CmdletBinding()]
     param (
         [Parameter()]
+        [Switch]$WithStats,
+        
+        [Parameter()]
         [String]$ShlinkServer,
 
         [Parameter()]
-        [SecureString]$ShlinkApiKey,
-
-        [Parameter()]
-        [Switch]$WithStats
-        
+        [SecureString]$ShlinkApiKey
     )
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey

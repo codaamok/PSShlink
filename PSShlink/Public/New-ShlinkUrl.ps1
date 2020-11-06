@@ -1,12 +1,6 @@
 function New-ShlinkUrl {
     [CmdletBinding()]
     param (
-        [Parameter()]
-        [String]$ShlinkServer,
-
-        [Parameter()]
-        [SecureString]$ShlinkApiKey,
-
         [Parameter(Mandatory)]
         [String]$LongUrl,
 
@@ -32,7 +26,13 @@ function New-ShlinkUrl {
         [Int]$ShortCodeLength,
 
         [Parameter()]
-        [Switch]$FindIfExists
+        [Switch]$FindIfExists,
+
+        [Parameter()]
+        [String]$ShlinkServer,
+
+        [Parameter()]
+        [SecureString]$ShlinkApiKey
     )
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey

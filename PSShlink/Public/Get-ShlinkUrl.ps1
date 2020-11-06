@@ -1,12 +1,6 @@
 function Get-ShlinkUrl {
     [CmdletBinding(DefaultParameterSetName="ListShortUrls")]
     param (
-        [Parameter()]
-        [String]$ShlinkServer,
-
-        [Parameter()]
-        [SecureString]$ShlinkApiKey,
-
         [Parameter(Mandatory, ParameterSetName="ParseShortCode")]
         [String]$ShortCode,
 
@@ -27,7 +21,13 @@ function Get-ShlinkUrl {
         [datetime]$StartDate,
 
         [Parameter(ParameterSetName="ListShortUrls")]
-        [datetime]$EndDate        
+        [datetime]$EndDate,
+
+        [Parameter()]
+        [String]$ShlinkServer,
+
+        [Parameter()]
+        [SecureString]$ShlinkApiKey
     )
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey

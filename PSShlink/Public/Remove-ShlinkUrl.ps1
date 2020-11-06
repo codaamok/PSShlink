@@ -1,17 +1,17 @@
 function Remove-ShlinkUrl {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param (
-        [Parameter()]
-        [String]$ShlinkServer,
-
-        [Parameter()]
-        [SecureString]$ShlinkApiKey,
-
         [Parameter(Mandatory)]
         [String]$ShortCode,
 
         [Parameter()]
-        [String]$Domain
+        [String]$Domain,
+
+        [Parameter()]
+        [String]$ShlinkServer,
+
+        [Parameter()]
+        [SecureString]$ShlinkApiKey
     )
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
