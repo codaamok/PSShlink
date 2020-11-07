@@ -1,9 +1,21 @@
-function Get-ShlinkTag {
+function Get-ShlinkTags {
+    <#
+    .SYNOPSIS
+        Short description
+    .DESCRIPTION
+        Long description
+    .EXAMPLE
+        PS C:\> <example usage>
+        Explanation of what the example does
+    .INPUTS
+        Inputs (if any)
+    .OUTPUTS
+        Output (if any)
+    .NOTES
+        General notes
+    #>
     [CmdletBinding()]
     param (
-        [Parameter()]
-        [Switch]$WithStats,
-        
         [Parameter()]
         [String]$ShlinkServer,
 
@@ -15,18 +27,12 @@ function Get-ShlinkTag {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
     }
     process {
+        $QueryString.Add("withStats", "true")
+
         $Params = @{
             Endpoint = "tags"
             ChildPropertyName = "tags"
-            PropertyTree = @("tags")
-        }
-
-        if ($WithStats.IsPresent) {
-            $QueryString.Add("withStats", "true")
-            $Params["PropertyTree"] += "stats"
-        }
-        else {
-            $Params["PropertyTree"] += "data"
+            PropertyTree = @("tags","stats")
         }
 
         $Params["Query"] = $QueryString
