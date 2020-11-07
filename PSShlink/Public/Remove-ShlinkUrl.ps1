@@ -15,7 +15,6 @@ function Remove-ShlinkUrl {
     )
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
-        $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
     }
     process {
         $Params = @{
@@ -29,13 +28,14 @@ function Remove-ShlinkUrl {
         
         switch ($PSBoundParameters.Keys) {
             "Domain" {
+                $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
                 $QueryString.Add("domain", $Domain)
+                $Params["Query"] = $QueryString
+                
                 $WouldMessage = $WouldMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
                 $RemovingMessage = $RemovingMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
             }
         }
-
-        $Params["Query"] = $QueryString
 
         if ($PSCmdlet.ShouldProcess(
             $WouldMessage,
