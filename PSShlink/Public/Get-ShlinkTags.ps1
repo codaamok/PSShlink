@@ -1,18 +1,17 @@
 function Get-ShlinkTags {
     <#
     .SYNOPSIS
-        Short description
+        Returns the list of all tags used in any short URL, including stats and ordered by name.
     .DESCRIPTION
-        Long description
+        Returns the list of all tags used in any short URL, including stats and ordered by name.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Get-ShlinkTags
+        
+        Returns the list of all tags used in any short URL, including stats and ordered by name.
     .INPUTS
-        Inputs (if any)
+        This function does not accept pipeline input.
     .OUTPUTS
-        Output (if any)
-    .NOTES
-        General notes
+        System.Management.Automation.PSObject
     #>
     [CmdletBinding()]
     param (
