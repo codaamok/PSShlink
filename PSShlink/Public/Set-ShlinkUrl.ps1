@@ -1,4 +1,44 @@
 function Set-ShlinkUrl {
+    <#
+    .SYNOPSIS
+        Update an existing short code on the Shlink server.
+    .DESCRIPTION
+        Update an existing short code on the Shlink server.
+    .PARAMETER ShortCode
+        The name of the short code you wish to update.
+    .PARAMETER LongUrl
+        The new long URL to associate with the existing short code.
+    .PARAMETER Tags
+        The name of one or more tags to associate with the existing short code.
+        Due to the architecture of Shlink's REST API, this parameter can only be used in its own parameter set.
+    .PARAMETER ValidSince
+        Define a new "valid since" date with the existing short code.
+    .PARAMETER ValidUntil
+        Define a new "valid until" date with the existing short code.
+    .PARAMETER MaxVisits
+        Set a new maximum visits threshold for the existing short code.
+    .PARAMETER Domain
+        The domain which is associated with the short code you wish to update.
+        This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
+    .PARAMETER ShlinkServer
+        The URL of your Shlink server (including schema). For example "https://example.com".
+        It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
+    .PARAMETER ShlinkApiKey
+        A SecureString object of your Shlink server's API key.
+        It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
+    .EXAMPLE
+        PS C:\> Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok" -ValidSince (Get-Date "2020-11-01") -ValidUntil (Get-Date "2020-11-30") -MaxVisits 99
+        
+        Update the existing short code "profile", associated with the default domain of the Shlink server, to point to URL "https://github.com/codaamok". The link will only be valid for November 2020. The link will only work for 99 visits. 
+    .EXAMPLE
+        PS C:\> Set-ShlinkUrl -ShortCode "profile" -Tags "powershell","pwsh"
+
+        Update the existing short code "profile" to have the tags "powershell" and "pwsh" associated with it.
+    .INPUTS
+        This function does not accept pipeline input.
+    .OUTPUTS
+        System.Management.Automation.PSObject
+    #>
     [CmdletBinding(DefaultParameterSetName="EditUrl")]
     param (
         [Parameter(Mandatory, ParameterSetName="EditUrlTag")]

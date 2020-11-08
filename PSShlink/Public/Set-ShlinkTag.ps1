@@ -15,8 +15,9 @@ function Set-ShlinkTag {
         A SecureString object of your Shlink server's API key.
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Set-ShlinkTag -OldTagName "oldwebsite" -NewTagName "veryoldwebsite"
+        
+        Updates the tag with the name "oldwebsite" to have a new name of "veryoldwebsite".
     .INPUTS
         This function does not accept pipeline input.
     .OUTPUTS
