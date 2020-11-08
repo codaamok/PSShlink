@@ -6,3 +6,4 @@
 ☐ decide whether to make 5.1 or 7 the minimum powershell verison
 ☐ would be cool to save QR code to file, maybe with Get-ShlinkUrl ?
 ☐ consider dropping begin{} process{} end{} blocks
+☐ consider disabling parameter positional binding on some commands for the benefit of clear command syntax when user uses Get-Help
