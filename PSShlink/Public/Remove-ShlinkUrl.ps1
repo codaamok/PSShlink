@@ -1,4 +1,33 @@
 function Remove-ShlinkUrl {
+    <#
+    .SYNOPSIS
+        Removes a short code from the Shlink server
+    .DESCRIPTION
+        Removes a short code from the Shlink server
+    .PARAMETER ShortCode
+        The name of the short code you wish to remove from the Shlink server.
+    .PARAMETER Domain
+        The domain associated with the short code you wish to remove from the Shlink server.
+        This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
+    .PARAMETER ShlinkServer
+        The URL of your Shlink server (including schema). For example "https://example.com".
+        It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
+    .PARAMETER ShlinkApiKey
+        A SecureString object of your Shlink server's API key.
+        It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
+    .EXAMPLE
+        PS C:\> Remove-ShlinkUrl -ShortCode "profile" -WhatIf
+        
+        Reports what would happen if the command was invoked, because the -WhatIf parameter is present.
+    .EXAMPLE
+        PS C:\> Remove-ShlinkUrl -ShortCode "profile" -Domain "example.com"
+
+        Removes the short code "profile" associated with the domain "example.com" from the Shlink server.
+    .INPUTS
+        This function does not accept pipeline input.
+    .OUTPUTS
+        System.Management.Automation.PSObject
+    #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param (
         [Parameter(Mandatory)]
