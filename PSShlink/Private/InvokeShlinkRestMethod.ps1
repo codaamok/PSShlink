@@ -30,7 +30,10 @@ function InvokeShlinkRestMethod {
         [String[]]$PropertyTree,
 
         [Parameter()]
-        [Int]$Page
+        [Int]$Page,
+
+        [Parameter()]
+        [String]$PSTypeName
     )
     begin {
         $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($ApiKey)
@@ -80,6 +83,12 @@ function InvokeShlinkRestMethod {
         # e.g. sometimes the data is burried in tags.data or shortUrls.data etc
         foreach ($Property in $PropertyTree) {
             $Result = $Result.$Property
+        }
+
+        if ($PSBoundParameters.ContainsKey("PSTypeName")) {
+            foreach ($item in $Result) {
+                $item.PSTypeNames.Insert(0, $PSTypeName)
+            }
         }
 
         Write-Output $Result
