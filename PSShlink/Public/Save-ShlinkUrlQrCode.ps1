@@ -1,4 +1,4 @@
-function Get-ShlinkUrlQrCode {
+function Save-ShlinkUrlQrCode {
     <#
     .SYNOPSIS
         Short description
