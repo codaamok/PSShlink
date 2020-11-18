@@ -10,7 +10,6 @@ function Get-ShlinkTags {
     .PARAMETER ShlinkApiKey
         A SecureString object of your Shlink server's API key.
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
-
     .EXAMPLE
         PS C:\> Get-ShlinkTags
         
@@ -28,23 +27,19 @@ function Get-ShlinkTags {
         [Parameter()]
         [SecureString]$ShlinkApiKey
     )
-    begin {
-        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
-        $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
-    }
-    process {
-        $QueryString.Add("withStats", "true")
 
-        $Params = @{
-            Endpoint = "tags"
-            ChildPropertyName = "tags"
-            PropertyTree = @("tags","stats")
-        }
+    GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+    $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
 
-        $Params["Query"] = $QueryString
+    $QueryString.Add("withStats", "true")
 
-        InvokeShlinkRestMethod @Params
+    $Params = @{
+        Endpoint = "tags"
+        ChildPropertyName = "tags"
+        PropertyTree = @("tags","stats")
     }
-    end {
-    }
+
+    $Params["Query"] = $QueryString
+
+    InvokeShlinkRestMethod @Params
 }

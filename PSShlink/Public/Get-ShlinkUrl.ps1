@@ -50,8 +50,6 @@ function Get-ShlinkUrl {
         PS C:\> Get-ShlinkUrl -SearchTerm "microsoft"
 
         Returns the short codes which match the search term "microsoft".
-    .EXAMPLE
-        PS C:\> 
     .INPUTS
         This function does not accept pipeline input.
     .OUTPUTS
@@ -87,60 +85,56 @@ function Get-ShlinkUrl {
         [Parameter()]
         [SecureString]$ShlinkApiKey
     )
-    begin {
-        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
-        $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
+
+    GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+    $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
+
+    $Params = @{
+        Endpoint = "short-urls"
     }
-    process {
-        $Params = @{
-            Endpoint = "short-urls"
-        }
 
-        switch ($PSCmdlet.ParameterSetName) {
-            "ParseShortCode" {
-                switch ($PSBoundParameters.Keys) {
-                    "ShortCode" {
-                        $Params["Path"] = $ShortCode
-                    }
-                    "Domain" {
-                        $QueryString.Add("domain", $Domain)
-                    }
+    switch ($PSCmdlet.ParameterSetName) {
+        "ParseShortCode" {
+            switch ($PSBoundParameters.Keys) {
+                "ShortCode" {
+                    $Params["Path"] = $ShortCode
                 }
-            }
-            "ListShortUrls" {
-                $Params["ChildPropertyName"] = "shortUrls"
-
-                $Params["PropertyTree"] = @(
-                    "shortUrls"
-                    "data"
-                )
-
-                switch ($PSBoundParameters.Keys) {
-                    "Tags" {
-                        foreach ($Tag in $Tags) {
-                            $QueryString.Add("tags[]", $Tag)
-                        }
-                    }
-                    "SearchTerm" {
-                        $QueryString.Add("searchTerm", $SearchTerm)
-                    }
-                    "OrderBy" {
-                        $QueryString.Add("orderBy", $OrderBy)
-                    }
-                    "StartDate" {
-                        $QueryString.Add("startDate", (Get-Date $StartDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
-                    }
-                    "EndDate" {
-                        $QueryString.Add("endDate", (Get-Date $EndDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
-                    }
+                "Domain" {
+                    $QueryString.Add("domain", $Domain)
                 }
             }
         }
+        "ListShortUrls" {
+            $Params["ChildPropertyName"] = "shortUrls"
 
-        $Params["Query"] = $QueryString
+            $Params["PropertyTree"] = @(
+                "shortUrls"
+                "data"
+            )
 
-        InvokeShlinkRestMethod @Params
+            switch ($PSBoundParameters.Keys) {
+                "Tags" {
+                    foreach ($Tag in $Tags) {
+                        $QueryString.Add("tags[]", $Tag)
+                    }
+                }
+                "SearchTerm" {
+                    $QueryString.Add("searchTerm", $SearchTerm)
+                }
+                "OrderBy" {
+                    $QueryString.Add("orderBy", $OrderBy)
+                }
+                "StartDate" {
+                    $QueryString.Add("startDate", (Get-Date $StartDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
+                }
+                "EndDate" {
+                    $QueryString.Add("endDate", (Get-Date $EndDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
+                }
+            }
+        }
     }
-    end {
-    }
+
+    $Params["Query"] = $QueryString
+
+    InvokeShlinkRestMethod @Params
 }

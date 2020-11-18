@@ -25,7 +25,7 @@
                   </ListItems>
                 </ListEntry>
               </ListEntries>
-						</ListControl>
+            </ListControl>
         </View>
     </ViewDefinitions>
 </Configuration>

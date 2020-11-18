@@ -112,7 +112,7 @@ function Get-ShlinkVisits {
     # the server's view count is returned when no parameters are used
     if ($PSCmdlet.ParameterSetName -eq "Server") {
         [PSCustomObject]@{
-            Server = $Script:ShlinkServer
+            Server      = $Script:ShlinkServer
             visitsCount = $Result.visitsCount
         }
     }
