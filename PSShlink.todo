@@ -1,9 +1,12 @@
 ✔ look in to more object orientated way to build uri with parameters and queries for InvokeRestMethod @done (04/11/2020, 21:14:27)
 ✔ need to select & expand shortUrls/data if no parameter/query is passed for InvokeRestMethod, and omit if parameter/query is passed @done (04/11/2020, 21:14:21)
-☐ create format data file
-☐ create comment based help
+✔ create format data file @done (17/11/2020, 19:52:28)
+✔ create comment based help @done (17/11/2020, 20:11:39)
 ☐ flesh out the read me
-☐ decide whether to make 5.1 or 7 the minimum powershell verison
-☐ would be cool to save QR code to file, maybe with Get-ShlinkUrl ?
-☐ consider dropping begin{} process{} end{} blocks
+✔ decide whether to make 5.1 or 7 the minimum powershell verison @done (17/11/2020, 20:11:49)
+✔ would be cool to save QR code to file, maybe with Get-ShlinkUrl ? @done (18/11/2020, 00:08:11)
+    ☐ note or investigate whether can get QR code for short codes for non-default domain
+    ☐ fill out CBH for it
+☐ consider dropping begin{} process{} end{} blocks where appropriate
+☐ add pipeline support to remove/set
 ☐ consider disabling parameter positional binding on some commands for the benefit of clear command syntax when user uses Get-Help
