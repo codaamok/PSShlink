@@ -3,16 +3,20 @@ function Save-ShlinkUrlQrCode {
     .SYNOPSIS
         Save a QR code to disk for a short code.
     .DESCRIPTION
-        Save a QR code to disk for a short code. It is possible to configure the QR code's size, file type and path 
+        Save a QR code to disk for a short code.
+        The default folder for files to be saved to is $HOME\Downloads. The naming convention for the saved files is as follows: ShlinkQRCode_<shortCode>_<domain>_<size>.<format>
     .EXAMPLE
-        PS C:\> <example usage>
-        Explanation of what the example does
+        PS C:\> Save-ShlinkUrlQrCode -ShortCode "profile" -Domain "example.com" -Size 1000 -Format svg -Path "C:\temp"
+        
+        Saves a QR code to disk in C:\temp named "ShlinkQRCode_profile_example-com_1000.svg". It will be saved as 1000x1000 pixels and of SVG type.
+    .EXAMPLE
+        PS C:\> Get-ShlinkUrl -SearchTerm "someword" | Save-ShlinkUrlQrCode -Path "C:\temp"
+
+        Saves QR codes for all short URLs returned by the Get-ShlinkUrl call. All files will be saved as the default values for size (300x300) and type (png). All files will be saved in "C:\temp" using the normal naming convention for file names, as detailed in the description.
     .INPUTS
-        Inputs (if any)
+        System.Management.Automation.PSObject
     .OUTPUTS
-        Output (if any)
-    .NOTES
-        General notes
+        System.Management.Automation.PSObject
     #>
     [CmdletBinding()]
     param (
@@ -80,7 +84,7 @@ function Save-ShlinkUrlQrCode {
             }
 
             $Params = @{
-                OutFile = "{0}\ShlinkQRCode_{1}_{2}.{3}" -f $Path, $Object.ShortCode, ($Object.Domain -replace "\.", "-"), $Format
+                OutFile = "{0}\ShlinkQRCode_{1}_{2}_{3}.{4}" -f $Path, $Object.ShortCode, ($Object.Domain -replace "\.", "-"), $Size, $Format
                 Uri     = "{0}/qr-code/{1}?{2}" -f $Object.ShortUrl, $Size, $QueryString.ToString()
             }
 

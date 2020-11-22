@@ -5,7 +5,7 @@
 ☐ flesh out the read me
 ✔ decide whether to make 5.1 or 7 the minimum powershell verison @done (17/11/2020, 20:11:49)
 ✔ would be cool to save QR code to file, maybe with Get-ShlinkUrl ? @done (18/11/2020, 00:08:11)
-    ☐ note or investigate whether can get QR code for short codes for non-default domain
+    ✔ note or investigate whether can get QR code for short codes for non-default domain @done (22/11/2020, 14:49:46)
     ☐ fill out CBH for it
 ☐ consider dropping begin{} process{} end{} blocks where appropriate
 ☐ add pipeline support to remove/set

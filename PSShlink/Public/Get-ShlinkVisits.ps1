@@ -1,9 +1,9 @@
 function Get-ShlinkVisits {
     <#
     .SYNOPSIS
-        Short description
+        Get details of visits for a Shlink server, short codes or tags.
     .DESCRIPTION
-        Long description
+        Get details of visits for a Shlink server, short codes or tags.
     .PARAMETER ShortCode
         The name of the short code you wish to return the visits data for. For example, if the short URL is "https://example.com/new-url" then the short code is "new-url".
     .PARAMETER Tag

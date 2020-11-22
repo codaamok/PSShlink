@@ -24,6 +24,7 @@ After using any function of PSShlink for the first time after importing the modu
 \* Some functions do not require both `-ShlinkServer` and `-ShlinkApiKey`, e.g. `Get-ShlinkServer`. Therefore if the first function you use after importing PSShlink accepts only `-ShlinkServer`, you will not be asked again for this value by other functions of PSShlink. You will however be prompted for the API key. Again, subsequent uses of other functions will no longer require `-ShlinkServer` and `-ShlinkApiKey`.
 
 If the first function you use after importing PSShlink requires `-ShlinkServer` and/or `-ShlinkApiKey` and you have not passed the parameter(s), you will be prompted for them.
+
 ## Examples
 
 ## Known issues
