@@ -4,6 +4,7 @@ function Save-ShlinkUrlQrCode {
         Save a QR code to disk for a short code.
     .DESCRIPTION
         Save a QR code to disk for a short code.
+        The default size of images is 300x300 and the default file type is png.
         The default folder for files to be saved to is $HOME\Downloads. The naming convention for the saved files is as follows: ShlinkQRCode_<shortCode>_<domain>_<size>.<format>
     .EXAMPLE
         PS C:\> Save-ShlinkUrlQrCode -ShortCode "profile" -Domain "example.com" -Size 1000 -Format svg -Path "C:\temp"
