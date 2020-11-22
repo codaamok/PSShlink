@@ -90,7 +90,8 @@ function Get-ShlinkUrl {
     $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
 
     $Params = @{
-        Endpoint = "short-urls"
+        Endpoint   = "short-urls"
+        PSTypeName = "PSShlink"
     }
 
     switch ($PSCmdlet.ParameterSetName) {
