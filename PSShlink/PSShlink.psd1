@@ -30,7 +30,7 @@ CompanyName = ''
 Copyright = '(c) Adam Cook (@codaamok). All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'A PowerShell module for Shlink (https://shlink.io), an open-source self-hosted and PHP-based URL shortener application'
+Description = 'An unofficial PowerShell module for Shlink (https://shlink.io), an open-source self-hosted and PHP-based URL shortener application'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1'
