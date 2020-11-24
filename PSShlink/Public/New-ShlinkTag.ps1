@@ -32,24 +32,20 @@ function New-ShlinkTag {
         [Parameter()]
         [SecureString]$ShlinkApiKey
     )
-    begin {
-        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
-    }
-    process {
-        $Params = @{
-            Endpoint = "tags"
-            Method = "POST"
-            Body = @{
-                tags = @($Tags)
-            }
-            PropertyTree = @(
-                "tags"
-                "data"
-            )
-        }
 
-        InvokeShlinkRestMethod @Params
+    GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+
+    $Params = @{
+        Endpoint = "tags"
+        Method = "POST"
+        Body = @{
+            tags = @($Tags)
+        }
+        PropertyTree = @(
+            "tags"
+            "data"
+        )
     }
-    end {
-    }
+
+    InvokeShlinkRestMethod @Params
 }
