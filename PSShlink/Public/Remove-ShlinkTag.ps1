@@ -27,7 +27,7 @@ function Remove-ShlinkTag {
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [String[]]$Tags,
         
         [Parameter()]
