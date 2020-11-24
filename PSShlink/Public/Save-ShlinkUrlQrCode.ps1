@@ -62,20 +62,18 @@ function Save-ShlinkUrlQrCode {
                 $Params["Domain"] = $Domain
             }
 
-            $ShlinkUrl = Get-ShlinkUrl @Params
+            # Force result to be scalar, otherwise it returns as a collection of 1 element.
+            # Thanks to Chris Dent for this being a big "ah-ha!" momemnt for me, especially
+            # when piping stuff to Get-Member
+            $Object = Get-ShlinkUrl @Params | ForEach-Object { $_ }
 
-            $InputObject = [PSCustomObject]@{
-                ShortCode = $ShortCode
-                ShortUrl  = $ShlinkUrl.shortUrl
-                Domain    = if ([String]::IsNullOrWhiteSpace($ShlinkUrl.Domain)) {
-                    # We can safely assume the ShlinkServer variable will be set due to the Get-ShlinkUrl call
-                    # i.e. if it is not, then Get-ShlinkUrl will prompt the user for it and therefore set the variable
-                    [Uri]$Script:ShlinkServer | Select-Object -ExpandProperty "Host"
-                }
-                else {
-                    $ShlinkUrl.Domain
-                }
+            if ([String]::IsNullOrWhiteSpace($Object.Domain)) {
+                # We can safely assume the ShlinkServer variable will be set due to the Get-ShlinkUrl call
+                # i.e. if it is not, then Get-ShlinkUrl will prompt the user for it and therefore set the variable
+                $Object.Domain = [Uri]$Script:ShlinkServer | Select-Object -ExpandProperty "Host"
             }
+
+            $InputObject = $Object
         }
     }
     process {
