@@ -37,21 +37,17 @@ function Set-ShlinkTag {
         [Parameter()]
         [SecureString]$ShlinkApiKey
     )
-    begin {
-        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
-    }
-    process {
-        $Params = @{
-            Endpoint = "tags"
-            Method = "PUT"
-            Body = @{
-                oldName = $OldTagName
-                newName = $NewTagName
-            }
-        }
 
-        InvokeShlinkRestMethod @Params
+    GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+
+    $Params = @{
+        Endpoint = "tags"
+        Method = "PUT"
+        Body = @{
+            oldName = $OldTagName
+            newName = $NewTagName
+        }
     }
-    end {
-    }
+
+    InvokeShlinkRestMethod @Params
 }
