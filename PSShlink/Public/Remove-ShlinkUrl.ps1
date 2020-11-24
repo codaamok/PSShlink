@@ -24,14 +24,16 @@ function Remove-ShlinkUrl {
 
         Removes the short code "profile" associated with the domain "example.com" from the Shlink server.
     .INPUTS
-        This function does not accept pipeline input.
+        System.String[]
+
+        Used for the -ShortCode parameter.
     .OUTPUTS
         System.Management.Automation.PSObject
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param (
-        [Parameter(Mandatory)]
-        [String]$ShortCode,
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [String[]]$ShortCode,
 
         [Parameter()]
         [String]$Domain,
@@ -46,31 +48,33 @@ function Remove-ShlinkUrl {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
     }
     process {
-        $Params = @{
-            Endpoint = "short-urls"
-            Path = $ShortCode
-            Method = "DELETE"
-        }
-
-        $WouldMessage = "Would delete short code '{0}' from Shlink server '{1}'" -f $ShortCode, $Script:ShlinkServer
-        $RemovingMessage = "Removing short code '{0}' from Shlink server '{1}'" -f $ShortCode, $Script:ShlinkServer
-        
-        switch ($PSBoundParameters.Keys) {
-            "Domain" {
-                $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
-                $QueryString.Add("domain", $Domain)
-                $Params["Query"] = $QueryString
-                
-                $WouldMessage = $WouldMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
-                $RemovingMessage = $RemovingMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
+        foreach ($Code in $ShortCode) {
+            $Params = @{
+                Endpoint = "short-urls"
+                Path = $Code
+                Method = "DELETE"
             }
-        }
 
-        if ($PSCmdlet.ShouldProcess(
-            $WouldMessage,
-            "Are you sure you want to continue?",
-            $RemovingMessage)) {
-                InvokeShlinkRestMethod @Params
+            $WouldMessage = "Would delete short code '{0}' from Shlink server '{1}'" -f $Code, $Script:ShlinkServer
+            $RemovingMessage = "Removing short code '{0}' from Shlink server '{1}'" -f $Code, $Script:ShlinkServer
+            
+            switch ($PSBoundParameters.Keys) {
+                "Domain" {
+                    $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
+                    $QueryString.Add("domain", $Domain)
+                    $Params["Query"] = $QueryString
+                    
+                    $WouldMessage = $WouldMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
+                    $RemovingMessage = $RemovingMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
+                }
+            }
+
+            if ($PSCmdlet.ShouldProcess(
+                $WouldMessage,
+                "Are you sure you want to continue?",
+                $RemovingMessage)) {
+                    InvokeShlinkRestMethod @Params
+            }
         }
     }
     end {

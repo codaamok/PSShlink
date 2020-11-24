@@ -54,6 +54,8 @@ function Get-ShlinkUrl {
         This function does not accept pipeline input.
     .OUTPUTS
         System.Management.Automation.PSObject
+
+        Objects have a PSTypeName of 'PSTypeName'.
     #>
     [CmdletBinding(DefaultParameterSetName="ListShortUrls")]
     param (
