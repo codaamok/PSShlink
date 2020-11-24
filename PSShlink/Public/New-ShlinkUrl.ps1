@@ -77,47 +77,43 @@ function New-ShlinkUrl {
         [Parameter()]
         [SecureString]$ShlinkApiKey
     )
-    begin {
-        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
-    }
-    process {
-        $Params = @{
-            Endpoint = "short-urls"
-            Method = "POST"
-            Body = @{
-                longUrl = $LongUrl
-            }
-        }
 
-        switch ($PSBoundParameters.Keys) {
-            "CustomSlug" {
-                $Params["Body"]["customSlug"] = $CustomSlug
-            }
-            "Tags" {
-                $Params["Body"]["tags"] = @($Tags)
-            }
-            "ValidSince" {
-                $Params["Body"]["validSince"] = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
-            }
-            "ValidUntil" {
-                $Params["Body"]["validUntil"] = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
-            }
-            "MaxVisits" {
-                $Params["Body"]["maxVisits"] = $MaxVisits
-            }
-            "Domain" {
-                $Params["Body"]["domain"] = $Domain
-            }
-            "ShortCodeLength" {
-                $Params["Body"]["shortCodeLength"] = $ShortCodeLength
-            }
-            "FindIfExists" {
-                $Params["Body"]["findIfExists"] = "true"
-            }
-        }
+    GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
 
-        InvokeShlinkRestMethod @Params
+    $Params = @{
+        Endpoint = "short-urls"
+        Method = "POST"
+        Body = @{
+            longUrl = $LongUrl
+        }
     }
-    end {
+
+    switch ($PSBoundParameters.Keys) {
+        "CustomSlug" {
+            $Params["Body"]["customSlug"] = $CustomSlug
+        }
+        "Tags" {
+            $Params["Body"]["tags"] = @($Tags)
+        }
+        "ValidSince" {
+            $Params["Body"]["validSince"] = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
+        }
+        "ValidUntil" {
+            $Params["Body"]["validUntil"] = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
+        }
+        "MaxVisits" {
+            $Params["Body"]["maxVisits"] = $MaxVisits
+        }
+        "Domain" {
+            $Params["Body"]["domain"] = $Domain
+        }
+        "ShortCodeLength" {
+            $Params["Body"]["shortCodeLength"] = $ShortCodeLength
+        }
+        "FindIfExists" {
+            $Params["Body"]["findIfExists"] = "true"
+        }
     }
+
+    InvokeShlinkRestMethod @Params
 }
