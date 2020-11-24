@@ -10,3 +10,6 @@
 ☐ consider dropping begin{} process{} end{} blocks where appropriate
 ☐ add pipeline support to remove/set
 ☐ consider disabling parameter positional binding on some commands for the benefit of clear command syntax when user uses Get-Help
+☐ check if things like shortcodes exist and inform user if they don't before making changes to them
+☐ create proper error records
+☐ update CBH where pipeline support has been added
