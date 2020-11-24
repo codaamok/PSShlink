@@ -2,13 +2,13 @@
 ✔ need to select & expand shortUrls/data if no parameter/query is passed for InvokeRestMethod, and omit if parameter/query is passed @done (04/11/2020, 21:14:21)
 ✔ create format data file @done (17/11/2020, 19:52:28)
 ✔ create comment based help @done (17/11/2020, 20:11:39)
-☐ flesh out the read me
+✔ flesh out the read me @done (24/11/2020, 22:40:15)
 ✔ decide whether to make 5.1 or 7 the minimum powershell verison @done (17/11/2020, 20:11:49)
 ✔ would be cool to save QR code to file, maybe with Get-ShlinkUrl ? @done (18/11/2020, 00:08:11)
     ✔ note or investigate whether can get QR code for short codes for non-default domain @done (22/11/2020, 14:49:46)
     ✔ fill out CBH for it @done (22/11/2020, 15:03:58)
-☐ consider dropping begin{} process{} end{} blocks where appropriate
-☐ add pipeline support to remove/set
+✔ consider dropping begin{} process{} end{} blocks where appropriate @done (24/11/2020, 22:40:09)
+✔ add pipeline support to remove/set @done (24/11/2020, 22:40:01)
 ☐ consider disabling parameter positional binding on some commands for the benefit of clear command syntax when user uses Get-Help
 ☐ check if things like shortcodes exist and inform user if they don't before making changes to them
 ☐ create proper error records
