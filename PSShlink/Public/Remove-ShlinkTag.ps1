@@ -20,8 +20,18 @@ function Remove-ShlinkTag {
         PS C:\> Remove-ShlinkTag -Tags "oldwebsite", "newwebsite"
 
         Removes the following tags from the Shlink server: "oldwebsite", "newwebsite"
+    .EXAMPLE
+        PS C:\> "tag1","tag2" | Remove-ShlinkTag
+
+        Removes "tag1" and "tag2" from your Shlink instance.
+    .EXAMPLE
+        PS C:\> Get-ShlinkUrl -ShortCode "profile" | Remove-ShlinkTag
+
+        Removes all the tags which are associated with the short code "profile" from the Shlink instance.
     .INPUTS
-        This function does not accept pipeline input.
+        System.String[]
+
+        Used for the -Tags parameter.
     .OUTPUTS
         System.Management.Automation.PSObject
     #>
@@ -39,24 +49,31 @@ function Remove-ShlinkTag {
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
+        $AllTags = Get-ShlinkTags
     }
     process {
         foreach ($Tag in $Tags) {
-            $QueryString.Add("tags[]", $Tag)
-        }
-
-        $Params = @{
-            Endpoint = "tags"
-            Method = "DELETE"
-            Query = $QueryString
-        }
-
-        if ($PSCmdlet.ShouldProcess(
-            ("Would delete tag(s) '{0}' from Shlink server '{1}'" -f ([String]::Join("', '", $Tags)), $Script:ShlinkServer),
-            "Are you sure you want to continue?",
-            ("Removing tag(s) '{0}' from Shlink server '{1}'" -f ([String]::Join("', '", $Tags)), $Script:ShlinkServer))) {
-                InvokeShlinkRestMethod @Params
+            if ($AllTags.tag -notcontains $Tag) {
+                Write-Error -Message ("Tag '{0}' does not exist on Shlink server '{1}'" -f $Tag, $Script:ShlinkServer) -Category ObjectNotFound -TargetObject $Tag
+                continue
             }
+            else {
+                $QueryString.Add("tags[]", $Tag)
+            }
+
+            $Params = @{
+                Endpoint = "tags"
+                Method = "DELETE"
+                Query = $QueryString
+            }
+    
+            if ($PSCmdlet.ShouldProcess(
+                ("Would delete tag '{0}' from Shlink server '{1}'" -f ([String]::Join("', '", $Tags)), $Script:ShlinkServer),
+                "Are you sure you want to continue?",
+                ("Removing tag '{0}' from Shlink server '{1}'" -f ([String]::Join("', '", $Tags)), $Script:ShlinkServer))) {
+                    InvokeShlinkRestMethod @Params
+                }
+        }
     }
     end {
     }
