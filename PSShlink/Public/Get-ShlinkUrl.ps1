@@ -87,57 +87,67 @@ function Get-ShlinkUrl {
         [Parameter()]
         [SecureString]$ShlinkApiKey
     )
-
-    GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
-    $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
-
-    $Params = @{
-        Endpoint   = "short-urls"
-        PSTypeName = "PSShlink"
+    # Using begin / process / end blocks due to the way PowerShell processes all 
+    # begin blocks in the pipeline first before the process blocks. If user passed
+    # -ShlinkServer and -ShlinkApiKey in this function and piped to something else,
+    # e.g. Set-ShlinkUrl, and they omitted those parameters from the piped function, 
+    # they will be prompted for -ShlinkServer and -ShlinkApiKey. This is not my intended
+    # user experience. Hence the decision to implement begin/process/end blocks here.
+    begin {
+        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+        $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
     }
-
-    switch ($PSCmdlet.ParameterSetName) {
-        "ParseShortCode" {
-            switch ($PSBoundParameters.Keys) {
-                "ShortCode" {
-                    $Params["Path"] = $ShortCode
-                }
-                "Domain" {
-                    $QueryString.Add("domain", $Domain)
-                }
-            }
+    process {
+        $Params = @{
+            Endpoint   = "short-urls"
+            PSTypeName = "PSShlink"
         }
-        "ListShortUrls" {
-            $Params["ChildPropertyName"] = "shortUrls"
-
-            $Params["PropertyTree"] = @(
-                "shortUrls"
-                "data"
-            )
-
-            switch ($PSBoundParameters.Keys) {
-                "Tags" {
-                    foreach ($Tag in $Tags) {
-                        $QueryString.Add("tags[]", $Tag)
+    
+        switch ($PSCmdlet.ParameterSetName) {
+            "ParseShortCode" {
+                switch ($PSBoundParameters.Keys) {
+                    "ShortCode" {
+                        $Params["Path"] = $ShortCode
+                    }
+                    "Domain" {
+                        $QueryString.Add("domain", $Domain)
                     }
                 }
-                "SearchTerm" {
-                    $QueryString.Add("searchTerm", $SearchTerm)
-                }
-                "OrderBy" {
-                    $QueryString.Add("orderBy", $OrderBy)
-                }
-                "StartDate" {
-                    $QueryString.Add("startDate", (Get-Date $StartDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
-                }
-                "EndDate" {
-                    $QueryString.Add("endDate", (Get-Date $EndDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
+            }
+            "ListShortUrls" {
+                $Params["ChildPropertyName"] = "shortUrls"
+    
+                $Params["PropertyTree"] = @(
+                    "shortUrls"
+                    "data"
+                )
+    
+                switch ($PSBoundParameters.Keys) {
+                    "Tags" {
+                        foreach ($Tag in $Tags) {
+                            $QueryString.Add("tags[]", $Tag)
+                        }
+                    }
+                    "SearchTerm" {
+                        $QueryString.Add("searchTerm", $SearchTerm)
+                    }
+                    "OrderBy" {
+                        $QueryString.Add("orderBy", $OrderBy)
+                    }
+                    "StartDate" {
+                        $QueryString.Add("startDate", (Get-Date $StartDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
+                    }
+                    "EndDate" {
+                        $QueryString.Add("endDate", (Get-Date $EndDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
+                    }
                 }
             }
         }
+    
+        $Params["Query"] = $QueryString
+    
+        InvokeShlinkRestMethod @Params
     }
-
-    $Params["Query"] = $QueryString
-
-    InvokeShlinkRestMethod @Params
+    end {
+    }    
 }
