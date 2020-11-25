@@ -23,6 +23,14 @@ function Remove-ShlinkUrl {
         PS C:\> Remove-ShlinkUrl -ShortCode "profile" -Domain "example.com"
 
         Removes the short code "profile" associated with the domain "example.com" from the Shlink server.
+    .EXAMPLE
+        PS C:\> Get-ShlinkUrl -SearchTerm "oldwebsite" | Remove-ShlinkUrl
+
+        Removes all existing short codes which match the search term "oldwebsite".
+    .EXAMPLE
+        PS C:\> "profile", "house" | Remove-ShlinkUrl
+
+        Removes the short codes "profile" and "house" from the Shlink instance.
     .INPUTS
         System.String[]
 

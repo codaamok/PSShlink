@@ -34,6 +34,10 @@ function Set-ShlinkUrl {
         PS C:\> Set-ShlinkUrl -ShortCode "profile" -Tags "powershell","pwsh"
 
         Update the existing short code "profile" to have the tags "powershell" and "pwsh" associated with it.
+    .EXAMPLE
+        PS C:\> Get-ShlinkUrl -SearchTerm "preview" | Set-ShlinkUrl -Tags "preview"
+
+        Updates all existing short codes which match the search term "preview" to have the tag "preview".
     .INPUTS
         System.String[]
 
@@ -78,6 +82,10 @@ function Set-ShlinkUrl {
     }
     process {
         foreach ($Code in $ShortCode) {
+            $GetShlinkUrlParams = @{
+                ShortCode = $Code
+            }
+
             switch ($PSCmdlet.ParameterSetName) {
                 "EditUrl" {
                     $Params = @{
@@ -116,13 +124,24 @@ function Set-ShlinkUrl {
             # The Domain parameter can be used in both parameter sets
             if ($PSBoundParameters.ContainsKey("Domain")) {
                 $QueryString.Add("domain", $Domain)
+                $GetShlinkUrlParams["Domain"] = $Domain
             }
 
             $Params["Query"] = $QueryString
 
-            # Note: when using -Tags the API endpoint returns a successful message / object,
-            # whereas with everything else no success message / object is returned.
-            InvokeShlinkRestMethod @Params
+            try {
+                # Note: when using -Tags the API endpoint returns a successful message / object,
+                # whereas with everything else no success message / object is returned...
+                $null = InvokeShlinkRestMethod @Params
+
+                # ... as a result I want to create a user experience where another call is made
+                # to Get-ShlinkUrl to show the user their new changes, viewing the whole object
+                # for each short code.
+                Get-ShlinkUrl @GetShlinkUrlParams
+            }
+            catch {
+                Write-Error -ErrorRecord $_
+            }
         }
     }
     end {

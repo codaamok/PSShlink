@@ -15,7 +15,7 @@ function Save-ShlinkUrlQrCode {
 
         Saves QR codes for all short URLs returned by the Get-ShlinkUrl call. All files will be saved as the default values for size (300x300) and type (png). All files will be saved in "C:\temp" using the normal naming convention for file names, as detailed in the description.
     .INPUTS
-        System.Management.Automation.PSObject
+        System.Management.Automation.PSObject[]
 
         Expects PSObjects with PSTypeName of 'PSTypeName', typically from Get-ShlinkUrl.
     .OUTPUTS
