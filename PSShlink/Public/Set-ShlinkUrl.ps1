@@ -99,9 +99,6 @@ function Set-ShlinkUrl {
                         "MaxVisits" {
                             $Params["Body"]["maxVisits"] = $MaxVisits
                         }
-                        "Domain" {
-                            $QueryString.Add("domain", $Domain)
-                        }
                     }
                 }
                 "EditUrlTag" {
