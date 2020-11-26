@@ -39,10 +39,11 @@ function InvokeShlinkRestMethod {
     $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($ApiKey)
 
     $Params = @{
-        Method = $Method
-        Uri = "{0}/rest/v2/{1}" -f $Server, $Endpoint
+        Method      = $Method
+        Uri         = "{0}/rest/v2/{1}" -f $Server, $Endpoint
         ContentType = "application/json"
-        Headers = @{"X-Api-Key" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)}
+        Headers     = @{"X-Api-Key" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)}
+        ErrorAction = "Stop"
     }
 
     if ($PSBoundParameters.ContainsKey("Path")) {
@@ -61,7 +62,12 @@ function InvokeShlinkRestMethod {
     }
 
     $Result = do {
-        $Data = Invoke-RestMethod @Params
+        try {
+            $Data = Invoke-RestMethod @Params
+        }
+        catch {
+            $PSCmdlet.ThrowTerminatingError($_)
+        }
 
         $PaginationData = if ($ChildPropertyName) {
             Write-Output $Data.$ChildPropertyName.pagination

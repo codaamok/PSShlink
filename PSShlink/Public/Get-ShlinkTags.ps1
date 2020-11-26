@@ -34,12 +34,30 @@ function Get-ShlinkTags {
     $QueryString.Add("withStats", "true")
 
     $Params = @{
-        Endpoint = "tags"
+        Endpoint          = "tags"
         ChildPropertyName = "tags"
-        PropertyTree = @("tags","stats")
+        PropertyTree      = @("tags","stats")
+        ErrorAction       = "Stop"
+        ErrorVariable     = "InvokeShlinkRestMethodError"
     }
 
     $Params["Query"] = $QueryString
 
-    InvokeShlinkRestMethod @Params
+    try {
+        InvokeShlinkRestMethod @Params
+    }
+    catch [System.Net.WebException] {
+        switch ($InvokeShlinkRestMethodError.Exception.Response.StatusCode) {
+            "InternalServerError" {
+                $WriteErrorSplat = @{
+                    Message      = $InvokeShlinkRestMethodError.Exception.Message
+                    Category     = "InvalidOperation"
+                }
+                Write-Error @WriteErrorSplat
+            }
+        }
+    }
+    catch {
+        Write-Error -ErrorRecord $_
+    }
 }

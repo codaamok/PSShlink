@@ -54,7 +54,12 @@ function Remove-ShlinkTag {
     process {
         foreach ($Tag in $Tags) {
             if ($AllTags.tag -notcontains $Tag) {
-                Write-Error -Message ("Tag '{0}' does not exist on Shlink server '{1}'" -f $Tag, $Script:ShlinkServer) -Category ObjectNotFound -TargetObject $Tag
+                $WriteErrorSplat = @{
+                    Message      = "Tag '{0}' does not exist on Shlink server '{1}'" -f $Tag, $Script:ShlinkServer
+                    Category     = "ObjectNotFound"
+                    TargetObject = $Tag
+                }
+                Write-Error @WriteErrorSplat
                 continue
             }
             else {

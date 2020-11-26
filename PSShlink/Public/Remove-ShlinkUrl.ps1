@@ -66,15 +66,13 @@ function Remove-ShlinkUrl {
             $WouldMessage = "Would delete short code '{0}' from Shlink server '{1}'" -f $Code, $Script:ShlinkServer
             $RemovingMessage = "Removing short code '{0}' from Shlink server '{1}'" -f $Code, $Script:ShlinkServer
             
-            switch ($PSBoundParameters.Keys) {
-                "Domain" {
-                    $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
-                    $QueryString.Add("domain", $Domain)
-                    $Params["Query"] = $QueryString
-                    
-                    $WouldMessage = $WouldMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
-                    $RemovingMessage = $RemovingMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
-                }
+            if ($PSBoundParameters.ContainsKey("Domain")) {
+                $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
+                $QueryString.Add("domain", $Domain)
+                $Params["Query"] = $QueryString
+                
+                $WouldMessage = $WouldMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
+                $RemovingMessage = $RemovingMessage -replace "from Shlink server", ("for domain '{0}'" -f $Domain)
             }
 
             if ($PSCmdlet.ShouldProcess(

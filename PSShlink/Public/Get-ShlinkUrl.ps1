@@ -99,8 +99,10 @@ function Get-ShlinkUrl {
     }
     process {
         $Params = @{
-            Endpoint   = "short-urls"
-            PSTypeName = "PSShlink"
+            Endpoint      = "short-urls"
+            PSTypeName    = "PSShlink"
+            ErrorAction   = "Stop"
+            ErrorVariable = "InvokeShlinkRestMethodError"
         }
     
         switch ($PSCmdlet.ParameterSetName) {
@@ -145,8 +147,31 @@ function Get-ShlinkUrl {
         }
     
         $Params["Query"] = $QueryString
-    
-        InvokeShlinkRestMethod @Params
+        
+        try {
+            InvokeShlinkRestMethod @Params
+        }
+        catch [System.Net.WebException] {
+            $WriteErrorSplat = @{
+                TargetObject = $ShortCode
+            }
+
+            switch ($InvokeShlinkRestMethodError.Exception.Response.StatusCode) {
+                "NotFound" { 
+                    $WriteErrorSplat["Message"]  = "Short code '{0}' does not exist on Shlink server '{1}'" -f $ShortCode, $Script:ShlinkServer
+                    $WriteErrorSplat["Category"] = "ObjectNotFound"
+                }
+                "InternalServerError" {
+                    $WriteErrorSplat["Message"]  = $InvokeShlinkRestMethodError.Exception.Message
+                    $WriteErrorSplat["Category"] = "InvalidOperation"
+                }
+            }
+
+            Write-Error @WriteErrorSplat
+        }
+        catch {
+            Write-Error -ErrorRecord $_
+        }
     }
     end {
     }    

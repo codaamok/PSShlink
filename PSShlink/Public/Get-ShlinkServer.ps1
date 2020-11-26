@@ -26,5 +26,27 @@ function Get-ShlinkServer {
 
     GetShlinkConnection -Server $ShlinkServer -ServerOnly
     $Uri = "{0}/rest/health" -f $Script:ShlinkServer
-    Invoke-RestMethod -Uri $Uri
+
+    try {
+        Invoke-RestMethod -Uri $Uri -ErrorAction "Stop" -ErrorVariable "InvokeRestMethodError"
+    }
+    catch [System.Net.WebException] {
+        $WriteErrorSplat = @{
+            Message = $InvokeRestMethodError.Exception.Message
+        }
+
+        switch ($InvokeRestMethodError.Exception.Response.StatusCode) {
+            "InternalServerError" {
+                $WriteErrorSplat["Category"] = "InvalidOperation"
+            }
+            "ServiceUnavailable" {
+                $WriteErrorSplat["Category"] = "ResourceUnavailable"
+            }
+        }
+        
+        Write-Error @WriteErrorSplat
+    }
+    catch {
+        Write-Error -ErrorRecord $_
+    }
 }
