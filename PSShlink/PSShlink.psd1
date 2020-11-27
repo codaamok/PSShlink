@@ -12,10 +12,10 @@
 RootModule = 'PSShlink.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.1.0'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = @('Core', 'Desktop')
 
 # ID used to uniquely identify this module
 GUID = 'c9acdd6c-96d0-4a8a-9cce-df8fdeabc25d'
