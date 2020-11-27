@@ -49,6 +49,11 @@ function Remove-ShlinkTag {
     begin {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
+
+        # Gather all tags and check if any of the user's desired tag(s) to delete
+        # are currently an existing tag within the process / for loop later.
+        # This is because the REST API does not produce any kind of feedback if the
+        # user attempts to delete a tag which does not exist.
         $AllTags = Get-ShlinkTags
     }
     process {
@@ -67,16 +72,22 @@ function Remove-ShlinkTag {
             }
 
             $Params = @{
-                Endpoint = "tags"
-                Method = "DELETE"
-                Query = $QueryString
+                Endpoint    = "tags"
+                Method      = "DELETE"
+                Query       = $QueryString
+                ErrorAction = "Stop"
             }
     
             if ($PSCmdlet.ShouldProcess(
                 ("Would delete tag '{0}' from Shlink server '{1}'" -f ([String]::Join("', '", $Tags)), $Script:ShlinkServer),
                 "Are you sure you want to continue?",
                 ("Removing tag '{0}' from Shlink server '{1}'" -f ([String]::Join("', '", $Tags)), $Script:ShlinkServer))) {
-                    InvokeShlinkRestMethod @Params
+                    try {
+                        InvokeShlinkRestMethod @Params
+                    }
+                    catch {
+                        Write-Error -ErrorRecord $_
+                    }
                 }
         }
     }

@@ -99,8 +99,9 @@ function Get-ShlinkUrl {
     }
     process {
         $Params = @{
-            Endpoint      = "short-urls"
-            PSTypeName    = "PSShlink"
+            Endpoint    = "short-urls"
+            PSTypeName  = "PSShlink"
+            ErrorACtion = "Stop"
         }
     
         switch ($PSCmdlet.ParameterSetName) {
@@ -114,13 +115,8 @@ function Get-ShlinkUrl {
                     }
                 }
             }
-            "ListShortUrls" {
-                $Params["ChildPropertyName"] = "shortUrls"
-    
-                $Params["PropertyTree"] = @(
-                    "shortUrls"
-                    "data"
-                )
+            "ListShortUrls" {   
+                $Params["PropertyTree"] = "shortUrls", "data"
     
                 switch ($PSBoundParameters.Keys) {
                     "Tags" {

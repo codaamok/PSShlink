@@ -28,7 +28,7 @@ function Get-ShlinkServer {
     $Uri = "{0}/rest/health" -f $Script:ShlinkServer
 
     try {
-        Invoke-RestMethod -Uri $Uri -ErrorAction "Stop" -ErrorVariable "InvokeRestMethodError"
+        Invoke-RestMethod -Uri $Uri -ErrorAction "Stop"
     }
     catch {
         Write-Error -ErrorRecord $_

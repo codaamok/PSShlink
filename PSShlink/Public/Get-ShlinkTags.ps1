@@ -34,9 +34,8 @@ function Get-ShlinkTags {
     $QueryString.Add("withStats", "true")
 
     $Params = @{
-        Endpoint          = "tags"
-        ChildPropertyName = "tags"
-        PropertyTree      = @("tags","stats")
+        Endpoint     = "tags"
+        PropertyTree = "tags", "stats"
     }
 
     $Params["Query"] = $QueryString

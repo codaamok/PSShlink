@@ -108,20 +108,20 @@ function Get-ShlinkVisits {
 
     try {
         $Result = InvokeShlinkRestMethod @Params
+
+        # I figured it would be nice to add the Server property so it is immediately clear 
+        # the server's view count is returned when no parameters are used
+        if ($PSCmdlet.ParameterSetName -eq "Server") {
+            [PSCustomObject]@{
+                Server      = $Script:ShlinkServer
+                visitsCount = $Result.visitsCount
+            }
+        }
+        else {
+            $Result
+        }
     }
     catch {
         Write-Error -ErrorRecord $_
-    }
-
-    # I figured it would be nice to add the Server property so it is immediately clear 
-    # the server's view count is returned when no parameters are used
-    if ($PSCmdlet.ParameterSetName -eq "Server") {
-        [PSCustomObject]@{
-            Server      = $Script:ShlinkServer
-            visitsCount = $Result.visitsCount
-        }
-    }
-    else {
-        $Result
     }
 }

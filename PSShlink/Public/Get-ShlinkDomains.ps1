@@ -24,5 +24,16 @@ function Get-ShlinkDomains {
 
     GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
 
-    InvokeShlinkRestMethod -EndPoint "domains" 
+    $Params = @{
+        Endpoint     = "domains"
+        PropertyTree = "domains", "data"
+        ErrorAction  = "Stop"
+    }
+
+    try {
+        InvokeShlinkRestMethod @Params
+    }
+    catch {
+        Write-Error -ErrorRecord $_
+    }
 }

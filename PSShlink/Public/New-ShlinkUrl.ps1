@@ -86,12 +86,13 @@ function New-ShlinkUrl {
     GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
 
     $Params = @{
-        Endpoint = "short-urls"
-        Method = "POST"
-        Body = @{
+        Endpoint    = "short-urls"
+        Method      = "POST"
+        Body        = @{
             longUrl     = $LongUrl
             validateUrl = (-not $DoNotValidateUrl.IsPresent).ToString().ToLower()
         }
+        ErrorAction = "STop"
     }
 
     switch ($PSBoundParameters.Keys) {
@@ -121,5 +122,10 @@ function New-ShlinkUrl {
         }
     }
 
-    InvokeShlinkRestMethod @Params
+    try {
+        InvokeShlinkRestMethod @Params
+    }
+    catch {
+        Write-Error -ErrorRecord $_
+    }
 }

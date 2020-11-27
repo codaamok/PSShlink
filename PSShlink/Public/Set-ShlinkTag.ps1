@@ -41,13 +41,19 @@ function Set-ShlinkTag {
     GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
 
     $Params = @{
-        Endpoint = "tags"
-        Method = "PUT"
-        Body = @{
+        Endpoint    = "tags"
+        Method      = "PUT"
+        Body        = @{
             oldName = $OldTagName
             newName = $NewTagName
         }
+        ErrorAction = "Stop"
     }
 
-    InvokeShlinkRestMethod @Params
+    try {
+        InvokeShlinkRestMethod @Params
+    }
+    catch {
+        Write-Error -ErrorRecord $_
+    }
 }

@@ -58,9 +58,10 @@ function Remove-ShlinkUrl {
     process {
         foreach ($Code in $ShortCode) {
             $Params = @{
-                Endpoint = "short-urls"
-                Path = $Code
-                Method = "DELETE"
+                Endpoint    = "short-urls"
+                Path        = $Code
+                Method      = "DELETE"
+                ErrorAction = "Stop"
             }
 
             $WouldMessage = "Would delete short code '{0}' from Shlink server '{1}'" -f $Code, $Script:ShlinkServer
@@ -79,7 +80,12 @@ function Remove-ShlinkUrl {
                 $WouldMessage,
                 "Are you sure you want to continue?",
                 $RemovingMessage)) {
-                    InvokeShlinkRestMethod @Params
+                    try {
+                        InvokeShlinkRestMethod @Params
+                    }
+                    catch {
+                        Write-Error -ErrorRecord $_
+                    }
             }
         }
     }

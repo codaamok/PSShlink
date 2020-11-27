@@ -58,6 +58,7 @@ function Save-ShlinkUrlQrCode {
                 ShortCode    = $ShortCode
                 ShlinkServer = $ShlinkServer
                 ShlinkApiKey = $ShlinkApiKey
+                ErrorAction  = "Stop"
             }
 
             if ($PSBoundParameters.ContainsKey("Domain")) {
@@ -67,7 +68,12 @@ function Save-ShlinkUrlQrCode {
             # Force result to be scalar, otherwise it returns as a collection of 1 element.
             # Thanks to Chris Dent for this being a big "ah-ha!" momemnt for me, especially
             # when piping stuff to Get-Member
-            $Object = Get-ShlinkUrl @Params | ForEach-Object { $_ }
+            try {
+                $Object = Get-ShlinkUrl @Params | ForEach-Object { $_ }
+            }
+            catch {
+                Write-Error -ErrorRecord $_
+            }
 
             if ([String]::IsNullOrWhiteSpace($Object.Domain)) {
                 # We can safely assume the ShlinkServer variable will be set due to the Get-ShlinkUrl call
@@ -85,11 +91,17 @@ function Save-ShlinkUrlQrCode {
             }
 
             $Params = @{
-                OutFile = "{0}\ShlinkQRCode_{1}_{2}_{3}.{4}" -f $Path, $Object.ShortCode, ($Object.Domain -replace "\.", "-"), $Size, $Format
-                Uri     = "{0}/qr-code/{1}?{2}" -f $Object.ShortUrl, $Size, $QueryString.ToString()
+                OutFile     = "{0}\ShlinkQRCode_{1}_{2}_{3}.{4}" -f $Path, $Object.ShortCode, ($Object.Domain -replace "\.", "-"), $Size, $Format
+                Uri         = "{0}/qr-code/{1}?{2}" -f $Object.ShortUrl, $Size, $QueryString.ToString()
+                ErrorAction = "Stop"
             }
 
-            Invoke-RestMethod @Params
+            try {
+                Invoke-RestMethod @Params
+            }
+            catch {
+                Write-Error -ErrorRecord $_
+            }
         }
     }
     end {

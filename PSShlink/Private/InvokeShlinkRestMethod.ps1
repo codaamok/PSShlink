@@ -24,9 +24,6 @@ function InvokeShlinkRestMethod {
         [hashtable]$Body,
 
         [Parameter()]
-        [String]$ChildPropertyName,
-
-        [Parameter()]
         [String[]]$PropertyTree,
 
         [Parameter()]
@@ -69,39 +66,44 @@ function InvokeShlinkRestMethod {
         catch {
             # The web exception class is different for Core vs Windows
             if ($InvokeRestMethodError.ErrorRecord.Exception.GetType().FullName -match "HttpResponseException|WebException") {
-                switch($InvokeRestMethodError.ErrorRecord.Exception.Response.StatusCode) {
-                    "NotFound" {
-                        $Exception = [System.Management.Automation.ItemNotFoundException]::New(($InvokeRestMethodError.Message | ConvertFrom-Json).detail)
-                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::New(
+                $ExceptionMessage = $InvokeRestMethodError.Message | ConvertFrom-Json | Select-Object -ExpandProperty detail
+                $ErrorId = "{0}{1}" -f 
+                    [Int][System.Net.HttpStatusCode]$InvokeRestMethodError.ErrorRecord.Exception.Response.StatusCode, 
+                    [String][System.Net.HttpStatusCode]$InvokeRestMethodError.ErrorRecord.Exception.Response.StatusCode
+
+                switch -Regex ($InvokeRestMethodError.ErrorRecord.Exception.Response.StatusCode) {
+                    "BadRequest|Conflict" {
+                        $Exception = [System.ArgumentException]::new($ExceptionMessage)
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
                             $Exception,
-                            "404NotFound",
+                            $ErrorId,
+                            [System.Management.Automation.ErrorCategory]::InvalidArgument,
+                            $Params['Url']
+                        )
+                    }
+                    "NotFound" {
+                        $Exception = [System.Management.Automation.ItemNotFoundException]::new($ExceptionMessage)
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                            $Exception,
+                            $ErrorId,
                             [System.Management.Automation.ErrorCategory]::ObjectNotFound,
                             $Params['Uri']
                         )
                     }
-                    "InternalServerError" {
-                        $Exception = [InvalidOperationException]::New(($InvokeRestMethodError.Message | ConvertFrom-Json).detail)
-                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::New(
-                            $Exception,
-                            "500InternalServerError",
-                            [System.Management.Automation.ErrorCategory]::InvalidOperation,
-                            $Params['Uri']
-                        )
-                    }
                     "ServiceUnavailable" {
-                        $Exception = [InvalidOperationException]::New(($InvokeRestMethodError.Message | ConvertFrom-Json).detail)
-                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::New(
+                        $Exception = [System.InvalidOperationException]::new($ExceptionMessage)
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
                             $Exception,
-                            "503ServiceUnavailable",
+                            $ErrorId,
                             [System.Management.Automation.ErrorCategory]::ResourceUnavailable,
                             $Params['Uri']
                         )
                     }
                     default {
-                        $Exception = [InvalidOperationException]::New(("Unknown status code '{0}' received from the endpoint" -f ($InvokeRestMethodError.Exception.Response.StatusCode).value__))
-                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::New(
+                        $Exception = [System.InvalidOperationException]::new($ExceptionMessage)
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
                             $Exception,
-                            "UnknownStatusCode",
+                            $ErrorId,
                             [System.Management.Automation.ErrorCategory]::InvalidOperation,
                             $Params['Uri']
                         )
@@ -115,8 +117,8 @@ function InvokeShlinkRestMethod {
             }   
         }
 
-        $PaginationData = if ($ChildPropertyName) {
-            Write-Output $Data.$ChildPropertyName.pagination
+        $PaginationData = if ($PropertyTree) {
+            Write-Output $Data.($PropertyTree[0]).pagination
         }
         else {
             Write-Output $Data.pagination

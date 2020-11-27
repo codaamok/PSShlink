@@ -36,18 +36,22 @@ function New-ShlinkTag {
     GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
 
     $Params = @{
-        Endpoint = "tags"
-        Method = "POST"
-        Body = @{
+        Endpoint     = "tags"
+        Method       = "POST"
+        Body         = @{
             tags = @($Tags)
         }
-        PropertyTree = @(
-            "tags"
-            "data"
-        )
+        PropertyTree = "tags", "data"
+        ErrorAction  = "Stop"
     }
 
-    InvokeShlinkRestMethod @Params
-
-    Write-Warning -Message "As of Shlink 2.4.0, this endpoint is deprecated. New tags are automatically created when you specify them in the -Tags parameter with New-ShlinkUrl. At some point, this function may be removed from PSShlink."
+    try {
+        InvokeShlinkRestMethod @Params
+    }
+    catch {
+        Write-Error -ErrorRecord $_
+    }
+    finally {
+        Write-Warning -Message "As of Shlink 2.4.0, this endpoint is deprecated. New tags are automatically created when you specify them in the -Tags parameter with New-ShlinkUrl. At some point, this function may be removed from PSShlink."
+    }
 }
