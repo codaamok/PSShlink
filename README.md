@@ -21,7 +21,8 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 
 ## Requirements
 
-- PowerShell 5.1 or newer
+- PowerShell 5.1 or newer (including PowerShell Core, 7.0 or newer)
+- Shlink 2.4.0 or newer
 
 ## Getting started
 
