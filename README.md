@@ -6,11 +6,33 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 
 ## Functions
 
+- [Get-ShlinkDomains](docs/Get-ShlinkDomains.md)
+- [Get-ShlinkServer](docs/Get-ShlinkServer.md)
+- [Get-ShlinkTags](docs/Get-ShlinkTags.md)
+- [Get-ShlinkUrl](docs/Get-ShlinkUrl.md)
+- [Get-ShlinkVisits](docs/Get-ShlinkVisits.md)
+- [New-ShlinkTag](docs/New-ShlinkTag.md)
+- [New-ShlinkUrl](docs/New-ShlinkUrl.md)
+- [Remove-ShlinkTag](docs/Remove-ShlinkTag.md)
+- [Remove-ShlinkUrl](docs/Remove-ShlinkUrl.md)
+- [Save-ShlinkUrlQrCode](docs/Save-ShlinkUrlQrCode.md)
+- [Set-ShlinkTag](docs/Set-ShlinkTag.md)
+- [Set-ShlinkUrl](docs/Set-ShlinkUrl.md)
+
 ## Requirements
 
 - PowerShell 5.1 or newer
 
 ## Getting started
+
+Install and import:
+
+```powershell
+PS C:\> Install-Module PSShlink -Scope CurrentUser
+PS C:\> Import-Module PSShlink
+```
+
+Be sure to check out the examples below.
 
 ## Authentication
 
@@ -27,6 +49,36 @@ If the first function you use after importing PSShlink requires `-ShlinkServer` 
 
 ## Examples
 
-## Known issues
+All functions come with complete comment based help, so it is possible to find examples for each function using `Get-Help`. For example, use the following to see detailed help including examples for `Save-ShlinkUrlQrCode`:
+
+```powershell
+PS C:\> Get-Help Save-ShlinkUrlQrCode
+```
+
+___
+
+```powershell
+PS C:\> Get-ShlinkUrl -SearchTerm "oldWebsite"
+```
+
+Returns all short codes which match the search term `oldWebsite`.
+
+___
+
+```powershell
+PS C:\> Get-ShlinkUrl -SearchTerm "oldWebsite" | Remove-ShlinkUrl
+```
+
+Deletes all short codes from the Shlink server which match the search term `oldWebsite`.
+
+___
+
+```powershell
+PS C:\> Get-ShlinkUrl -SearchTerm "newWebsite" | Save-ShlinkUrlQrCode
+```
+
+Saves QR codes for all short URLs which match the search term `newWebsite`. All files will be saved as the default values for size (300x300) and type (png). All files by default are saved in your Downloads directory using the naming convention: `ShlinkQRCode_<shortCode>_<domain>_<size>.<format>`. e.g. `ShlinkQRCode_asFk2_example-com_300.png`.
 
 ## Support
+
+If you experience any issues with PSShlink, please raise an issue on GitHub.
