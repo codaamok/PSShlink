@@ -17,7 +17,7 @@ jobs:
       - name: Set environment variables
         run: |
           $Username, $ProjectName = $env:GITHUB_REPOSITORY -split "/"
-          Write-Output ("GH_PROJECTNAME={0}" -f $$ProjectName) | Add-Content -Path $env:GITHUB_ENV 
+          Write-Output ("GH_PROJECTNAME={0}" -f $ProjectName) | Add-Content -Path $env:GITHUB_ENV 
           Write-Output ("GH_USERNAME={0}" -f $Username) | Add-Content -Path $env:GITHUB_ENV 
         shell: pwsh
 
