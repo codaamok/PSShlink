@@ -17,7 +17,24 @@ param (
 )
 
 # Synopsis: Initiate the entire build process
-task . Clean, GetPSGalleryVersionNumber, CopyChangeLog, GetChangelog, GetReleaseNotes, GetManifestVersionNumber, GetVersionToBuild, UpdateChangeLog, GetFunctionsToExport, CreateRootModule, CopyFormatFiles, CopyLicense, CreateProcessScript, CopyAboutHelp, CopyModuleManifest, UpdateModuleManifest, CreateReleaseAsset
+task . Clean, 
+    GetPSGalleryVersionNumber, 
+    CopyChangeLog, 
+    GetChangelog, 
+    GetReleaseNotes,
+    GetManifestVersionNumber, 
+    GetVersionToBuild, 
+    UpdateChangeLog, 
+    GetFunctionsToExport, 
+    CreateRootModule,
+    CopyFormatFiles, 
+    CopyLicense, 
+    CreateProcessScript, 
+    CopyAboutHelp, 
+    CopyModuleManifest, 
+    UpdateModuleManifest, 
+    CreateReleaseAsset,
+    UpdateDocs
 
 # Synopsis: Empty the contents of the build and release directories. If not exist, create them.
 task Clean {
@@ -115,9 +132,9 @@ task GetVersionToBuild {
         if ($null -ne $Script:ChangeLog.Released[0].Version -And $Script:ChangeLog.Released[0].Version -ne $Script:PSGalleryModuleInfo.Version) {
             throw "The latest released version in the changelog does not match the latest released version in the PowerShell gallery"
         }
-        # If module isn't yet published in the PowerShell gallery, and there's no Released section in the change log, set initial version
+        # If module isn't yet published in the PowerShell gallery, and there's no Released section in the change log, set initial version as per the manifest
         elseif ($Script:PSGalleryModuleInfo.Version -eq "0.0" -And $Script:ChangeLog.Released.Count -eq 0) {
-            $Script:VersionToBuild = [System.Version]::New(1, 0, $Date, 0)
+            $Script:VersionToBuild = [System.Version]$Script:ModuleManifest.ModuleVersion
         }
         # If module isn't yet published in the PowerShell gallery, and there is a Released section in the change log, update version
         elseif ($Script:PSGalleryModuleInfo.Version -eq "0.0" -And $Script:ChangeLog.Released.Count -ge 1) {
@@ -125,8 +142,7 @@ task GetVersionToBuild {
             $Script:VersionToBuild = [System.Version]::New(
                 $CurrentVersion.Major,
                 $CurrentVersion.Minor + 1,
-                $Date,
-                0
+                $CurrentVersion.Build
             )
         }
         # If the last Released verison in the change log and currently latest verison in the PowerShell gallery are in harmony, update version
@@ -135,8 +151,7 @@ task GetVersionToBuild {
             $Script:VersionToBuild = [System.Version]::New(
                 $CurrentVersion.Major,
                 $CurrentVersion.Minor + 1,
-                $Date,
-                0
+                $CurrentVersion.Build
             )
         }
         else {
@@ -157,7 +172,7 @@ task GetVersionToBuild {
                     $Script:VersionToBuild = [System.Version]::New(
                         $Script:VersionToBuild.Major,
                         $Script:VersionToBuild.Minor,
-                        $Script:VersionToBuild.Build, $i
+                        $Script:VersionToBuild.Build + $i
                     )
                 }
                 else {
@@ -180,8 +195,7 @@ task GetVersionToBuild {
             $Script:VersionToBuild = [System.Version]::New(
                 ([System.Version]$ModuleManifest.ModuleVersion).Major, 
                 ([System.Version]$ModuleManifest.ModuleVersion).Minor, 
-                ([System.Version]$ModuleManifest.ModuleVersion).Build, 
-                ([System.Version]$ModuleManifest.ModuleVersion).Revision + 1
+                ([System.Version]$ModuleManifest.ModuleVersion).Build + 1
             )
         }
         else {
@@ -332,7 +346,7 @@ task CreateReleaseAsset {
 }
 
 # Synopsis: Update documentation (-NewRelease or -UpdateDocs switch parameter)
-#task UpdateDocs -If ($NewRelease.IsPresent -Or $UpdateDocs.IsPresent) {
-#    Import-Module -Name $BuildRoot\build\$Script:ModuleName -Force
-#    New-MarkdownHelp -Module $Script:ModuleName -OutputFolder $BuildRoot\docs -Force
-#}
+task UpdateDocs -If ($NewRelease.IsPresent -Or $UpdateDocs.IsPresent) {
+    Import-Module -Name $BuildRoot\build\$Script:ModuleName -Force
+    New-MarkdownHelp -Module $Script:ModuleName -OutputFolder $BuildRoot\docs -Force
+}
