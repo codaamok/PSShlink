@@ -48,4 +48,6 @@ function New-ShlinkTag {
     }
 
     InvokeShlinkRestMethod @Params
+
+    Write-Warning -Message "As of Shlink 2.4.0, this endpoint is deprecated. New tags are automatically created when you specify them in the -Tags parameter with New-ShlinkUrl. At some point, this function may be removed from PSShlink."
 }

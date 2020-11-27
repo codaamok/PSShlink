@@ -70,6 +70,9 @@ function Set-ShlinkUrl {
         [Parameter(ParameterSetName="EditUrl")]
         [String]$Domain,
 
+        [Parameter(ParameterSetName="EditUrl")]
+        [Switch]$DoNotValidateUrl,
+
         [Parameter()]
         [String]$ShlinkServer,
 
@@ -93,7 +96,8 @@ function Set-ShlinkUrl {
                         Path = $Code
                         Method = "PATCH"
                         Body = @{
-                            longUrl = $LongUrl
+                            longUrl     = $LongUrl
+                            validateUrl = (-not $DoNotValidateUrl.IsPresent).ToString().ToLower()
                         }
                     }
 

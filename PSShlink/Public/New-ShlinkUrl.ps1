@@ -23,6 +23,8 @@ function New-ShlinkUrl {
         Set the length of your new short code other than the default.
     .PARAMETER FindIfExists
         Specify this switch to first search and return the data about an existing short code that uses the same long URL if one exists.
+    .PARAMETER DoNotValidateUrl
+        Disables long URL validation while creating the short code.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -72,6 +74,9 @@ function New-ShlinkUrl {
         [Switch]$FindIfExists,
 
         [Parameter()]
+        [Switch]$DoNotValidateUrl,
+
+        [Parameter()]
         [String]$ShlinkServer,
 
         [Parameter()]
@@ -84,7 +89,8 @@ function New-ShlinkUrl {
         Endpoint = "short-urls"
         Method = "POST"
         Body = @{
-            longUrl = $LongUrl
+            longUrl     = $LongUrl
+            validateUrl = (-not $DoNotValidateUrl.IsPresent).ToString().ToLower()
         }
     }
 

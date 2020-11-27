@@ -33,7 +33,7 @@ function GetShlinkConnection {
     if (-not $Script:GetShlinkConnectionHasRun) {
         $Script:GetShlinkConnectionHasRun = $true
         $Script:ShlinkVersion = Get-ShlinkServer | Select-Object -ExpandProperty Version
-        $Script:MinSupportedShlinkVersion = [Version]"2.3.0"
+        $Script:MinSupportedShlinkVersion = [Version]"2.4.0"
 
         if ([Version]$Script:ShlinkVersion -lt [Version]$Script:MinSupportedShlinkVersion) {
             $Script:ShlinkVersionIsSupported = $false

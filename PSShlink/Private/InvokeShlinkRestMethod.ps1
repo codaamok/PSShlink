@@ -39,11 +39,12 @@ function InvokeShlinkRestMethod {
     $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($ApiKey)
 
     $Params = @{
-        Method      = $Method
-        Uri         = "{0}/rest/v2/{1}" -f $Server, $Endpoint
-        ContentType = "application/json"
-        Headers     = @{"X-Api-Key" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)}
-        ErrorAction = "Stop"
+        Method        = $Method
+        Uri           = "{0}/rest/v2/{1}" -f $Server, $Endpoint
+        ContentType   = "application/json"
+        Headers       = @{"X-Api-Key" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)}
+        ErrorAction   = "Stop"
+        ErrorVariable = "InvokeRestMethodError"
     }
 
     if ($PSBoundParameters.ContainsKey("Path")) {
@@ -66,7 +67,52 @@ function InvokeShlinkRestMethod {
             $Data = Invoke-RestMethod @Params
         }
         catch {
-            $PSCmdlet.ThrowTerminatingError($_)
+            # The web exception class is different for Core vs Windows
+            if ($InvokeRestMethodError.ErrorRecord.Exception.GetType().FullName -match "HttpResponseException|WebException") {
+                switch($InvokeRestMethodError.ErrorRecord.Exception.Response.StatusCode) {
+                    "NotFound" {
+                        $Exception = [System.Management.Automation.ItemNotFoundException]::New(($InvokeRestMethodError.Message | ConvertFrom-Json).detail)
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::New(
+                            $Exception,
+                            "404NotFound",
+                            [System.Management.Automation.ErrorCategory]::ObjectNotFound,
+                            $Params['Uri']
+                        )
+                    }
+                    "InternalServerError" {
+                        $Exception = [InvalidOperationException]::New(($InvokeRestMethodError.Message | ConvertFrom-Json).detail)
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::New(
+                            $Exception,
+                            "500InternalServerError",
+                            [System.Management.Automation.ErrorCategory]::InvalidOperation,
+                            $Params['Uri']
+                        )
+                    }
+                    "ServiceUnavailable" {
+                        $Exception = [InvalidOperationException]::New(($InvokeRestMethodError.Message | ConvertFrom-Json).detail)
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::New(
+                            $Exception,
+                            "503ServiceUnavailable",
+                            [System.Management.Automation.ErrorCategory]::ResourceUnavailable,
+                            $Params['Uri']
+                        )
+                    }
+                    default {
+                        $Exception = [InvalidOperationException]::New(("Unknown status code '{0}' received from the endpoint" -f ($InvokeRestMethodError.Exception.Response.StatusCode).value__))
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::New(
+                            $Exception,
+                            "UnknownStatusCode",
+                            [System.Management.Automation.ErrorCategory]::InvalidOperation,
+                            $Params['Uri']
+                        )
+                    }
+                }
+    
+                $PSCmdlet.ThrowTerminatingError($ErrorRecord)
+            }
+            else {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }   
         }
 
         $PaginationData = if ($ChildPropertyName) {

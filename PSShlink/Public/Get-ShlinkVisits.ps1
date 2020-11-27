@@ -106,7 +106,12 @@ function Get-ShlinkVisits {
 
     $Params["Query"] = $QueryString
 
-    $Result = InvokeShlinkRestMethod @Params
+    try {
+        $Result = InvokeShlinkRestMethod @Params
+    }
+    catch {
+        Write-Error -ErrorRecord $_
+    }
 
     # I figured it would be nice to add the Server property so it is immediately clear 
     # the server's view count is returned when no parameters are used
