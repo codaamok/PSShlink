@@ -57,7 +57,8 @@ PS C:\> Get-Help Save-ShlinkUrlQrCode
 ___
 
 ```powershell
-PS C:\> Get-ShlinkUrl -SearchTerm "oldWebsite"
+PS C:\> $Key = "ba6c52ed-flk5-4e84-9fc7-9c7e34825da0" | ConvertTo-SecureString -AsPlainText -Force
+PS C:\> Get-ShlinkUrl -SearchTerm "oldWebsite" -ShlinkServer "https://myshlinkserver.com" -ShlinkApiKey $Key
 ```
 
 Returns all short codes which match the search term `oldWebsite`.
