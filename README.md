@@ -1,7 +1,5 @@
 # PSShlink
 
-This module is currently in development.
-
 An unofficial PowerShell module for Shlink (https://shlink.io), an open-source self-hosted and PHP-based URL shortener application.
 
 ## Functions
