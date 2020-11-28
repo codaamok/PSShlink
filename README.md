@@ -1,4 +1,8 @@
 # PSShlink
+| Branch | Build status | Last commit | Latest release | PowerShell Gallery | GitHub |
+|-|-|-|-|-|-|
+| `main` | ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/codaamok/PSShlink/Publish/main) | ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/codaamok/PSShlink/main?color=blue) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/codaamok/PSShlink?color=blue) ![GitHub Release Date](https://img.shields.io/github/release-date/codaamok/PSShlink?color=blue) | ![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/PSShlink?color=blue) | ![GitHub all releases](https://img.shields.io/github/downloads/codaamok/PSShlink/total?color=blue) |
+
 
 An unofficial PowerShell module for Shlink (https://shlink.io), an open-source self-hosted and PHP-based URL shortener application.
 
@@ -79,6 +83,20 @@ PS C:\> Get-ShlinkUrl -SearchTerm "newWebsite" | Save-ShlinkUrlQrCode
 
 Saves QR codes for all short URLs which match the search term `newWebsite`. All files will be saved as the default values for size (300x300) and type (png). All files by default are saved in your Downloads directory using the naming convention: `ShlinkQRCode_<shortCode>_<domain>_<size>.<format>`. e.g. `ShlinkQRCode_asFk2_example-com_300.png`.
 
+___
+
+```powershell
+PS C:\> Get-ShlinkUrl -SearchTerm "newWebsite"  | Set-ShlinkUrl -Tags "newWebsite"
+```
+
+Sets the tag `newWebsite` on all short codes matching the search term `newWebsite`.
+___
+
+```powershell
+PS C:\> New-ShlinkUrl -LongUrl "https://tools.ietf.org/html/rfc2549" -CustomSlug "rfc2549" -Domain "cookadam.co.uk" -DoNotValidateUrl
+```
+
+Creates a new short code named `rfc2549` under the non-default domain `cookadam.co.uk`. The short code will redirect to `https://tools.ietf.org/html/rfc2549`. URL validation is not enforced.
 ## Support
 
 If you experience any issues with PSShlink, please raise an issue on GitHub.
