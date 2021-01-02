@@ -97,6 +97,12 @@ PS C:\> New-ShlinkUrl -LongUrl "https://tools.ietf.org/html/rfc2549" -CustomSlug
 ```
 
 Creates a new short code named `rfc2549` under the non-default domain `cookadam.co.uk`. The short code will redirect to `https://tools.ietf.org/html/rfc2549`. URL validation is not enforced.
+
+## Known issues
+
+- If you specify a URL for `-ShlinkServer` where the web server responds with a redirect (e.g. to convert the URL from `http://` to `https://`), you will experience odd behaviour. The symptoms you might observe, for example, `New-ShlinkUrl` will respond with the first 10 short codes on your Shlink instance instead of creating a new short URL. The root cause stems from `Invoke-RestMethod` not persisting HTTP methods through redirects; it persistently uses HTTP GET in subsequent calls after receiving a redirect status code from the server. In other words, `New-ShlinkUrl` will make a POST request and when it receives a redirect response, it will re-process the same request with the same parameters and body but through a HTTP GET request. 
+  - See [Feature Request: create switch to persist HTTP method when following a redirect for Invoke-RestMethod or Invoke-WebRequest(https://github.com/PowerShell/PowerShell/issues/14531)
+
 ## Support
 
 If you experience any issues with PSShlink, please raise an issue on GitHub.
