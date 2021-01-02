@@ -10,6 +10,10 @@ function GetShlinkConnection {
         [Switch]$ServerOnly
     )
 
+    if (-not ("System.Web.HttpUtility" -as [Type])) {
+        Add-Type -AssemblyName "System.Web" -ErrorAction "Stop"
+    }
+
     if (-not $Script:ShlinkServer) {
         if ([String]::IsNullOrWhitespace($Server)) {
             $Script:ShlinkServer = Read-Host -Prompt "Enter your Shlink server URL (e.g. https://example.com)"
