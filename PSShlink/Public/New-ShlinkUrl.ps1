@@ -90,9 +90,9 @@ function New-ShlinkUrl {
         Method      = "POST"
         Body        = @{
             longUrl     = $LongUrl
-            validateUrl = (-not $DoNotValidateUrl.IsPresent).ToString().ToLower()
+            validateUrl = -not $DoNotValidateUrl.IsPresent
         }
-        ErrorAction = "STop"
+        ErrorAction = "Stop"
     }
 
     switch ($PSBoundParameters.Keys) {

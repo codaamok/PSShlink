@@ -97,7 +97,7 @@ function Set-ShlinkUrl {
                         Method = "PATCH"
                         Body = @{
                             longUrl     = $LongUrl
-                            validateUrl = (-not $DoNotValidateUrl.IsPresent).ToString().ToLower()
+                            validateUrl = -not $DoNotValidateUrl.IsPresent
                         }
                     }
 
