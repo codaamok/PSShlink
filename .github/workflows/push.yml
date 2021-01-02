@@ -85,6 +85,6 @@ jobs:
           git commit -m "Released ${VersionToBuild}: updated change log and manifest"
       
       - name: Push commit
-        uses: ad-m/github-push-action@main
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
