@@ -34,14 +34,14 @@ function Save-ShlinkUrlQrCode {
         [String]$Domain,
 
         [Parameter()]
+        [String]$Path = "{0}\Downloads" -f $home,
+        
+        [Parameter()]
         [Int]$Size = 300,
 
         [Parameter()]
         [ValidateSet("png","svg")]
         [String]$Format = "png",
-
-        [Parameter()]
-        [String]$Path = "{0}\Downloads" -f $home,
 
         [Parameter(ParameterSetName="SpecifyProperties")]
         [String]$ShlinkServer,
@@ -52,6 +52,7 @@ function Save-ShlinkUrlQrCode {
     begin {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
         $QueryString.Add("format", $Format)
+        $QueryString.Add("size", $Size)
 
         if ($PSCmdlet.ParameterSetName -ne "InputObject") {
             $Params = @{ 
@@ -92,7 +93,8 @@ function Save-ShlinkUrlQrCode {
 
             $Params = @{
                 OutFile     = "{0}\ShlinkQRCode_{1}_{2}_{3}.{4}" -f $Path, $Object.ShortCode, ($Object.Domain -replace "\.", "-"), $Size, $Format
-                Uri         = "{0}/qr-code/{1}?{2}" -f $Object.ShortUrl, $Size, $QueryString.ToString()
+                Uri         = "{0}/qr-code?{1}" -f $Object.ShortUrl, $QueryString.ToString()
+                ContentType = switch ($Format) { "png" { "image/png" } "svg" { "image/svg+xml" } }
                 ErrorAction = "Stop"
             }
 

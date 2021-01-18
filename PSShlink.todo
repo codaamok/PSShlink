@@ -13,3 +13,4 @@
 ✔ check if things like shortcodes exist and inform user if they don't before making changes to them @done (27/11/2020, 22:03:22)
 ✔ create proper error records @done (27/11/2020, 22:03:12)
 ✔ update CBH where pipeline support has been added @done (25/11/2020, 22:58:01)
+☐ add support to InvokeShlinkRestMethod so it can call endpoints without the hardcoded root of /rest/v2, would help Save-ShlinkUrlQrCode and Get-ShlinkServer
