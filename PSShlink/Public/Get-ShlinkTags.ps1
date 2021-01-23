@@ -28,7 +28,13 @@ function Get-ShlinkTags {
         [SecureString]$ShlinkApiKey
     )
 
-    GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+    try {
+        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+    }
+    catch {
+        Write-Error -ErrorRecord $_ -ErrorAction "Stop"
+    }
+    
     $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
 
     $QueryString.Add("withStats", "true")

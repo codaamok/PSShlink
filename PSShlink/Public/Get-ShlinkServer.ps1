@@ -24,7 +24,13 @@ function Get-ShlinkServer {
         [String]$ShlinkServer
     )
 
-    GetShlinkConnection -Server $ShlinkServer -ServerOnly
+    try {
+        GetShlinkConnection -Server $ShlinkServer -ServerOnly
+    }
+    catch {
+        Write-Error -ErrorRecord $_ -ErrorAction "Stop"
+    }
+
     $Uri = "{0}/rest/health" -f $Script:ShlinkServer
 
     try {

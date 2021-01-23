@@ -94,7 +94,13 @@ function Get-ShlinkUrl {
     # they will be prompted for -ShlinkServer and -ShlinkApiKey. This is not my intended
     # user experience. Hence the decision to implement begin/process/end blocks here.
     begin {
-        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+        try {
+            GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+        }
+        catch {
+            Write-Error -ErrorRecord $_ -ErrorAction "Stop"
+        }
+        
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
     }
     process {

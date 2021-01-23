@@ -53,7 +53,12 @@ function Remove-ShlinkUrl {
         [SecureString]$ShlinkApiKey
     )
     begin {
-        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+        try {
+            GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+        }
+        catch {
+            Write-Error -ErrorRecord $_ -ErrorAction "Stop"
+        }
     }
     process {
         foreach ($Code in $ShortCode) {

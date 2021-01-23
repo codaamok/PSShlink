@@ -10,6 +10,8 @@ function GetShlinkConnection {
         [Switch]$ServerOnly
     )
 
+    $Script:MinSupportedShlinkVersion = [Version]"2.5.0"
+
     if (-not ("System.Web.HttpUtility" -as [Type])) {
         Add-Type -AssemblyName "System.Web" -ErrorAction "Stop"
     }
@@ -22,7 +24,10 @@ function GetShlinkConnection {
         # User has previously used a -ShlinkServer parameter and is using it right now, and its value is different to what was used last in any of the functions
         # In other words, it has changes - they wish to use a different server
         $Script:ShlinkServer = $Server
+        # Set this to false so we can go through the motions again of checking the new Shlink server's version number
         $Script:GetShlinkConnectionHasRun = $false
+        # We no longer know if the new server's Shlink version is supported for PSShlink
+        Clear-Variable -Name "ShlinkVersionIsSupported" -Scope "Script" -ErrorAction "SilentlyContinue"
     }
 
     if ([String]::IsNullOrWhitespace($ApiKey) -And -not $Script:ShlinkApiKey -And -not $ServerOnly) {
@@ -41,22 +46,10 @@ function GetShlinkConnection {
     if (-not $Script:GetShlinkConnectionHasRun) {
         $Script:GetShlinkConnectionHasRun = $true
         $Script:ShlinkVersion = Get-ShlinkServer -ShlinkServer $Script:ShlinkServer -ErrorAction "SilentlyContinue" | Select-Object -ExpandProperty Version
-        $Script:MinSupportedShlinkVersion = [Version]"2.5.0"
 
         if (-not $Script:ShlinkVersion) {
-            <#
-            # Trying out the 3 exception handling methods to refresh my memory on user experience
-            $Exception = [System.ArgumentException]::new("Could not determine the version of your Shlink on '{0}'" -f $Script:ShlinkServer)
-            $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
-                $Exception,
-                1,
-                [System.Management.Automation.ErrorCategory]::InvalidArgument,
-                $Script:ShlinkServer
-            )
-            $PSCmdlet.ThrowTerminatingError($ErrorRecord)
-            throw ("Could not determine the version of your Shlink on '{0}'" -f $Script:ShlinkServer)
-            #>
-            Write-Error -Message ("Could not determine the version of your Shlink on '{0}'" -f $Script:ShlinkServer) -Category "InvalidData" -TargetObject "" -ErrorAction "Stop"
+            $Script:GetShlinkConnectionHasRun = $false
+            Write-Error -Message ("Could not determine the version of Shlink on '{0}'" -f $Script:ShlinkServer) -Category "InvalidData" -TargetObject $Script:ShlinkServer -ErrorAction "Stop"
         }
         elseif ([Version]$Script:ShlinkVersion -lt [Version]$Script:MinSupportedShlinkVersion) {
             $Script:ShlinkVersionIsSupported = $false

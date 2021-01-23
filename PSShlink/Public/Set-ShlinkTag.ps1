@@ -38,7 +38,12 @@ function Set-ShlinkTag {
         [SecureString]$ShlinkApiKey
     )
 
-    GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+    try {
+        GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey
+    }
+    catch {
+        Write-Error -ErrorRecord $_ -ErrorAction "Stop"
+    }
 
     $Params = @{
         Endpoint    = "tags"
