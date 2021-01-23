@@ -14,13 +14,13 @@ Save a QR code to disk for a short code.
 
 ### InputObject
 ```
-Save-ShlinkUrlQrCode -InputObject <PSObject[]> [-Size <Int32>] [-Format <String>] [-Path <String>]
+Save-ShlinkUrlQrCode -InputObject <PSObject[]> [-Path <String>] [-Size <Int32>] [-Format <String>]
  [<CommonParameters>]
 ```
 
 ### SpecifyProperties
 ```
-Save-ShlinkUrlQrCode -ShortCode <String> [-Domain <String>] [-Size <Int32>] [-Format <String>] [-Path <String>]
+Save-ShlinkUrlQrCode -ShortCode <String> [-Domain <String>] [-Path <String>] [-Size <Int32>] [-Format <String>]
  [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
@@ -96,6 +96,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Path
+{{ Fill Path Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: "{0}\Downloads" -f $home
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Size
 {{ Fill Size Description }}
 
@@ -122,21 +137,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: Png
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Path
-{{ Fill Path Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: "{0}\Downloads" -f $home
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2021-01-23
+
 ### Changed
 - Minimum Shlink version updated to 2.5.0
 - `Save-ShlinkUrlQrCode` now uses newer API format for the 'size' query parameter
@@ -23,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.2.0..HEAD
+[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.3.0..HEAD
+[0.3.0]: https://github.com/codaamok/PSShlink/compare/0.2.0..0.3.0
 [0.2.0]: https://github.com/codaamok/PSShlink/compare/0.1.0..0.2.0
 [0.1.0]: https://github.com/codaamok/PSShlink/tree/0.1.0
