@@ -58,7 +58,7 @@ jobs:
           release_name: Release ${{ env.VersionToBuild }}
           body_path: release/releasenotes.txt
           draft: false
-          prelease: false
+          prerelease: false
 
       - name: Upload release asset
         id: upload_release_asset
