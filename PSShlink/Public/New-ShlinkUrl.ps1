@@ -111,7 +111,7 @@ function New-ShlinkUrl {
             $Params["Body"]["validSince"] = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
         }
         "ValidUntil" {
-            $Params["Body"]["validUntil"] = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
+            $Params["Body"]["validUntil"] = (Get-Date $ValidUntil -Format "yyyy-MM-ddTHH:mm:sszzzz")
         }
         "MaxVisits" {
             $Params["Body"]["maxVisits"] = $MaxVisits
