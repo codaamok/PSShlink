@@ -3,7 +3,7 @@ function Set-ShlinkUrl {
     .SYNOPSIS
         Update an existing short code on the Shlink server.
     .DESCRIPTION
-        Update an existing short code on the Shlink server.
+        Update an existing short code on the Shlink server. It is only possible to update one property for a short code in a single call of this function.
     .PARAMETER ShortCode
         The name of the short code you wish to update.
     .PARAMETER LongUrl
@@ -124,12 +124,12 @@ function Set-ShlinkUrl {
                         validateUrl = -not $DoNotValidateUrl.IsPresent
                     }
                 }
-                "ValidSince" {
+                "EditValidSince" {
                     $Params["Body"] = @{
                         validSince  = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
                     }
                 }
-                "ValidUntil" {
+                "EditValidUntil" {
                     $Params["Body"] = @{
                         validUntil  = (Get-Date $validUntil -Format "yyyy-MM-ddTHH:mm:sszzzz")
                     }
