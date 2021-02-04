@@ -27,9 +27,9 @@ function Set-ShlinkUrl {
         A SecureString object of your Shlink server's API key.
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
     .EXAMPLE
-        PS C:\> Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok" -ValidSince (Get-Date "2020-11-01") -ValidUntil (Get-Date "2020-11-30") -MaxVisits 99
+        PS C:\> Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok"
         
-        Update the existing short code "profile", associated with the default domain of the Shlink server, to point to URL "https://github.com/codaamok". The link will only be valid for November 2020. The link will only work for 99 visits. 
+        Update the existing short code "profile", associated with the default domain of the Shlink server, to point to URL "https://github.com/codaamok".
     .EXAMPLE
         PS C:\> Set-ShlinkUrl -ShortCode "profile" -Tags "powershell","pwsh"
 
@@ -45,8 +45,11 @@ function Set-ShlinkUrl {
     .OUTPUTS
         System.Management.Automation.PSObject
     #>
-    [CmdletBinding(DefaultParameterSetName="EditUrl")]
+    [CmdletBinding()]
     param (
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="MaxVisits")]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="EditValidUntil")]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="EditValidSince")]
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="EditUrlTag")]
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="EditUrl")]
         [String[]]$ShortCode,
@@ -57,17 +60,16 @@ function Set-ShlinkUrl {
         [Parameter(Mandatory, ParameterSetName="EditUrlTag")]
         [String[]]$Tags,
 
-        [Parameter(ParameterSetName="EditUrl")]
+        [Parameter(Mandatory, ParameterSetName="EditValidSince")]
         [datetime]$ValidSince,
 
-        [Parameter(ParameterSetName="EditUrl")]
+        [Parameter(Mandatory, ParameterSetName="EditValidUntil")]
         [datetime]$ValidUntil,
 
-        [Parameter(ParameterSetName="EditUrl")]
+        [Parameter(Mandatory, ParameterSetName="MaxVisits")]
         [Int]$MaxVisits,
 
-        [Parameter(ParameterSetName="EditUrlTag")]
-        [Parameter(ParameterSetName="EditUrl")]
+        [Parameter()]
         [String]$Domain,
 
         [Parameter(ParameterSetName="EditUrl")]
@@ -95,43 +97,51 @@ function Set-ShlinkUrl {
                 ShortCode = $Code
             }
 
-            switch ($PSCmdlet.ParameterSetName) {
-                "EditUrl" {
-                    $Params = @{
-                        Endpoint = "short-urls"
-                        Path = $Code
-                        Method = "PATCH"
-                        Body = @{
-                            longUrl     = $LongUrl
-                            validateUrl = -not $DoNotValidateUrl.IsPresent
-                        }
-                    }
+            $Params = if ($PSCmdlet.ParameterSetName -eq "EditUrlTag") {
+                @{
+                    Endpoint = "short-urls/{0}/tags" -f $Code
+                }
+            }
+            else {
+                @{
+                    Endpoint = "short-urls"
+                    Path = $Code
+                    Method = "PATCH"
+                }
+            }
 
-                    switch ($PSBoundParameters.Keys) {
-                        "ValidSince" {
-                            $Params["Body"]["validSince"] = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
-                        }
-                        "ValidUntil" {
-                            $Params["Body"]["validUntil"] = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
-                        }
-                        "MaxVisits" {
-                            $Params["Body"]["maxVisits"] = $MaxVisits
-                        }
+            switch ($PSCmdlet.ParameterSetName) {
+                "EditUrlTag" {
+                    $Params["Method"] = "PUT"
+                    $Params["Query"] = $QueryString
+                    $Params["Body"] = @{
+                        tags = @($Tags)
                     }
                 }
-                "EditUrlTag" {
-                    $Params = @{
-                        Endpoint = "short-urls/{0}/tags" -f $Code
-                        Method = "PUT"
-                        Query = $QueryString
-                        Body = @{
-                            tags = @($Tags)
-                        }
+                "EditUrl" {
+                    $Params["Body"] = @{
+                        longUrl     = $LongUrl
+                        validateUrl = -not $DoNotValidateUrl.IsPresent
+                    }
+                }
+                "ValidSince" {
+                    $Params["Body"] = @{
+                        validSince  = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
+                    }
+                }
+                "ValidUntil" {
+                    $Params["Body"] = @{
+                        validUntil  = (Get-Date $validUntil -Format "yyyy-MM-ddTHH:mm:sszzzz")
+                    }
+                }
+                "MaxVisits" {
+                    $Params["Body"] = @{
+                        maxVisits  = $MaxVisits
                     }
                 }
             }
 
-            # The Domain parameter can be used in both parameter sets
+            # The Domain parameter can be used in all parameter sets
             if ($PSBoundParameters.ContainsKey("Domain")) {
                 $QueryString.Add("domain", $Domain)
                 $GetShlinkUrlParams["Domain"] = $Domain
