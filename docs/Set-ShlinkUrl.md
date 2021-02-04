@@ -12,11 +12,10 @@ Update an existing short code on the Shlink server.
 
 ## SYNTAX
 
-### EditUrl (Default)
+### EditUrl
 ```
-Set-ShlinkUrl -ShortCode <String[]> -LongUrl <String> [-ValidSince <DateTime>] [-ValidUntil <DateTime>]
- [-MaxVisits <Int32>] [-Domain <String>] [-DoNotValidateUrl] [-ShlinkServer <String>]
- [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+Set-ShlinkUrl -ShortCode <String[]> -LongUrl <String> [-Domain <String>] [-DoNotValidateUrl]
+ [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
 ### EditUrlTag
@@ -25,19 +24,36 @@ Set-ShlinkUrl -ShortCode <String[]> -Tags <String[]> [-Domain <String>] [-Shlink
  [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
+### EditValidSince
+```
+Set-ShlinkUrl -ShortCode <String[]> -ValidSince <DateTime> [-Domain <String>] [-ShlinkServer <String>]
+ [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+```
+
+### EditValidUntil
+```
+Set-ShlinkUrl -ShortCode <String[]> -ValidUntil <DateTime> [-Domain <String>] [-ShlinkServer <String>]
+ [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+```
+
+### MaxVisits
+```
+Set-ShlinkUrl -ShortCode <String[]> -MaxVisits <Int32> [-Domain <String>] [-ShlinkServer <String>]
+ [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Update an existing short code on the Shlink server.
+It is only possible to update one property for a short code in a single call of this function.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok" -ValidSince (Get-Date "2020-11-01") -ValidUntil (Get-Date "2020-11-30") -MaxVisits 99
+Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok"
 ```
 
 Update the existing short code "profile", associated with the default domain of the Shlink server, to point to URL "https://github.com/codaamok".
-The link will only be valid for November 2020.
-The link will only work for 99 visits.
 
 ### EXAMPLE 2
 ```
@@ -106,10 +122,10 @@ Define a new "valid since" date with the existing short code.
 
 ```yaml
 Type: DateTime
-Parameter Sets: EditUrl
+Parameter Sets: EditValidSince
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -121,10 +137,10 @@ Define a new "valid until" date with the existing short code.
 
 ```yaml
 Type: DateTime
-Parameter Sets: EditUrl
+Parameter Sets: EditValidUntil
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -136,10 +152,10 @@ Set a new maximum visits threshold for the existing short code.
 
 ```yaml
 Type: Int32
-Parameter Sets: EditUrl
+Parameter Sets: MaxVisits
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: 0
 Accept pipeline input: False
