@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - `-ValidUntil` would be set the same as `-ValidSince` with `New-ShlinkUrl`, fixes #3 
 
+### Changed
+- In order to fix #4, I had to change the way `Set-ShlinkUrl` works. You can now only update one property of a short code per call of `Set-ShlinkUrl`.
+
 ## [0.3.0] - 2021-01-23
 
 ### Changed
