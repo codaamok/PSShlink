@@ -231,7 +231,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### System.Management.Automation.PSObject
-### Objects have a PSTypeName of 'PSTypeName'.
+### Objects have a PSTypeName of 'PSShlink'.
 ## NOTES
 
 ## RELATED LINKS

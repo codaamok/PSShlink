@@ -14,9 +14,9 @@ Creates a new Shlink short code on your Shlink server.
 
 ```
 New-ShlinkUrl [-LongUrl] <String> [[-CustomSlug] <String>] [[-Tags] <String[]>] [[-ValidSince] <DateTime>]
- [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Domain] <String>] [[-ShortCodeLength] <Int32>]
- [-FindIfExists] [-DoNotValidateUrl] [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>]
- [<CommonParameters>]
+ [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Title] <String>] [[-Domain] <String>]
+ [[-ShortCodeLength] <Int32>] [-FindIfExists] [-DoNotValidateUrl] [[-ShlinkServer] <String>]
+ [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -134,6 +134,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Title
+Define a title with the new short code.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Domain
 Associate a domain with the new short code to be something other than the default domain. 
 This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
@@ -144,7 +159,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: 8
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -159,7 +174,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 9
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -207,7 +222,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 10
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -224,7 +239,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 11
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

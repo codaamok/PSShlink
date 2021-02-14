@@ -12,48 +12,25 @@ Update an existing short code on the Shlink server.
 
 ## SYNTAX
 
-### EditUrl
 ```
-Set-ShlinkUrl -ShortCode <String[]> -LongUrl <String> [-Domain <String>] [-DoNotValidateUrl]
- [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
-```
-
-### EditUrlTag
-```
-Set-ShlinkUrl -ShortCode <String[]> -Tags <String[]> [-Domain <String>] [-ShlinkServer <String>]
- [-ShlinkApiKey <SecureString>] [<CommonParameters>]
-```
-
-### EditValidSince
-```
-Set-ShlinkUrl -ShortCode <String[]> -ValidSince <DateTime> [-Domain <String>] [-ShlinkServer <String>]
- [-ShlinkApiKey <SecureString>] [<CommonParameters>]
-```
-
-### EditValidUntil
-```
-Set-ShlinkUrl -ShortCode <String[]> -ValidUntil <DateTime> [-Domain <String>] [-ShlinkServer <String>]
- [-ShlinkApiKey <SecureString>] [<CommonParameters>]
-```
-
-### MaxVisits
-```
-Set-ShlinkUrl -ShortCode <String[]> -MaxVisits <Int32> [-Domain <String>] [-ShlinkServer <String>]
- [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+Set-ShlinkUrl [-ShortCode] <String[]> [[-LongUrl] <String>] [[-Tags] <String[]>] [[-ValidSince] <DateTime>]
+ [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Title] <String>] [[-Domain] <String>] [-DoNotValidateUrl]
+ [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 Update an existing short code on the Shlink server.
-It is only possible to update one property for a short code in a single call of this function.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok"
+Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok" -ValidSince (Get-Date "2020-11-01") -ValidUntil (Get-Date "2020-11-30") -MaxVisits 99
 ```
 
 Update the existing short code "profile", associated with the default domain of the Shlink server, to point to URL "https://github.com/codaamok".
+The link will only be valid for November 2020.
+The link will only work for 99 visits.
 
 ### EXAMPLE 2
 ```
@@ -80,7 +57,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
@@ -91,11 +68,11 @@ The new long URL to associate with the existing short code.
 
 ```yaml
 Type: String
-Parameter Sets: EditUrl
+Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: Named
+Required: False
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -107,11 +84,11 @@ Due to the architecture of Shlink's REST API, this parameter can only be used in
 
 ```yaml
 Type: String[]
-Parameter Sets: EditUrlTag
+Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: Named
+Required: False
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -122,11 +99,11 @@ Define a new "valid since" date with the existing short code.
 
 ```yaml
 Type: DateTime
-Parameter Sets: EditValidSince
+Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: Named
+Required: False
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -137,11 +114,11 @@ Define a new "valid until" date with the existing short code.
 
 ```yaml
 Type: DateTime
-Parameter Sets: EditValidUntil
+Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: Named
+Required: False
+Position: 5
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -152,12 +129,27 @@ Set a new maximum visits threshold for the existing short code.
 
 ```yaml
 Type: Int32
-Parameter Sets: MaxVisits
+Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: Named
+Required: False
+Position: 6
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Title
+Define a title with the new short code.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -172,7 +164,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 8
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -183,7 +175,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: EditUrl
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -205,7 +197,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 9
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -222,7 +214,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 10
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

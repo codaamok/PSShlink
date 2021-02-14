@@ -15,13 +15,13 @@ Save a QR code to disk for a short code.
 ### InputObject
 ```
 Save-ShlinkUrlQrCode -InputObject <PSObject[]> [-Path <String>] [-Size <Int32>] [-Format <String>]
- [<CommonParameters>]
+ [-Margin <Int32>] [<CommonParameters>]
 ```
 
 ### SpecifyProperties
 ```
 Save-ShlinkUrlQrCode -ShortCode <String> [-Domain <String>] [-Path <String>] [-Size <Int32>] [-Format <String>]
- [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+ [-Margin <Int32>] [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -67,7 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### -ShortCode
-{{ Fill ShortCode Description }}
+The name of the short code you wish to create a QR code with.
 
 ```yaml
 Type: String
@@ -82,7 +82,8 @@ Accept wildcard characters: False
 ```
 
 ### -Domain
-{{ Fill Domain Description }}
+The domain which is associated with the short code you wish to create a QR code with.
+This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
 
 ```yaml
 Type: String
@@ -97,7 +98,9 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-{{ Fill Path Description }}
+The path where you would like the save the QR code. 
+If omitted, the default is the Downloads directory of the runner user's $Home environment variable. 
+If the directory doesn't exist, it will be created.
 
 ```yaml
 Type: String
@@ -112,7 +115,9 @@ Accept wildcard characters: False
 ```
 
 ### -Size
-{{ Fill Size Description }}
+Specify the pixel width you want for your generated shortcodes.
+The same value will be applied to the height.
+If omitted, the default is 300.
 
 ```yaml
 Type: Int32
@@ -127,7 +132,7 @@ Accept wildcard characters: False
 ```
 
 ### -Format
-{{ Fill Format Description }}
+Specify whether you would like your QR codes to save as .png or .svg files.
 
 ```yaml
 Type: String
@@ -141,8 +146,27 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Margin
+Specify the margin/whitespace around the QR code image in pixels.
+If omitted, the default is 0.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ShlinkServer
-{{ Fill ShlinkServer Description }}
+The URL of your Shlink server (including schema).
+For example "https://example.com".
+It is not required to use this parameter for every use of this function.
+When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
 
 ```yaml
 Type: String
@@ -157,7 +181,9 @@ Accept wildcard characters: False
 ```
 
 ### -ShlinkApiKey
-{{ Fill ShlinkApiKey Description }}
+A SecureString object of your Shlink server's API key.
+It is not required to use this parameter for every use of this function.
+When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
 
 ```yaml
 Type: SecureString
