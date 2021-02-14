@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- New function `Get-ShlinkVisitsOrphan`, new in Shlink 2.6.0
+- New `-Margin` parameter to `Save-ShlinkUrlQrCode`, new in Shlink 2.6.0
+- Added missing comment based help to `Save-ShlinkUrlQrCode` for its parameters
+- New `-Title` parameter to `New-ShlinkUrl` and `Set-ShlinkUrl`, new in Shlink 2.6.0
+
+### Changed
+- Improvements to the Shlink API in 2.6.0 enables me to restore the previous (intended) functionality of `Set-ShlinkUrl` is restored. Specifically, the ability to modify multiple properties of a short code within a single call. No longer need to call the function for each change you want to make to a short code.
+- `Save-ShlinkUrlQrCode` now creates the directory `-Path` if it does not exist
+- Minimum Shlink version updated to 2.6.0
 
 ## [0.4.0] - 2021-02-04
 ### Fixed

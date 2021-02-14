@@ -24,7 +24,8 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 ## Requirements
 
 - PowerShell 5.1 or newer (including PowerShell Core, 7.0 or newer)
-- Shlink 2.4.0 or newer
+- Shlink 2.6.0 or newer
+  - If you need support for older versions of Shlink, you can still source older versions of PSShlink [here](https://github.com/codaamok/PSShlink/releases) or use the `-RequiredVersion` parameter of `Install-Module` when installed from the PowerShell Gallery
 
 ## Getting started
 
@@ -86,10 +87,10 @@ Saves QR codes for all short URLs which match the search term `newWebsite`. All 
 ___
 
 ```powershell
-PS C:\> Get-ShlinkUrl -SearchTerm "newWebsite"  | Set-ShlinkUrl -Tags "newWebsite"
+PS C:\> Get-ShlinkUrl -SearchTerm "newWebsite" | Set-ShlinkUrl -Tags "newWebsite" -MaxVisits 100
 ```
 
-Sets the tag `newWebsite` on all short codes matching the search term `newWebsite`.
+Sets the tag `newWebsite` on all short codes matching the search term `newWebsite`. Also sets all matching short codes with a max visits value of 100.
 ___
 
 ```powershell

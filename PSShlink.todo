@@ -14,3 +14,5 @@
 ✔ create proper error records @done (27/11/2020, 22:03:12)
 ✔ update CBH where pipeline support has been added @done (25/11/2020, 22:58:01)
 ☐ add support to InvokeShlinkRestMethod so it can call endpoints without the hardcoded root of /rest/v2, would help Save-ShlinkUrlQrCode and Get-ShlinkServer
+☐ ditch use of enumerating over bound parameters when trying to discern user supplied parameters, it's not appropriate. not a big deal though
+☐ add Get-ShlinkUrl to Remove-ShlinkUrl so can include long url in the shouldprocess messages

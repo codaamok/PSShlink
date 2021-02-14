@@ -55,7 +55,7 @@ function Get-ShlinkUrl {
     .OUTPUTS
         System.Management.Automation.PSObject
 
-        Objects have a PSTypeName of 'PSTypeName'.
+        Objects have a PSTypeName of 'PSShlink'.
     #>
     [CmdletBinding(DefaultParameterSetName="ListShortUrls")]
     param (

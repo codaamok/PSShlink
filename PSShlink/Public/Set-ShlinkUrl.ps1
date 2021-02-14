@@ -3,7 +3,7 @@ function Set-ShlinkUrl {
     .SYNOPSIS
         Update an existing short code on the Shlink server.
     .DESCRIPTION
-        Update an existing short code on the Shlink server. It is only possible to update one property for a short code in a single call of this function.
+        Update an existing short code on the Shlink server.
     .PARAMETER ShortCode
         The name of the short code you wish to update.
     .PARAMETER LongUrl
@@ -20,6 +20,8 @@ function Set-ShlinkUrl {
     .PARAMETER Domain
         The domain which is associated with the short code you wish to update.
         This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
+    .PARAMETER Title
+        Define a title with the new short code.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -27,9 +29,9 @@ function Set-ShlinkUrl {
         A SecureString object of your Shlink server's API key.
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
     .EXAMPLE
-        PS C:\> Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok"
+        PS C:\> Set-ShlinkUrl -ShortCode "profile" -LongUrl "https://github.com/codaamok" -ValidSince (Get-Date "2020-11-01") -ValidUntil (Get-Date "2020-11-30") -MaxVisits 99
         
-        Update the existing short code "profile", associated with the default domain of the Shlink server, to point to URL "https://github.com/codaamok".
+        Update the existing short code "profile", associated with the default domain of the Shlink server, to point to URL "https://github.com/codaamok". The link will only be valid for November 2020. The link will only work for 99 visits. 
     .EXAMPLE
         PS C:\> Set-ShlinkUrl -ShortCode "profile" -Tags "powershell","pwsh"
 
@@ -47,32 +49,31 @@ function Set-ShlinkUrl {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="MaxVisits")]
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="EditValidUntil")]
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="EditValidSince")]
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="EditUrlTag")]
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName="EditUrl")]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [String[]]$ShortCode,
 
-        [Parameter(Mandatory, ParameterSetName="EditUrl")]
+        [Parameter()]
         [String]$LongUrl,
 
-        [Parameter(Mandatory, ParameterSetName="EditUrlTag")]
+        [Parameter()]
         [String[]]$Tags,
 
-        [Parameter(Mandatory, ParameterSetName="EditValidSince")]
+        [Parameter()]
         [datetime]$ValidSince,
 
-        [Parameter(Mandatory, ParameterSetName="EditValidUntil")]
+        [Parameter()]
         [datetime]$ValidUntil,
 
-        [Parameter(Mandatory, ParameterSetName="MaxVisits")]
+        [Parameter()]
         [Int]$MaxVisits,
+
+        [Parameter()]
+        [String]$Title,
 
         [Parameter()]
         [String]$Domain,
 
-        [Parameter(ParameterSetName="EditUrl")]
+        [Parameter()]
         [Switch]$DoNotValidateUrl,
 
         [Parameter()]
@@ -90,74 +91,48 @@ function Set-ShlinkUrl {
         }
         
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
+
+        $Params = @{
+            Endpoint = "short-urls"
+            Method = "PATCH"
+            Body = @{}
+        }
     }
     process {
         foreach ($Code in $ShortCode) {
-            $GetShlinkUrlParams = @{
-                ShortCode = $Code
-            }
+            $Params["Path"] = $Code
 
-            $Params = if ($PSCmdlet.ParameterSetName -eq "EditUrlTag") {
-                @{
-                    Endpoint = "short-urls/{0}/tags" -f $Code
+            switch($PSBoundParameters.Keys) {
+                "LongUrl" {
+                    $Params["Body"]["longUrl"] = $LongUrl
                 }
-            }
-            else {
-                @{
-                    Endpoint = "short-urls"
-                    Path = $Code
-                    Method = "PATCH"
+                "Tags" {
+                    $Params["Body"]["tags"] = @($Tags)
                 }
-            }
-
-            switch ($PSCmdlet.ParameterSetName) {
-                "EditUrlTag" {
-                    $Params["Method"] = "PUT"
-                    $Params["Query"] = $QueryString
-                    $Params["Body"] = @{
-                        tags = @($Tags)
-                    }
+                "ValidSince" {
+                    $Params["Body"]["validSince"] = Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz"
                 }
-                "EditUrl" {
-                    $Params["Body"] = @{
-                        longUrl     = $LongUrl
-                        validateUrl = -not $DoNotValidateUrl.IsPresent
-                    }
-                }
-                "EditValidSince" {
-                    $Params["Body"] = @{
-                        validSince  = (Get-Date $ValidSince -Format "yyyy-MM-ddTHH:mm:sszzzz")
-                    }
-                }
-                "EditValidUntil" {
-                    $Params["Body"] = @{
-                        validUntil  = (Get-Date $validUntil -Format "yyyy-MM-ddTHH:mm:sszzzz")
-                    }
+                "ValidUntil" {
+                    $Params["Body"]["validUntil"] = Get-Date $ValidUntil -Format "yyyy-MM-ddTHH:mm:sszzzz"
                 }
                 "MaxVisits" {
-                    $Params["Body"] = @{
-                        maxVisits  = $MaxVisits
-                    }
+                    $Params["Body"]["maxVisits"] = $MaxVisits
                 }
-            }
-
-            # The Domain parameter can be used in all parameter sets
-            if ($PSBoundParameters.ContainsKey("Domain")) {
-                $QueryString.Add("domain", $Domain)
-                $GetShlinkUrlParams["Domain"] = $Domain
+                "Title" {
+                    $Params["Body"]["title"] = $Title
+                }
+                "Domain" {
+                    $QueryString.Add("domain", $Domain)
+                }
+                "DoNotValidateUrl" {
+                    $Params["Body"]["validateUrl"] = -not $DoNotValidateUrl.IsPresent
+                }
             }
 
             $Params["Query"] = $QueryString
 
             try {
-                # Note: when using -Tags the API endpoint returns a successful message / object,
-                # whereas with everything else no success message / object is returned...
-                $null = InvokeShlinkRestMethod @Params
-
-                # ... as a result I want to create a user experience where another call is made
-                # to Get-ShlinkUrl to show the user their new changes, viewing the whole object
-                # for each short code.
-                Get-ShlinkUrl @GetShlinkUrlParams
+                InvokeShlinkRestMethod @Params
             }
             catch {
                 Write-Error -ErrorRecord $_

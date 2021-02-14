@@ -10,7 +10,7 @@ function GetShlinkConnection {
         [Switch]$ServerOnly
     )
 
-    $Script:MinSupportedShlinkVersion = [Version]"2.5.0"
+    $Script:MinSupportedShlinkVersion = [Version]"2.6.0"
 
     if (-not ("System.Web.HttpUtility" -as [Type])) {
         Add-Type -AssemblyName "System.Web" -ErrorAction "Stop"

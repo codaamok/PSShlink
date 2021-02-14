@@ -6,6 +6,29 @@ function Save-ShlinkUrlQrCode {
         Save a QR code to disk for a short code.
         The default size of images is 300x300 and the default file type is png.
         The default folder for files to be saved to is $HOME\Downloads. The naming convention for the saved files is as follows: ShlinkQRCode_<shortCode>_<domain>_<size>.<format>
+    .PARAMETER ShortCode
+        The name of the short code you wish to create a QR code with. 
+    .PARAMETER Domain
+        The domain which is associated with the short code you wish to create a QR code with.
+        This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
+    .PARAMETER Path
+        The path where you would like the save the QR code. 
+        If omitted, the default is the Downloads directory of the runner user's $Home environment variable. 
+        If the directory doesn't exist, it will be created.
+    .PARAMETER Size
+        Specify the pixel width you want for your generated shortcodes. The same value will be applied to the height.
+        If omitted, the default is 300.
+    .PARAMETER Format
+        Specify whether you would like your QR codes to save as .png or .svg files.
+    .PARAMETER Margin
+        Specify the margin/whitespace around the QR code image in pixels.
+        If omitted, the default is 0.
+    .PARAMETER ShlinkServer
+        The URL of your Shlink server (including schema). For example "https://example.com".
+        It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
+    .PARAMETER ShlinkApiKey
+        A SecureString object of your Shlink server's API key.
+        It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
     .EXAMPLE
         PS C:\> Save-ShlinkUrlQrCode -ShortCode "profile" -Domain "example.com" -Size 1000 -Format svg -Path "C:\temp"
         
@@ -43,6 +66,9 @@ function Save-ShlinkUrlQrCode {
         [ValidateSet("png","svg")]
         [String]$Format = "png",
 
+        [Parameter()]
+        [Int]$Margin = 0,
+
         [Parameter(ParameterSetName="SpecifyProperties")]
         [String]$ShlinkServer,
 
@@ -53,6 +79,7 @@ function Save-ShlinkUrlQrCode {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
         $QueryString.Add("format", $Format)
         $QueryString.Add("size", $Size)
+        $QueryString.Add("margin", $Margin)
 
         if ($PSCmdlet.ParameterSetName -ne "InputObject") {
             $Params = @{ 
@@ -83,6 +110,10 @@ function Save-ShlinkUrlQrCode {
             }
 
             $InputObject = $Object
+        }
+
+        if (-not (Test-Path $Path)) {
+            $null = New-Item -Path $Path -ItemType Directory -ErrorAction "Stop"
         }
     }
     process {

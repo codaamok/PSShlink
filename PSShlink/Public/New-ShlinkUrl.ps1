@@ -16,6 +16,8 @@ function New-ShlinkUrl {
         Define a "valid until" date with the new short code.
     .PARAMETER MaxVisits
         Set the maximum number of visits allowed for the new short code.
+    .PARAMETER Title
+        Define a title with the new short code.
     .PARAMETER Domain
         Associate a domain with the new short code to be something other than the default domain. 
         This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
@@ -63,6 +65,9 @@ function New-ShlinkUrl {
 
         [Parameter()]
         [Int]$MaxVisits,
+
+        [Parameter()]
+        [String]$Title,
 
         [Parameter()]
         [String]$Domain,
@@ -118,6 +123,9 @@ function New-ShlinkUrl {
         }
         "Domain" {
             $Params["Body"]["domain"] = $Domain
+        }
+        "Title" {
+            $Params["Body"]["title"] = $Title
         }
         "ShortCodeLength" {
             $Params["Body"]["shortCodeLength"] = $ShortCodeLength

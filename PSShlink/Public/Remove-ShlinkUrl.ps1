@@ -86,7 +86,7 @@ function Remove-ShlinkUrl {
                 "Are you sure you want to continue?",
                 $RemovingMessage)) {
                     try {
-                        InvokeShlinkRestMethod @Params
+                        $null = InvokeShlinkRestMethod @Params
                     }
                     catch {
                         Write-Error -ErrorRecord $_
