@@ -13,6 +13,7 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 - [Get-ShlinkTags](docs/Get-ShlinkTags.md)
 - [Get-ShlinkUrl](docs/Get-ShlinkUrl.md)
 - [Get-ShlinkVisits](docs/Get-ShlinkVisits.md)
+- [Get-ShlinkVisitsOrphan](docs/Get-ShlinkVisitsOrphan.md)
 - [New-ShlinkTag](docs/New-ShlinkTag.md)
 - [New-ShlinkUrl](docs/New-ShlinkUrl.md)
 - [Remove-ShlinkTag](docs/Remove-ShlinkTag.md)
