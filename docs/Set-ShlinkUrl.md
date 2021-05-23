@@ -15,7 +15,7 @@ Update an existing short code on the Shlink server.
 ```
 Set-ShlinkUrl [-ShortCode] <String[]> [[-LongUrl] <String>] [[-Tags] <String[]>] [[-ValidSince] <DateTime>]
  [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Title] <String>] [[-Domain] <String>] [-DoNotValidateUrl]
- [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
+ [[-Crawlable] <Boolean>] [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -166,12 +166,12 @@ Aliases:
 Required: False
 Position: 8
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
 ### -DoNotValidateUrl
-{{ Fill DoNotValidateUrl Description }}
+Disables long URL validation while creating the short code.
 
 ```yaml
 Type: SwitchParameter
@@ -180,6 +180,21 @@ Aliases:
 
 Required: False
 Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Crawlable
+Set short URLs as crawlable, making them be listed in the robots.txt as Allowed.
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 9
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -197,7 +212,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 10
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -214,7 +229,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 11
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

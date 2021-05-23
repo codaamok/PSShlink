@@ -8,28 +8,38 @@ schema: 2.0.0
 # Get-ShlinkVisitsOrphan
 
 ## SYNOPSIS
+Get the list of visits to invalid short URLs, the base URL or any other 404.
 
 ## SYNTAX
 
 ```
-Get-ShlinkVisitsOrphan [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [[-ShlinkServer] <String>]
- [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
+Get-ShlinkVisitsOrphan [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [-ExcludeBots]
+ [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get the list of visits to invalid short URLs, the base URL or any other 404.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-
+Get-ShlinkVisitsOrphan
 ```
+
+Get the list of visits to invalid short URLs, the base URL or any other 404.
+
+### EXAMPLE 2
+```
+Get-ShlinkVisitsOrphan -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01") -ExcludeBots
+```
+
+Get the list of visits to invalid short URLs, the base URL or any other 404, for the whole of November and excluding bots/crawlers.
 
 ## PARAMETERS
 
 ### -StartDate
-{{ Fill StartDate Description }}
+A datetime object to filter the visit data where the start date is equal or greater than this value.
 
 ```yaml
 Type: DateTime
@@ -44,7 +54,7 @@ Accept wildcard characters: False
 ```
 
 ### -EndDate
-{{ Fill EndDate Description }}
+A datetime object to filter the visit data where its end date is equal or less than this value.
 
 ```yaml
 Type: DateTime
@@ -58,8 +68,26 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ExcludeBots
+Exclude visits from bots or crawlers.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ShlinkServer
-{{ Fill ShlinkServer Description }}
+The URL of your Shlink server (including schema).
+For example "https://example.com".
+It is not required to use this parameter for every use of this function.
+When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
 
 ```yaml
 Type: String
@@ -74,7 +102,9 @@ Accept wildcard characters: False
 ```
 
 ### -ShlinkApiKey
-{{ Fill ShlinkApiKey Description }}
+A SecureString object of your Shlink server's API key.
+It is not required to use this parameter for every use of this function.
+When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
 
 ```yaml
 Type: SecureString

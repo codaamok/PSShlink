@@ -100,10 +100,10 @@ function Get-ShlinkUrl {
         catch {
             Write-Error -ErrorRecord $_ -ErrorAction "Stop"
         }
-        
+
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
     }
-    process {
+    process {        
         $Params = @{
             Endpoint    = "short-urls"
             PSTypeName  = "PSShlink"

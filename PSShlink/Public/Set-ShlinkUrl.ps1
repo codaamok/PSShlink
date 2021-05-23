@@ -22,6 +22,10 @@ function Set-ShlinkUrl {
         This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
     .PARAMETER Title
         Define a title with the new short code.
+    .PARAMETER DoNotValidateUrl
+        Disables long URL validation while creating the short code.
+    .PARAMETER Crawlable
+        Set short URLs as crawlable, making them be listed in the robots.txt as Allowed.    
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -70,11 +74,14 @@ function Set-ShlinkUrl {
         [Parameter()]
         [String]$Title,
 
-        [Parameter()]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [String]$Domain,
 
         [Parameter()]
         [Switch]$DoNotValidateUrl,
+
+        [Parameter()]
+        [Bool]$Crawlable,
 
         [Parameter()]
         [String]$ShlinkServer,
@@ -89,7 +96,8 @@ function Set-ShlinkUrl {
         catch {
             Write-Error -ErrorRecord $_ -ErrorAction "Stop"
         }
-        
+    }
+    process {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
 
         $Params = @{
@@ -97,8 +105,7 @@ function Set-ShlinkUrl {
             Method = "PATCH"
             Body = @{}
         }
-    }
-    process {
+
         foreach ($Code in $ShortCode) {
             $Params["Path"] = $Code
 
@@ -122,10 +129,19 @@ function Set-ShlinkUrl {
                     $Params["Body"]["title"] = $Title
                 }
                 "Domain" {
-                    $QueryString.Add("domain", $Domain)
+                    # An additional null check here, and not as a validate parameter attribute, because I wanted it to be simple
+                    # to pipe to Set-ShlinkUrl where some objects have a populated, or null, domain property. 
+                    # The domain property is blank for short codes if they were created to use the Shlink instance's default domain. 
+                    # They are also most commonly blank on Shlink instances where there are no additional domains responding / listening. 
+                    if (-not [String]::IsNullOrWhiteSpace($Domain)) {
+                        $QueryString.Add("domain", $Domain)
+                    }
                 }
                 "DoNotValidateUrl" {
                     $Params["Body"]["validateUrl"] = -not $DoNotValidateUrl.IsPresent
+                }
+                "Crawlable" {
+                    $Params["Body"]["crawlable"] = $Crawlable
                 }
             }
 

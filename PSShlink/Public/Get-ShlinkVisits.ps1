@@ -15,6 +15,8 @@ function Get-ShlinkVisits {
         A datetime object to filter the visit data where the start date is equal or greater than this value. 
     .PARAMETER EndDate
         A datetime object to filter the visit data where its end date is equal or less than this value. 
+    .PARAMETER ExcludeBots
+        Exclude visits from bots or crawlers. 
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -34,7 +36,7 @@ function Get-ShlinkVisits {
 
         Returns all the visit data for all short codes asociated with the tag "oldwebsite"
     .EXAMPLE
-        PS C:\> Get-ShlinkVisits -ShortCode "profile" -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-11-30")
+        PS C:\> Get-ShlinkVisits -ShortCode "profile" -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01")
 
         Returns all visit data associated with the short code "profile" for the whole of November 2020
     .INPUTS
@@ -61,6 +63,10 @@ function Get-ShlinkVisits {
         [Parameter(ParameterSetName="ShortCode")]
         [Parameter(ParameterSetName="Tag")]
         [datetime]$EndDate,
+
+        [Parameter(ParameterSetName="ShortCode")]
+        [Parameter(ParameterSetName="Tag")]
+        [Switch]$ExcludeBots,
 
         [Parameter()]
         [String]$ShlinkServer,
@@ -99,6 +105,9 @@ function Get-ShlinkVisits {
                 }
                 "EndDate" {
                     $QueryString.Add("endDate", (Get-Date $EndDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
+                }
+                "ExcludeBots" {
+                    $QueryString.Add("excludeBots", "true")
                 }
             }
         }

@@ -53,8 +53,6 @@ function Remove-ShlinkTag {
         catch {
             Write-Error -ErrorRecord $_ -ErrorAction "Stop"
         }
-        
-        $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
 
         # Gather all tags and check if any of the user's desired tag(s) to delete
         # are currently an existing tag within the process / for loop later.
@@ -63,6 +61,8 @@ function Remove-ShlinkTag {
         $AllTags = Get-ShlinkTags
     }
     process {
+        $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
+        
         foreach ($Tag in $Tags) {
             if ($AllTags.tag -notcontains $Tag) {
                 $WriteErrorSplat = @{

@@ -20,12 +20,12 @@ Get-ShlinkVisits [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<Commo
 ### ShortCode
 ```
 Get-ShlinkVisits -ShortCode <String> [-Domain <String>] [-StartDate <DateTime>] [-EndDate <DateTime>]
- [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+ [-ExcludeBots] [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
 ### Tag
 ```
-Get-ShlinkVisits -Tag <String> [-Domain <String>] [-StartDate <DateTime>] [-EndDate <DateTime>]
+Get-ShlinkVisits -Tag <String> [-Domain <String>] [-StartDate <DateTime>] [-EndDate <DateTime>] [-ExcludeBots]
  [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
@@ -57,7 +57,7 @@ Returns all the visit data for all short codes asociated with the tag "oldwebsit
 
 ### EXAMPLE 4
 ```
-Get-ShlinkVisits -ShortCode "profile" -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-11-30")
+Get-ShlinkVisits -ShortCode "profile" -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01")
 ```
 
 Returns all visit data associated with the short code "profile" for the whole of November 2020
@@ -138,6 +138,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeBots
+Exclude visits from bots or crawlers.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ShortCode, Tag
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

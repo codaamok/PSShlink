@@ -61,6 +61,7 @@ function InvokeShlinkRestMethod {
 
     $Result = do {
         try {
+            Write-Verbose ("Body: {0}" -f $Params["Body"])
             $Data = Invoke-RestMethod @Params
         }
         catch {

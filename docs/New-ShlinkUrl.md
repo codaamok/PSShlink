@@ -15,8 +15,8 @@ Creates a new Shlink short code on your Shlink server.
 ```
 New-ShlinkUrl [-LongUrl] <String> [[-CustomSlug] <String>] [[-Tags] <String[]>] [[-ValidSince] <DateTime>]
  [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Title] <String>] [[-Domain] <String>]
- [[-ShortCodeLength] <Int32>] [-FindIfExists] [-DoNotValidateUrl] [[-ShlinkServer] <String>]
- [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
+ [[-ShortCodeLength] <Int32>] [-FindIfExists] [-DoNotValidateUrl] [[-Crawlable] <Boolean>]
+ [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -210,6 +210,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Crawlable
+Set short URLs as crawlable, making them be listed in the robots.txt as Allowed.
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 10
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ShlinkServer
 The URL of your Shlink server (including schema).
 For example "https://example.com".
@@ -222,7 +237,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 11
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -239,7 +254,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 11
+Position: 12
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- New `-ExcludeBots` parameter to `Get-ShlinkVisits` and `Get-ShlinkVisitsOrphan`, new in Shlink 2.7.0
+- New `-Crawlable` parameter to `New-ShlinkUrl` and `Set-ShlinkUrl`, new in Shlink 2.7.0
+
+### Changed
+- `Set-ShlinkUrl` accepts `domain` as ValueFromPipelineByPropertyName
+- Minimum Shlink version updated to 2.7.0
+
+### Fixed
+- Fixed an issue where `Set-ShlinkUrl` would not reinitialise its query string when used within a pipeline
+- Added missing comment based help to `Get-ShlinkVisitsOrphan`
+- Fixed typos in comment based help for some functions
 
 ## [0.5.0] - 2021-02-14
 ### Added

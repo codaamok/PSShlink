@@ -27,6 +27,8 @@ function New-ShlinkUrl {
         Specify this switch to first search and return the data about an existing short code that uses the same long URL if one exists.
     .PARAMETER DoNotValidateUrl
         Disables long URL validation while creating the short code.
+    .PARAMETER Crawlable
+        Set short URLs as crawlable, making them be listed in the robots.txt as Allowed.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -82,6 +84,9 @@ function New-ShlinkUrl {
         [Switch]$DoNotValidateUrl,
 
         [Parameter()]
+        [Bool]$Crawlable,
+
+        [Parameter()]
         [String]$ShlinkServer,
 
         [Parameter()]
@@ -132,6 +137,9 @@ function New-ShlinkUrl {
         }
         "FindIfExists" {
             $Params["Body"]["findIfExists"] = "true"
+        }
+        "Crawlable" {
+            $Params["Body"]["crawlable"] = $Crawlable
         }
     }
 
