@@ -73,6 +73,15 @@ function InvokeShlinkRestMethod {
                     [String][System.Net.HttpStatusCode]$InvokeRestMethodError.ErrorRecord.Exception.Response.StatusCode
 
                 switch -Regex ($InvokeRestMethodError.ErrorRecord.Exception.Response.StatusCode) {
+                    "Unauthorized" {
+                        $Exception = [System.UnauthorizedAccessException]::new($ExceptionMessage)
+                        $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                            $Exception,
+                            $ErrorId,
+                            [System.Management.Automation.ErrorCategory]::AuthenticationError,
+                            $Params['Url']
+                        )
+                    }
                     "BadRequest|Conflict" {
                         $Exception = [System.ArgumentException]::new($ExceptionMessage)
                         $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
