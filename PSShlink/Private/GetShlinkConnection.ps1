@@ -10,7 +10,21 @@ function GetShlinkConnection {
         [Switch]$ServerOnly
     )
 
-    $Script:MinSupportedShlinkVersion = [Version]"2.7.0"
+    function SetShlinkServer {
+        param (
+            [Parameter()]
+            [String]$Server
+        )
+        if ($Server -notmatch '^http[s]?:\/\/') {
+            Write-Warning ("Rewriting Shlink server address to be 'https://{0}' instead of using http://. To use HTTP, instead of HTTPS, specify 'http://' in your -ShlinkServer." -f $Server) -Verbose
+            $Script:ShlinkServer = "https://{0}" -f $Server
+        }
+        else {
+            $Script:ShlinkServer = $Server
+        }
+    }
+
+    $Script:MinSupportedShlinkVersion = [Version]"2.8.0"
 
     if (-not ("System.Web.HttpUtility" -as [Type])) {
         Add-Type -AssemblyName "System.Web" -ErrorAction "Stop"
@@ -18,12 +32,12 @@ function GetShlinkConnection {
 
     if ([String]::IsNullOrWhiteSpace($Server) -And -not $Script:ShlinkServer) {
         # User has not yet used use a -ShlinkServer paramater from any of the functions, therefore prompt
-        $Script:ShlinkServer = Read-Host -Prompt "Enter your Shlink server URL (e.g. https://example.com)"
+        SetShlinkServer -Server (Read-Host -Prompt "Enter your Shlink server URL (e.g. https://example.com)")
     }
     elseif (-not [String]::IsNullOrWhiteSpace($Server) -And $Script:ShlinkServer -ne $Server) {
         # User has previously used a -ShlinkServer parameter and is using it right now, and its value is different to what was used last in any of the functions
-        # In other words, it has changes - they wish to use a different server
-        $Script:ShlinkServer = $Server
+        # In other words, it has changed and they wish to use a different server, and that new server will be used for subsequent calls unless they specify a different server again.
+        SetShlinkServer -Server $Server
         # Set this to false so we can go through the motions again of checking the new Shlink server's version number
         $Script:GetShlinkConnectionHasRun = $false
         # We no longer know if the new server's Shlink version is supported for PSShlink
@@ -36,7 +50,7 @@ function GetShlinkConnection {
     }
     elseif (-not [String]::IsNullOrWhiteSpace($ApiKey) -And $Script:ShlinkApiKey -ne $ApiKey) {
         # User has previously used a -ShlinkApiKey parameter and is using it right now, and its value is different to what was used last in any of the functions
-        # In other words, it has changed - they wish to use a different API key
+        # In other words, it has changed - they wish to use a different API key, and that new API key will be used for subsequent calls unless they specify a different API key again.
         $Script:ShlinkApiKey = $ApiKey
     }
 

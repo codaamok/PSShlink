@@ -15,13 +15,14 @@ Save a QR code to disk for a short code.
 ### InputObject
 ```
 Save-ShlinkUrlQrCode -InputObject <PSObject[]> [-Path <String>] [-Size <Int32>] [-Format <String>]
- [-Margin <Int32>] [<CommonParameters>]
+ [-Margin <Int32>] [-ErrorCorrection <String>] [<CommonParameters>]
 ```
 
 ### SpecifyProperties
 ```
 Save-ShlinkUrlQrCode -ShortCode <String> [-Domain <String>] [-Path <String>] [-Size <Int32>] [-Format <String>]
- [-Margin <Int32>] [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+ [-Margin <Int32>] [-ErrorCorrection <String>] [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -158,6 +159,22 @@ Aliases:
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ErrorCorrection
+Specify the level of error correction you would like in the QR code.
+Choose from L for low, M for medium, Q for quartile, or H for high.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: L
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

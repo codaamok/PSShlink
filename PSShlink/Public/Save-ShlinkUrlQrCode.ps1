@@ -23,6 +23,9 @@ function Save-ShlinkUrlQrCode {
     .PARAMETER Margin
         Specify the margin/whitespace around the QR code image in pixels.
         If omitted, the default is 0.
+    .PARAMETER ErrorCorrection
+        Specify the level of error correction you would like in the QR code.
+        Choose from L for low, M for medium, Q for quartile, or H for high.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -69,6 +72,10 @@ function Save-ShlinkUrlQrCode {
         [Parameter()]
         [Int]$Margin = 0,
 
+        [Parameter()]
+        [ValidateSet("L", "M", "Q", "H")]
+        [String]$ErrorCorrection = "L",
+
         [Parameter(ParameterSetName="SpecifyProperties")]
         [String]$ShlinkServer,
 
@@ -80,6 +87,7 @@ function Save-ShlinkUrlQrCode {
         $QueryString.Add("format", $Format)
         $QueryString.Add("size", $Size)
         $QueryString.Add("margin", $Margin)
+        $QueryString.Add("errorCorrection", $ErrorCorrection)
 
         if ($PSCmdlet.ParameterSetName -ne "InputObject") {
             $Params = @{ 

@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- New function `Set-ShlinkDomainRedirects`, new in Shlink 2.8.0
+- New `-ErrorCorrection` parameter for `Save-ShlinkUrlQrCode`, new in Shlink 2.8.0
+
+### Changed
+- Minimum Shlink version updated to 2.8.0
+
+### Fixed
+- Return exception `UnauthorizedAccessException` when Shlink returns 401. Previously `InvalidOperationException` was returned
+
+### Security
+- Default to https:// as -ShlinkServer if schema is not provided. Largely for security but also because of https://github.com/PowerShell/PowerShell/issues/14531
 
 ## [0.6.0] - 2021-05-23
 ### Added
