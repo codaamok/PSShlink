@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.7.0] - 2021-08-09
 ### Added
 - New function `Set-ShlinkDomainRedirects`, new in Shlink 2.8.0
 - New `-ErrorCorrection` parameter for `Save-ShlinkUrlQrCode`, new in Shlink 2.8.0
@@ -70,7 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.6.0..HEAD
+[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.7.0..HEAD
+[0.7.0]: https://github.com/codaamok/PSShlink/compare/0.6.0..0.7.0
 [0.6.0]: https://github.com/codaamok/PSShlink/compare/0.5.0..0.6.0
 [0.5.0]: https://github.com/codaamok/PSShlink/compare/0.4.0..0.5.0
 [0.4.0]: https://github.com/codaamok/PSShlink/compare/0.3.0..0.4.0
