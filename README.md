@@ -19,6 +19,7 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 - [Remove-ShlinkTag](docs/Remove-ShlinkTag.md)
 - [Remove-ShlinkUrl](docs/Remove-ShlinkUrl.md)
 - [Save-ShlinkUrlQrCode](docs/Save-ShlinkUrlQrCode.md)
+- [Set-ShlinkDomainRedirects](docs/Set-ShlinkDomainRedirects.md)
 - [Set-ShlinkTag](docs/Set-ShlinkTag.md)
 - [Set-ShlinkUrl](docs/Set-ShlinkUrl.md)
 
