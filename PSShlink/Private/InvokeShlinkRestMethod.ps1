@@ -79,7 +79,7 @@ function InvokeShlinkRestMethod {
                             $Exception,
                             $ErrorId,
                             [System.Management.Automation.ErrorCategory]::AuthenticationError,
-                            $Params['Url']
+                            $Params['Uri']
                         )
                     }
                     "BadRequest|Conflict" {
@@ -88,7 +88,7 @@ function InvokeShlinkRestMethod {
                             $Exception,
                             $ErrorId,
                             [System.Management.Automation.ErrorCategory]::InvalidArgument,
-                            $Params['Url']
+                            $Params['Uri']
                         )
                     }
                     "NotFound" {
