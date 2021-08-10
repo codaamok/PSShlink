@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Corrected object reference to API URL attempted in ErrorRecord
+
 ## [0.7.0] - 2021-08-09
 ### Added
 - New function `Set-ShlinkDomainRedirects`, new in Shlink 2.8.0
