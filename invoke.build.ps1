@@ -71,7 +71,7 @@ task InitaliseBuildDirectory {
     )
 
     if (Test-Path -Path $BuildRoot\$Script:ModuleName\* -Include "*format.ps1xml") {
-        $Script:FormatFiles = Copy-Item -Path $BuildRoot\$Script:ModuleName -Destination $BuildRoot\build\$Script:ModuleName -Filter "*format.ps1xml" -PassThru
+        $Script:FormatFiles = Copy-Item -Path $BuildRoot\$Script:ModuleName\* -Destination $BuildRoot\build\$Script:ModuleName -Filter "*format.ps1xml" -PassThru
     }
 
     if (Test-Path -Path $BuildRoot\$Script:ModuleName\Files\*) {

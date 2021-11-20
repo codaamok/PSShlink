@@ -17,15 +17,17 @@ function Save-ShlinkUrlQrCode {
         If the directory doesn't exist, it will be created.
     .PARAMETER Size
         Specify the pixel width you want for your generated shortcodes. The same value will be applied to the height.
-        If omitted, the default is 300.
+        If omitted, the default configuration of your Shlink server is used.
     .PARAMETER Format
         Specify whether you would like your QR codes to save as .png or .svg files.
+        If omitted, the default configuration of your Shlink server is used.
     .PARAMETER Margin
         Specify the margin/whitespace around the QR code image in pixels.
-        If omitted, the default is 0.
+        If omitted, the default configuration of your Shlink server is used.
     .PARAMETER ErrorCorrection
         Specify the level of error correction you would like in the QR code.
         Choose from L for low, M for medium, Q for quartile, or H for high.
+        If omitted, the default configuration of your Shlink server is used.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -63,18 +65,18 @@ function Save-ShlinkUrlQrCode {
         [String]$Path = "{0}\Downloads" -f $home,
         
         [Parameter()]
-        [Int]$Size = 300,
+        [Int]$Size,
 
         [Parameter()]
         [ValidateSet("png","svg")]
-        [String]$Format = "png",
+        [String]$Format,
 
         [Parameter()]
-        [Int]$Margin = 0,
+        [Int]$Margin,
 
         [Parameter()]
         [ValidateSet("L", "M", "Q", "H")]
-        [String]$ErrorCorrection = "L",
+        [String]$ErrorCorrection,
 
         [Parameter(ParameterSetName="SpecifyProperties")]
         [String]$ShlinkServer,
@@ -84,10 +86,21 @@ function Save-ShlinkUrlQrCode {
     )
     begin {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
-        $QueryString.Add("format", $Format)
-        $QueryString.Add("size", $Size)
-        $QueryString.Add("margin", $Margin)
-        $QueryString.Add("errorCorrection", $ErrorCorrection)
+
+        switch ($PSBoundParameters.Keys) {
+            "Size" {
+                $QueryString.Add("size", $Size)
+            }
+            "Format" {
+                $QueryString.Add("format", $Format)
+            }
+            "Margin" {
+                $QueryString.Add("margin", $Margin)
+            }
+            "ErrorCorrection" {
+                $QueryString.Add("errorCorrection", $ErrorCorrection)
+            }
+        }
 
         if ($PSCmdlet.ParameterSetName -ne "InputObject") {
             $Params = @{ 
@@ -131,17 +144,48 @@ function Save-ShlinkUrlQrCode {
             }
 
             $Params = @{
-                OutFile     = "{0}\ShlinkQRCode_{1}_{2}_{3}.{4}" -f $Path, $Object.ShortCode, ($Object.Domain -replace "\.", "-"), $Size, $Format
                 Uri         = "{0}/qr-code?{1}" -f $Object.ShortUrl, $QueryString.ToString()
-                ContentType = switch ($Format) { "png" { "image/png" } "svg" { "image/svg+xml" } }
                 ErrorAction = "Stop"
             }
 
             try {
-                Invoke-RestMethod @Params
+                $Result = Invoke-WebRequest @Params
             }
             catch {
                 Write-Error -ErrorRecord $_
+                continue
+            }
+
+            $FileType = [Regex]::Match($Result.Headers."Content-Type", "^image\/(\w+)").Groups[1].Value
+            $FileName = "{0}\ShlinkQRCode_{1}_{2}.{3}" -f $Path, $Object.ShortCode, ($Object.Domain -replace "\.", "-"), $FileType
+
+            if ($PSBoundParameters.ContainsKey("Size")) {
+                $FileName = $FileName -replace "\.$FileType", "_$Size.$FileType"
+            }
+
+            $Params = @{
+                Path        = $FileName
+                Value       = $Result.Content
+                ErrorAction = "Stop"
+            }
+
+            # Non-svg formats are returned from web servers as a byte array
+            # Set-Content also changed to accepting byte array via -Encoding parameters after PS6+, so this is for back compatibility with Windows PS.
+            if ($Result.Content -is [System.Byte[]]) {
+                if ($PSVersionTable.PSVersion -ge [System.Version]"6.0") {
+                    $Params["AsByteStream"] = $true
+                }
+                else {
+                    $Params["Encoding"] = "Byte"
+                }
+            }
+
+            try {
+                Set-Content @Params
+            }
+            catch {
+                Write-Error -ErrorRecord $_
+                continue
             }
         }
     }
