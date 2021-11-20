@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved build pipeline to use [codaamok.build](https://github.com/codaamok/codaamok.build)
 
 ### Changed
+- Removed use of methods `SecureStringToBSTR` and `PtrToStringAuto` from Marshal .NET class for secure string handling in `InvokeShlinkRestMethod`, in favour of using `GetNetworkCredential` method from a PSCredential object.
 - `Save-ShlinkUrlQrCode` no longer has hardcoded default parameter values (much like the API did) for size, margin, format, and error correction level.. Shlink 2.9.0 now lets you configure these defaults for QR codes, so by omitting values for these params, your server default values are used.
 
 ### Fixed

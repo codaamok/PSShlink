@@ -33,13 +33,11 @@ function InvokeShlinkRestMethod {
         [String]$PSTypeName
     )
 
-    $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($ApiKey)
-
     $Params = @{
         Method        = $Method
         Uri           = "{0}/rest/v2/{1}" -f $Server, $Endpoint
         ContentType   = "application/json"
-        Headers       = @{"X-Api-Key" = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)}
+        Headers       = @{"X-Api-Key" = [PSCredential]::new("none", $ApiKey).GetNetworkCredential().Password}
         ErrorAction   = "Stop"
         ErrorVariable = "InvokeRestMethodError"
     }
@@ -155,6 +153,4 @@ function InvokeShlinkRestMethod {
     }
 
     Write-Output $Result
-
-    [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)
 }
