@@ -26,7 +26,7 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 ## Requirements
 
 - PowerShell 5.1 or newer (including PowerShell Core, 7.0 or newer)
-- Shlink 2.8.0 or newer
+- Shlink 2.9.0 or newer
   - If you need support for older versions of Shlink, you can still source older versions of PSShlink [here](https://github.com/codaamok/PSShlink/releases) or use the `-RequiredVersion` parameter of `Install-Module` when installed from the PowerShell Gallery
 
 ## Getting started

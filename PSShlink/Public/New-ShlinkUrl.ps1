@@ -25,8 +25,10 @@ function New-ShlinkUrl {
         Set the length of your new short code other than the default.
     .PARAMETER FindIfExists
         Specify this switch to first search and return the data about an existing short code that uses the same long URL if one exists.
-    .PARAMETER DoNotValidateUrl
-        Disables long URL validation while creating the short code.
+    .PARAMETER ValidateUrl
+        Control long URL validation while creating the short code.
+    .PARAMETER ForwardQuery
+        Forwards UTM query parameters to the long URL if any were passed to the short URL.
     .PARAMETER Crawlable
         Set short URLs as crawlable, making them be listed in the robots.txt as Allowed.
     .PARAMETER ShlinkServer
@@ -78,10 +80,13 @@ function New-ShlinkUrl {
         [Int]$ShortCodeLength,
 
         [Parameter()]
-        [Switch]$FindIfExists,
+        [Bool]$FindIfExists,
 
         [Parameter()]
-        [Switch]$DoNotValidateUrl,
+        [Bool]$ValidateUrl,
+
+        [Parameter()]
+        [Bool]$ForwardQuery,
 
         [Parameter()]
         [Bool]$Crawlable,
@@ -104,8 +109,7 @@ function New-ShlinkUrl {
         Endpoint    = "short-urls"
         Method      = "POST"
         Body        = @{
-            longUrl     = $LongUrl
-            validateUrl = -not $DoNotValidateUrl.IsPresent
+            longUrl      = $LongUrl
         }
         ErrorAction = "Stop"
     }
@@ -136,7 +140,13 @@ function New-ShlinkUrl {
             $Params["Body"]["shortCodeLength"] = $ShortCodeLength
         }
         "FindIfExists" {
-            $Params["Body"]["findIfExists"] = "true"
+            $Params["Body"]["findIfExists"] = $FindIfExists
+        }
+        "ValidateUrl" {
+            $Params["Body"]["validateUrl"] = $ValidateUrl
+        }
+        "ForwardQuery" {
+            $Params["Body"]["forwardQuery"] = $ForwardQuery
         }
         "Crawlable" {
             $Params["Body"]["crawlable"] = $Crawlable

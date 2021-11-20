@@ -24,6 +24,8 @@ function Set-ShlinkUrl {
         Define a title with the new short code.
     .PARAMETER DoNotValidateUrl
         Disables long URL validation while creating the short code.
+    .PARAMETER ForwardQuery
+        Forwards UTM query parameters to the long URL if any were passed to the short URL.
     .PARAMETER Crawlable
         Set short URLs as crawlable, making them be listed in the robots.txt as Allowed.    
     .PARAMETER ShlinkServer
@@ -78,7 +80,10 @@ function Set-ShlinkUrl {
         [String]$Domain,
 
         [Parameter()]
-        [Switch]$DoNotValidateUrl,
+        [Bool]$ValidateUrl,
+
+        [Parameter()]
+        [Bool]$ForwardQuery,
 
         [Parameter()]
         [Bool]$Crawlable,
@@ -137,8 +142,11 @@ function Set-ShlinkUrl {
                         $QueryString.Add("domain", $Domain)
                     }
                 }
-                "DoNotValidateUrl" {
-                    $Params["Body"]["validateUrl"] = -not $DoNotValidateUrl.IsPresent
+                "ValidateUrl" {
+                    $Params["Body"]["validateUrl"] = $ValidateUrl
+                }
+                "ForwardQuery" {
+                    $Params["Body"]["forwardQuery"] = $ForwardQuery
                 }
                 "Crawlable" {
                     $Params["Body"]["crawlable"] = $Crawlable
