@@ -14,8 +14,9 @@ Update an existing short code on the Shlink server.
 
 ```
 Set-ShlinkUrl [-ShortCode] <String[]> [[-LongUrl] <String>] [[-Tags] <String[]>] [[-ValidSince] <DateTime>]
- [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Title] <String>] [[-Domain] <String>] [-DoNotValidateUrl]
- [[-Crawlable] <Boolean>] [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
+ [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Title] <String>] [[-Domain] <String>]
+ [[-ValidateUrl] <Boolean>] [[-ForwardQuery] <Boolean>] [[-Crawlable] <Boolean>] [[-ShlinkServer] <String>]
+ [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -170,16 +171,31 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -DoNotValidateUrl
-Disables long URL validation while creating the short code.
+### -ValidateUrl
+{{ Fill ValidateUrl Description }}
 
 ```yaml
-Type: SwitchParameter
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 9
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ForwardQuery
+Forwards UTM query parameters to the long URL if any were passed to the short URL.
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 10
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -194,7 +210,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 11
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -212,7 +228,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 12
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -229,7 +245,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 11
+Position: 13
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

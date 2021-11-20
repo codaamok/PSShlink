@@ -118,7 +118,7 @@ Accept wildcard characters: False
 ### -Size
 Specify the pixel width you want for your generated shortcodes.
 The same value will be applied to the height.
-If omitted, the default is 300.
+If omitted, the default configuration of your Shlink server is used.
 
 ```yaml
 Type: Int32
@@ -127,13 +127,14 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: 300
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Format
 Specify whether you would like your QR codes to save as .png or .svg files.
+If omitted, the default configuration of your Shlink server is used.
 
 ```yaml
 Type: String
@@ -142,14 +143,14 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: Png
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Margin
 Specify the margin/whitespace around the QR code image in pixels.
-If omitted, the default is 0.
+If omitted, the default configuration of your Shlink server is used.
 
 ```yaml
 Type: Int32
@@ -166,6 +167,7 @@ Accept wildcard characters: False
 ### -ErrorCorrection
 Specify the level of error correction you would like in the QR code.
 Choose from L for low, M for medium, Q for quartile, or H for high.
+If omitted, the default configuration of your Shlink server is used.
 
 ```yaml
 Type: String
@@ -174,7 +176,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: L
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

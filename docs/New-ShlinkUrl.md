@@ -15,8 +15,9 @@ Creates a new Shlink short code on your Shlink server.
 ```
 New-ShlinkUrl [-LongUrl] <String> [[-CustomSlug] <String>] [[-Tags] <String[]>] [[-ValidSince] <DateTime>]
  [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Title] <String>] [[-Domain] <String>]
- [[-ShortCodeLength] <Int32>] [-FindIfExists] [-DoNotValidateUrl] [[-Crawlable] <Boolean>]
- [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
+ [[-ShortCodeLength] <Int32>] [[-FindIfExists] <Boolean>] [[-ValidateUrl] <Boolean>]
+ [[-ForwardQuery] <Boolean>] [[-Crawlable] <Boolean>] [[-ShlinkServer] <String>]
+ [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -184,27 +185,42 @@ Accept wildcard characters: False
 Specify this switch to first search and return the data about an existing short code that uses the same long URL if one exists.
 
 ```yaml
-Type: SwitchParameter
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 10
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DoNotValidateUrl
-Disables long URL validation while creating the short code.
+### -ValidateUrl
+Control long URL validation while creating the short code.
 
 ```yaml
-Type: SwitchParameter
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 11
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ForwardQuery
+Forwards UTM query parameters to the long URL if any were passed to the short URL.
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 12
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -219,7 +235,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 13
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -237,7 +253,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 11
+Position: 14
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -254,7 +270,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 12
+Position: 15
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
