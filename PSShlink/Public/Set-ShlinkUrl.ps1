@@ -22,8 +22,8 @@ function Set-ShlinkUrl {
         This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
     .PARAMETER Title
         Define a title with the new short code.
-    .PARAMETER DoNotValidateUrl
-        Disables long URL validation while creating the short code.
+    .PARAMETER ValidateUrl
+        Control long URL validation while creating the short code.
     .PARAMETER ForwardQuery
         Forwards UTM query parameters to the long URL if any were passed to the short URL.
     .PARAMETER Crawlable
