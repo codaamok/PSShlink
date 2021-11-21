@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Updated warnings about minimum Shlink version to suggest 2.9.0
+
 ## [0.8.0] - 2021-11-20
 ### Added
 - Improved build pipeline to use [codaamok.build](https://github.com/codaamok/codaamok.build)
@@ -19,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Save-ShlinkUrlQrCode` no longer has hardcoded default parameter values (much like the API did) for size, margin, format, and error correction level.. Shlink 2.9.0 now lets you configure these defaults for QR codes, so by omitting values for these params, your server default values are used.
 
 ### Fixed
-- Updated warnings about minimum Shlink version to suggest 2.9.0
 - Corrected object reference to API URL attempted in ErrorRecord
 
 ## [0.7.0] - 2021-08-09
