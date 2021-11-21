@@ -12,7 +12,7 @@
 RootModule = 'PSShlink.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.8.1'
+ModuleVersion = '0.8.2'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Core', 'Desktop'
@@ -112,7 +112,7 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = '# Fixed
-- Updated warnings about minimum Shlink version to suggest 2.9.0'
+- Renamed parameter DoNotValidateUrl to ValidateUrl in comment based help for Set-ShlinkUrl'
 
         # Prerelease string of this module
         # Prerelease = ''

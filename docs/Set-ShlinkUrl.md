@@ -172,7 +172,7 @@ Accept wildcard characters: False
 ```
 
 ### -ValidateUrl
-{{ Fill ValidateUrl Description }}
+Control long URL validation while creating the short code.
 
 ```yaml
 Type: Boolean
