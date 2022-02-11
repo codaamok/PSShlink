@@ -156,7 +156,7 @@ task UpdateModuleManifest {
         $UpdateModuleManifestSplat["ModuleVersion"] = $Script:Version
     }
     else {
-        $GitVersion = (gitversion.exe | ConvertFrom-Json)
+        $GitVersion = (gitversion | ConvertFrom-Json)
         $UpdateModuleManifestSplat["ModuleVersion"] = $GitVersion.MajorMinorPatch
         $UpdateModuleManifestSplat["Prerelease"] = $GitVersion.NuGetPreReleaseTag
     }
