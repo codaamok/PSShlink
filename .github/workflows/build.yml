@@ -2,6 +2,9 @@ name: "Create GitHub release and publish to the PowerShell Gallery"
 
 on: 
   push:
+    paths-ignore:
+      - 'PSShlink/tests/**'
+      - '*'
     branches:
       - main
       - master
