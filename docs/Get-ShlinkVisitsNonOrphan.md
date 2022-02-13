@@ -5,50 +5,80 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-ShlinkTags
+# Get-ShlinkVisitsNonOrphan
 
 ## SYNOPSIS
-Returns the list of all tags used in any short URL, including stats and ordered by name.
+Get the list of visits to invalid short URLs, the base URL or any other 404.
 
 ## SYNTAX
 
 ```
-Get-ShlinkTags [[-SearchTerm] <String>] [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>]
- [<CommonParameters>]
+Get-ShlinkVisitsNonOrphan [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [-ExcludeBots]
+ [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns the list of all tags used in any short URL, including stats and ordered by name.
+Get the list of visits to invalid short URLs, the base URL or any other 404.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-ShlinkTags
+Get-ShlinkVisitsOrphan
 ```
 
-Returns the list of all tags used in any short URL, including stats and ordered by name.
+Get the list of visits to invalid short URLs, the base URL or any other 404.
 
 ### EXAMPLE 2
 ```
-Get-ShlinkTags -SearchTerm "pwsh"
+Get-ShlinkVisitsOrphan -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01") -ExcludeBots
 ```
 
-Returns the list of all tags used in any short URL, including stats and ordered by name, where those match the term "pwsh" by name of tag.
+Get the list of visits to invalid short URLs, the base URL or any other 404, for the whole of November and excluding bots/crawlers.
 
 ## PARAMETERS
 
-### -SearchTerm
-A query used to filter results by searching for it on the tag name.
+### -StartDate
+A datetime object to filter the visit data where the start date is equal or greater than this value.
 
 ```yaml
-Type: String
+Type: DateTime
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: 1
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EndDate
+A datetime object to filter the visit data where its end date is equal or less than this value.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeBots
+Exclude visits from bots or crawlers.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -65,7 +95,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -82,7 +112,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

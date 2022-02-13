@@ -15,14 +15,14 @@ Save a QR code to disk for a short code.
 ### InputObject
 ```
 Save-ShlinkUrlQrCode -InputObject <PSObject[]> [-Path <String>] [-Size <Int32>] [-Format <String>]
- [-Margin <Int32>] [-ErrorCorrection <String>] [<CommonParameters>]
+ [-Margin <Int32>] [-ErrorCorrection <String>] [-RoundBlockSize <Boolean>] [<CommonParameters>]
 ```
 
 ### SpecifyProperties
 ```
 Save-ShlinkUrlQrCode -ShortCode <String> [-Domain <String>] [-Path <String>] [-Size <Int32>] [-Format <String>]
- [-Margin <Int32>] [-ErrorCorrection <String>] [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>]
- [<CommonParameters>]
+ [-Margin <Int32>] [-ErrorCorrection <String>] [-RoundBlockSize <Boolean>] [-ShlinkServer <String>]
+ [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -177,6 +177,23 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RoundBlockSize
+Allows to disable block size rounding, which might reduce the readability of the QR code, but ensures no extra margin is added.
+Possible values are true or false boolean types.
+If omitted, the default configuration of your Shlink server is used.
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

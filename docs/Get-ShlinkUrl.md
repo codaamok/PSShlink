@@ -14,8 +14,9 @@ Get details of all short codes, or just one.
 
 ### ListShortUrls (Default)
 ```
-Get-ShlinkUrl [-SearchTerm <String>] [-Tags <String[]>] [-OrderBy <String>] [-StartDate <DateTime>]
- [-EndDate <DateTime>] [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+Get-ShlinkUrl [-SearchTerm <String>] [-Tags <String[]>] [-TagsMode <String>] [-OrderBy <String>]
+ [-StartDate <DateTime>] [-EndDate <DateTime>] [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>]
+ [<CommonParameters>]
 ```
 
 ### ParseShortCode
@@ -54,10 +55,10 @@ This is useful if your Shlink instance is responding/creating short URLs for mul
 
 ### EXAMPLE 4
 ```
-Get-ShlinkUrl -Tags "oldwebsite", "evenolderwebsite" -OrderBy "dateCreated"
+Get-ShlinkUrl -Tags "oldwebsite", "evenolderwebsite" -TagsMode "any" -OrderBy "dateCreated-ASC"
 ```
 
-Returns short codes which are associated with the tags "oldwebsite" and "evenolderwebsite".
+Returns short codes which are associated with the tags "oldwebsite" or "evenolderwebsite".
 Ordered by the dateCreated property in ascending order.
 
 ### EXAMPLE 5
@@ -140,9 +141,24 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -TagsMode
+Tells how the filtering by tags should work, returning short URLs containing "any" of the tags, or "all" the tags.
+It's ignored if no tags are provided, and defaults to "any" if not provided.
+
+```yaml
+Type: String
+Parameter Sets: ListShortUrls
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -OrderBy
-Order the results returned by "longUrl", "shortCode", "dateCreated", or "visits".
-The default sort order is in ascending order.
+Order the results returned by "longUrl-ASC", "longUrl-DESC", "shortCode-ASC", "shortCode-DESC", "dateCreated-ASC", "dateCreated-DESC", "visits-ASC", "visits-DESC", "title-ASC", "title-DESC".
 
 ```yaml
 Type: String

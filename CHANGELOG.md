@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.9.0] - 2022-02-13
 ### Added
 - Function `Get-ShlinkUrl` has new parameter `-TagsMode`, new in Shlink 3.0.0
 - Function `Get-ShlinkTags` has new parameter `-SearchTerm`, new in Shlink 3.0.0
@@ -112,7 +114,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.8.2..HEAD
+[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.9.0..HEAD
+[0.9.0]: https://github.com/codaamok/PSShlink/compare/0.8.2..0.9.0
 [0.8.2]: https://github.com/codaamok/PSShlink/compare/0.8.1..0.8.2
 [0.8.1]: https://github.com/codaamok/PSShlink/compare/0.8.0..0.8.1
 [0.8.0]: https://github.com/codaamok/PSShlink/compare/0.7.0..0.8.0
