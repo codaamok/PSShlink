@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Function `Get-ShlinkUrl` has new parameter `-TagsMode`, new in Shlink 3.0.0
+- Function `Get-ShlinkTags` has new parameter `-SearchTerm`, new in Shlink 3.0.0
+- New function `Get-ShlinkVisitsNonOrphan`, new endpoint in Shlink 3.0.0
+- New parameter `-RoundBlockSize` for `Save-ShlinkUrlQrCode`
+
+### Changed
+- `Get-ShlinkTags` uses the new `/tags/stats` endpoint to include stats in the data returned. This change is purely internal of the function, does not impact how the function is used or how the data is returned.
+- `Get-ShlinkDomains` now includes two parent properties when data is returned: `data` and `defaultRedirects`. In Shlink 2.10.0, this endpoint was updated to include the `defaultRedirects` property. Previously, all that was returned was everything within the `data` property.
+- New parameter set of possible values for `-OrderBy` parameter of `Get-ShlinkUrl` function: `longUrl-ASC`, `longUrl-DESC`, `shortCode-ASC`, `shortCode-DESC`, `dateCreated-ASC`, `dateCreated-DESC`, `visits-ASC`, `visits-DESC`, `title-ASC`, and `title-DESC`
+
+### Removed
+- Function `New-ShlinKTag` as the endpoint was removed from Shlink REST API in 3.0.0
+
+### Fixed
+- `Remove-ShlinkTag` ShouldProcess prompts listed the entire array of tags passed to it, rather than the current iterable it was working on
 
 ## [0.8.2] - 2021-11-21
 ### Fixed

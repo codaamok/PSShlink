@@ -28,4 +28,4 @@ git fetch upstream
 # If there are changes, pull and work on merge conflicts
 git pull --rebase upstream develop
 ```
-4. Make sure you have pushed your commits to your new branch and then create a pull request
+6. Make sure you have pushed your commits to your new branch and then create a pull request

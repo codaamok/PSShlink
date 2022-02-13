@@ -85,9 +85,9 @@ function Remove-ShlinkTag {
             }
     
             if ($PSCmdlet.ShouldProcess(
-                ("Would delete tag '{0}' from Shlink server '{1}'" -f ([String]::Join("', '", $Tags)), $Script:ShlinkServer),
+                ("Would delete tag '{0}' from Shlink server '{1}'" -f $Tag, $Script:ShlinkServer),
                 "Are you sure you want to continue?",
-                ("Removing tag '{0}' from Shlink server '{1}'" -f ([String]::Join("', '", $Tags)), $Script:ShlinkServer))) {
+                ("Removing tag '{0}' from Shlink server '{1}'" -f $Tag, $Script:ShlinkServer))) {
                     try {
                         InvokeShlinkRestMethod @Params
                     }

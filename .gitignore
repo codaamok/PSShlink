@@ -1,3 +1,5 @@
+# This file does not start with a period in the codaamok.build FileList because there seems to be an issue with using files in a module manifest's FileList starting with a period
 build/*
-release/*
 !*.gitkeep
+release/*
+.DS_Store

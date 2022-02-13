@@ -13,8 +13,8 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 - [Get-ShlinkTags](docs/Get-ShlinkTags.md)
 - [Get-ShlinkUrl](docs/Get-ShlinkUrl.md)
 - [Get-ShlinkVisits](docs/Get-ShlinkVisits.md)
+- [Get-ShlinkVisitsNonOrphan](docs/Get-ShlinkVisitsNonOrphan.md)
 - [Get-ShlinkVisitsOrphan](docs/Get-ShlinkVisitsOrphan.md)
-- [New-ShlinkTag](docs/New-ShlinkTag.md)
 - [New-ShlinkUrl](docs/New-ShlinkUrl.md)
 - [Remove-ShlinkTag](docs/Remove-ShlinkTag.md)
 - [Remove-ShlinkUrl](docs/Remove-ShlinkUrl.md)
@@ -26,7 +26,7 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 ## Requirements
 
 - PowerShell 5.1 or newer (including PowerShell Core, 7.0 or newer)
-- Shlink 2.9.0 or newer
+- Shlink 3.0.0 or newer
   - If you need support for older versions of Shlink, you can still source older versions of PSShlink [here](https://github.com/codaamok/PSShlink/releases) or use the `-RequiredVersion` parameter of `Install-Module` when installed from the PowerShell Gallery
 
 ## Getting started

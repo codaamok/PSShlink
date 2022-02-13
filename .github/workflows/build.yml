@@ -3,8 +3,7 @@ name: "Create GitHub release and publish to the PowerShell Gallery"
 on: 
   push:
     paths:
-      - 'PSShlink/**'
-      - '!PSShlink/tests/**'
+      - 'src/**'
     branches:
       - main
       - master
@@ -36,15 +35,28 @@ jobs:
           Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
           Install-Module "InvokeBuild" -Force
           $Username, $ProjectName = $env:GITHUB_REPOSITORY -split "/"
-          Invoke-Build -ModuleName $ProjectName -Author $Username -Task "InstallDependencies","ImportBuildModule","SetGitHubActionEnvironmentVariables"
+          Invoke-Build -File "invoke.build.ps1" -ModuleName $ProjectName -Author $Username -Task "InstallDependencies","ImportBuildModule","SetGitHubActionEnvironmentVariables"
         shell: pwsh
 
       - name: Build
-        run: Invoke-Build -ModuleName $env:GH_PROJECTNAME -Author $env:GH_USERNAME -Version $env:GitVersion_SemVer -NewRelease $true
+        run: |
+          $Params = @{
+            ModuleName = $env:GH_PROJECTNAME
+            Author     = $env:GH_USERNAME
+            Version    = $env:GitVersion_SemVer
+            NewRelease = $true
+          }
+          Invoke-Build -File "custom.build.ps1" @Params -Task PreBuild
+          Invoke-Build -File "invoke.build.ps1" @Params
+          Invoke-Build -File "custom.build.ps1" @Params -Task PostBuild
+        shell: pwsh
+
+      - name: Custom pre-release tasks
+        run: Invoke-Build -File "custom.build.ps1" -ModuleName $env:GH_PROJECTNAME -Author $env:GH_USERNAME -Version $env:GitVersion_SemVer -NewRelease $true -Task PreRelease
         shell: pwsh
 
       - name: Publish to PowerShell Gallery
-        run: Invoke-Build -ModuleName $env:GH_PROJECTNAME -Task "PublishModule"
+        run: Invoke-Build -File "invoke.build.ps1" -ModuleName $env:GH_PROJECTNAME -Task "PublishModule"
         shell: pwsh
         env:
           PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
@@ -76,10 +88,14 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add CHANGELOG.md ${GH_PROJECTNAME}/${GH_PROJECTNAME}.psd1 docs
+          git add CHANGELOG.md src/${GH_PROJECTNAME}.psd1 docs
           git commit -m "Released ${{ env.GitVersion_SemVer }}"
       
       - name: Push commit
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Custom post-release tasks
+        run: Invoke-Build -File "custom.build.ps1" -ModuleName $env:GH_PROJECTNAME -Author $env:GH_USERNAME -Version $env:GitVersion_SemVer -NewRelease $true -Task PostRelease
+        shell: pwsh

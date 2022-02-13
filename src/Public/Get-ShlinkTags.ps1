@@ -1,11 +1,11 @@
-function New-ShlinkTag {
+function Get-ShlinkTags {
     <#
     .SYNOPSIS
-        Creates one or more new tags on your Shlink server
+        Returns the list of all tags used in any short URL, including stats and ordered by name.
     .DESCRIPTION
-        Creates one or more new tags on your Shlink server
-    .PARAMETER Tags
-        Name(s) for your new tag(s)
+        Returns the list of all tags used in any short URL, including stats and ordered by name.
+    .PARAMETER SearchTerm
+        A query used to filter results by searching for it on the tag name.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -13,9 +13,13 @@ function New-ShlinkTag {
         A SecureString object of your Shlink server's API key.
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
     .EXAMPLE
-        PS C:\> New-ShlinkTag -Tags "oldwebsite","newwebsite","misc"
+        PS C:\> Get-ShlinkTags
         
-        Creates the following new tags on your Shlink server: "oldwebsite","newwebsite","misc"
+        Returns the list of all tags used in any short URL, including stats and ordered by name.
+    .EXAMPLE
+        PS C:\> Get-ShlinkTags -SearchTerm "pwsh"
+
+        Returns the list of all tags used in any short URL, including stats and ordered by name, where those match the term "pwsh" by name of tag.
     .INPUTS
         This function does not accept pipeline input.
     .OUTPUTS
@@ -23,8 +27,8 @@ function New-ShlinkTag {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory)]
-        [String[]]$Tags,
+        [Parameter()]
+        [String]$SearchTerm,
 
         [Parameter()]
         [String]$ShlinkServer,
@@ -39,24 +43,25 @@ function New-ShlinkTag {
     catch {
         Write-Error -ErrorRecord $_ -ErrorAction "Stop"
     }
+    
+    $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
 
     $Params = @{
         Endpoint     = "tags"
-        Method       = "POST"
-        Body         = @{
-            tags = @($Tags)
-        }
+        Path         = "stats"
         PropertyTree = "tags", "data"
-        ErrorAction  = "Stop"
     }
+
+    if ($PSBoundParameters.ContainsKey("SearchTerm")) {
+        $QueryString.Add("searchTerm", $SearchTerm)
+    }
+
+    $Params["Query"] = $QueryString
 
     try {
         InvokeShlinkRestMethod @Params
     }
     catch {
         Write-Error -ErrorRecord $_
-    }
-    finally {
-        Write-Warning -Message "As of Shlink 2.4.0, this endpoint is deprecated. New tags are automatically created when you specify them in the -Tags parameter with New-ShlinkUrl. At some point, this function may be removed from PSShlink."
     }
 }

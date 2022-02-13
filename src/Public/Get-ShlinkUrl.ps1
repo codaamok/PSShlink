@@ -13,8 +13,10 @@ function Get-ShlinkUrl {
         The search term to search for a short code with.
     .PARAMETER Tags
         One or more tags can be passed to find short codes using said tag(s).
+    .PARAMETER TagsMode
+        Tells how the filtering by tags should work, returning short URLs containing "any" of the tags, or "all" the tags. It's ignored if no tags are provided, and defaults to "any" if not provided.
     .PARAMETER OrderBy
-        Order the results returned by "longUrl", "shortCode", "dateCreated", or "visits". The default sort order is in ascending order.
+        Order the results returned by "longUrl-ASC", "longUrl-DESC", "shortCode-ASC", "shortCode-DESC", "dateCreated-ASC", "dateCreated-DESC", "visits-ASC", "visits-DESC", "title-ASC", "title-DESC".
     .PARAMETER StartDate
         A datetime object to search for short codes where its start date is equal or greater than this value. 
         If a start date is not configured for the short code(s), this filters on the dateCreated property.
@@ -39,9 +41,9 @@ function Get-ShlinkUrl {
 
         Returns the short code "profile" using the domain "example.com". This is useful if your Shlink instance is responding/creating short URLs for multiple domains.
     .EXAMPLE
-        PS C:\> Get-ShlinkUrl -Tags "oldwebsite", "evenolderwebsite" -OrderBy "dateCreated"
+        PS C:\> Get-ShlinkUrl -Tags "oldwebsite", "evenolderwebsite" -TagsMode "any" -OrderBy "dateCreated-ASC"
 
-        Returns short codes which are associated with the tags "oldwebsite" and "evenolderwebsite". Ordered by the dateCreated property in ascending order.
+        Returns short codes which are associated with the tags "oldwebsite" or "evenolderwebsite". Ordered by the dateCreated property in ascending order.
     .EXAMPLE
         PS C:\> Get-ShlinkUrl -StartDate (Get-Date "2020-10-25 11:00:00")
 
@@ -72,7 +74,11 @@ function Get-ShlinkUrl {
         [String[]]$Tags,
 
         [Parameter(ParameterSetName="ListShortUrls")]
-        [ValidateSet("longUrl", "shortCode", "dateCreated", "visits")]
+        [ValidateSet("any","all")]
+        [String]$TagsMode,
+
+        [Parameter(ParameterSetName="ListShortUrls")]
+        [ValidateSet("longUrl-ASC", "longUrl-DESC", "shortCode-ASC", "shortCode-DESC", "dateCreated-ASC", "dateCreated-DESC", "visits-ASC", "visits-DESC", "title-ASC", "title-DESC")]
         [String]$OrderBy,
 
         [Parameter(ParameterSetName="ListShortUrls")]
@@ -129,6 +135,9 @@ function Get-ShlinkUrl {
                         foreach ($Tag in $Tags) {
                             $QueryString.Add("tags[]", $Tag)
                         }
+                    }
+                    "TagsMode" {
+                        $QueryString.Add("tagsMode", $TagsMode)
                     }
                     "SearchTerm" {
                         $QueryString.Add("searchTerm", $SearchTerm)

@@ -28,6 +28,10 @@ function Save-ShlinkUrlQrCode {
         Specify the level of error correction you would like in the QR code.
         Choose from L for low, M for medium, Q for quartile, or H for high.
         If omitted, the default configuration of your Shlink server is used.
+    .PARAMETER RoundBlockSize
+        Allows to disable block size rounding, which might reduce the readability of the QR code, but ensures no extra margin is added.
+        Possible values are true or false boolean types.
+        If omitted, the default configuration of your Shlink server is used.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -78,6 +82,9 @@ function Save-ShlinkUrlQrCode {
         [ValidateSet("L", "M", "Q", "H")]
         [String]$ErrorCorrection,
 
+        [Parameter()]
+        [Bool]$RoundBlockSize,
+
         [Parameter(ParameterSetName="SpecifyProperties")]
         [String]$ShlinkServer,
 
@@ -99,6 +106,9 @@ function Save-ShlinkUrlQrCode {
             }
             "ErrorCorrection" {
                 $QueryString.Add("errorCorrection", $ErrorCorrection)
+            }
+            "RoundBlockSize" {
+                $QueryString.Add("roundBlockSize", $RoundBlockSize.ToString().ToLower())
             }
         }
 

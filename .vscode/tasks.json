@@ -38,5 +38,49 @@
             },
             "problemMatcher": []
         },
+        {
+            "label": "Tests",
+            "type": "process",
+            "command": "pwsh",
+            "args": ["-noprofile","-command","Import-Module ${input:CodeType}; $env:ShlinkServer = '${input:ShlinkServer}'; $env:ShlinkAPIKey = '${input:ShlinkAPIKey}' | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString; Invoke-Pester -Path './tests/*' -Output Detailed"],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+    ],
+    "inputs": [
+        {
+            "description": "Please enter Shlink server name",
+            "id": "ShlinkServer",
+            "type": "promptString",
+            "default": "https://acook.io"
+        },
+        {
+            "description": "Please enter Shlink API key",
+            "id": "ShlinkAPIKey",
+            "type": "promptString",
+            "default": "",
+            "password": true,
+        },
+        {
+            "type": "pickString",
+            "id": "CodeType",
+            "description": "Would you like use built, or development code?",
+            "options": [
+                "./src/PSShlink.psd1",
+                "./build/PSShlink/PSShlink.psd1"
+            ],
+            "default": "./src/PSShlink.psd1"
+        },
     ]
 }
