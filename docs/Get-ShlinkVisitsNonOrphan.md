@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-ShlinkVisitsNonOrphan
 
 ## SYNOPSIS
-Get the list of visits to invalid short URLs, the base URL or any other 404.
+Get the list of visits to all valid short URLs.
 
 ## SYNTAX
 
@@ -18,23 +18,23 @@ Get-ShlinkVisitsNonOrphan [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [-Ex
 ```
 
 ## DESCRIPTION
-Get the list of visits to invalid short URLs, the base URL or any other 404.
+Get the list of visits to all valid short URLs.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-ShlinkVisitsOrphan
+Get-ShlinkVisitsNonOrphan
 ```
 
-Get the list of visits to invalid short URLs, the base URL or any other 404.
+Get the list of visits to all valid short URLs.
 
 ### EXAMPLE 2
 ```
-Get-ShlinkVisitsOrphan -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01") -ExcludeBots
+Get-ShlinkVisitsNonOrphan -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01") -ExcludeBots
 ```
 
-Get the list of visits to invalid short URLs, the base URL or any other 404, for the whole of November and excluding bots/crawlers.
+Get the list of visits to all valid short URLs for the whole of November and excluding bots/crawlers.
 
 ## PARAMETERS
 
