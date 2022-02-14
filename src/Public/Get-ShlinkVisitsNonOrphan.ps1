@@ -1,9 +1,9 @@
 function Get-ShlinkVisitsNonOrphan {
     <#
     .SYNOPSIS
-        Get the list of visits to invalid short URLs, the base URL or any other 404.
+        Get the list of visits to all valid short URLs.
     .DESCRIPTION
-        Get the list of visits to invalid short URLs, the base URL or any other 404.
+        Get the list of visits to all valid short URLs.
     .PARAMETER StartDate
         A datetime object to filter the visit data where the start date is equal or greater than this value. 
     .PARAMETER EndDate
@@ -17,13 +17,13 @@ function Get-ShlinkVisitsNonOrphan {
         A SecureString object of your Shlink server's API key.
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
     .EXAMPLE
-        PS C:\> Get-ShlinkVisitsOrphan
+        PS C:\> Get-ShlinkVisitsNonOrphan
 
-        Get the list of visits to invalid short URLs, the base URL or any other 404.
+        Get the list of visits to all valid short URLs.
     .EXAMPLE
-        PS C:\> Get-ShlinkVisitsOrphan -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01") -ExcludeBots
+        PS C:\> Get-ShlinkVisitsNonOrphan -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01") -ExcludeBots
 
-        Get the list of visits to invalid short URLs, the base URL or any other 404, for the whole of November and excluding bots/crawlers.
+        Get the list of visits to all valid short URLs for the whole of November and excluding bots/crawlers.
     .INPUTS
         This function does not accept pipeline input.
     .OUTPUTS
