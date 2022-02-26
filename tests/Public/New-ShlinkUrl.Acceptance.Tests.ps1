@@ -1,47 +1,50 @@
 BeforeAll {
+    # Always use built code if running in a pipeline
+    if ($env:USER -eq 'runner') {
+        Import-Module "$PSScriptRoot/../../build/PSShlink/PSShlink.psd1" -Force
+    }
     # Check if module is already imported, as it can be via VSCode task where you can choose what code base to test
     # and you might not want to cloober it with the non-built code
-    if (-not (Get-Module PSShlink)) {
-        Import-Module $PSScriptRoot/../../src/PSShlink.psd1 -Force
+    elseif (-not (Get-Module PSShlink)) {
+        Import-Module "$PSScriptRoot/../../src/PSShlink.psd1" -Force
     }
 }
 
-Describe "Create new short URLs" {
+Describe "New-ShlinkUrl" {
     It "New valid short URL" {
-        $Guid = (New-Guid).Guid
-        $Splat = @{
+        $Params = @{
             LongUrl      = 'https://google.co.uk'
-            CustomSlug   = $Guid
+            CustomSlug   = 'PSShlink-Test'
+            Tags         = 'psshlinktag1', 'psshlinktag2'
             ShlinkServer = $env:ShlinkServer
             ShlinkApiKey = $env:ShlinkAPIKey | ConvertTo-SecureString
             ErrorAction  = 'Stop'
         }
-        $Object = New-ShlinkUrl @Splat
-        $Object.shortCode | Should -Be $Guid
-        $Object.shortUrl  | Should -Be ('{0}/{1}' -f $env:ShlinkServer, $Guid)
+        $Object = New-ShlinkUrl @Params
+        $Object.shortCode | Should -Be 'PSShlink-Test'
+        $Object.shortUrl  | Should -Be ('{0}/PSShlink-Test' -f $env:ShlinkServer)
+        $Object.tags      | Should -Be 'psshlinktag1', 'psshlinktag2'
         $Object.longUrl   | Should -Be 'https://google.co.uk'
     }
 
     It "New invalid short URL" {
         $Guid = (New-Guid).Guid
-        $Splat = @{
-            LongUrl      = 'https://{0}.com' -f (New-Guid).Guid
+        $Params = @{
+            LongUrl      = 'https://{0}.com' -f ([String[]]$Guid * 3 -join '-')
             CustomSlug   = $Guid
             ShlinkServer = $env:ShlinkServer
             ShlinkApiKey = $env:ShlinkAPIKey | ConvertTo-SecureString
+            ValidateUrl  = $true
             ErrorAction  = 'Stop'
         }
-        { New-ShlinkUrl @Splat } | Should -Throw -ExceptionType ([System.ArgumentException])
+        { New-ShlinkUrl @Params } | Should -Throw -ExceptionType ([System.ArgumentException])
     }
 
     It "New invalid short URL with validation off" {
         $Guid = (New-Guid).Guid
-        # Multiply guid string by 3 because ideally we *really* do not want a valid URL
-        $Url = 'https://{0}.com' -f ($Guid * 3)
-
+        $Url = 'https://{0}.com' -f ([String[]]$Guid * 3 -join '-')
         { Invoke-WebRequest -Uri $Url -ErrorAction 'Stop' } | Should -Throw -ExceptionType ([System.Net.Http.HttpRequestException])
-
-        $Splat = @{
+        $Params = @{
             LongUrl      = $Url
             CustomSlug   = $Guid
             ShlinkServer = $env:ShlinkServer
@@ -49,7 +52,7 @@ Describe "Create new short URLs" {
             ValidateUrl  = $false
             ErrorAction  = 'Stop'
         }
-        $Object = New-ShlinkUrl @Splat
+        $Object = New-ShlinkUrl @Params
         $Object.shortCode | Should -Be $Guid
         $Object.shortUrl  | Should -Be ('{0}/{1}' -f $env:ShlinkServer, $Guid)
         $Object.longUrl   | Should -Be $Url

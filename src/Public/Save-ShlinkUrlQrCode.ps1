@@ -38,6 +38,8 @@ function Save-ShlinkUrlQrCode {
     .PARAMETER ShlinkApiKey
         A SecureString object of your Shlink server's API key.
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
+    .PARAMETER PassThru
+        Returns a System.IO.FileSystemInfo object of each QR image file it creates 
     .EXAMPLE
         PS C:\> Save-ShlinkUrlQrCode -ShortCode "profile" -Domain "example.com" -Size 1000 -Format svg -Path "C:\temp"
         
@@ -51,7 +53,7 @@ function Save-ShlinkUrlQrCode {
 
         Expects PSObjects with PSTypeName of 'PSTypeName', typically from Get-ShlinkUrl.
     .OUTPUTS
-        System.Management.Automation.PSObject
+        System.IO.FileSystemInfo
     #>
     [CmdletBinding()]
     param (
@@ -89,7 +91,10 @@ function Save-ShlinkUrlQrCode {
         [String]$ShlinkServer,
 
         [Parameter(ParameterSetName="SpecifyProperties")]
-        [SecureString]$ShlinkApiKey
+        [SecureString]$ShlinkApiKey,
+
+        [Parameter()]
+        [Switch]$PassThru
     )
     begin {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
@@ -192,6 +197,9 @@ function Save-ShlinkUrlQrCode {
 
             try {
                 Set-Content @Params
+                if ($PassThru) {
+                    Get-Item $FileName
+                }
             }
             catch {
                 Write-Error -ErrorRecord $_

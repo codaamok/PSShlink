@@ -4,7 +4,7 @@ function Remove-ShlinkTag {
         Remove a tag from an existing Shlink server.
     .DESCRIPTION
         Remove a tag from an existing Shlink server.
-    .PARAMETER Tags
+    .PARAMETER Tag
         Name(s) of the tag(s) you want to remove.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
@@ -38,7 +38,7 @@ function Remove-ShlinkTag {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param (
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [String[]]$Tags,
+        [String[]]$Tag,
         
         [Parameter()]
         [String]$ShlinkServer,
@@ -63,18 +63,18 @@ function Remove-ShlinkTag {
     process {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString('')
         
-        foreach ($Tag in $Tags) {
-            if ($AllTags.tag -notcontains $Tag) {
+        foreach ($_Tag in $Tag) {
+            if ($AllTags.tag -notcontains $_Tag) {
                 $WriteErrorSplat = @{
-                    Message      = "Tag '{0}' does not exist on Shlink server '{1}'" -f $Tag, $Script:ShlinkServer
+                    Message      = "Tag '{0}' does not exist on Shlink server '{1}'" -f $_Tag, $Script:ShlinkServer
                     Category     = "ObjectNotFound"
-                    TargetObject = $Tag
+                    TargetObject = $_Tag
                 }
                 Write-Error @WriteErrorSplat
                 continue
             }
             else {
-                $QueryString.Add("tags[]", $Tag)
+                $QueryString.Add("tags[]", $_Tag)
             }
 
             $Params = @{
@@ -85,9 +85,9 @@ function Remove-ShlinkTag {
             }
     
             if ($PSCmdlet.ShouldProcess(
-                ("Would delete tag '{0}' from Shlink server '{1}'" -f $Tag, $Script:ShlinkServer),
+                ("Would delete tag '{0}' from Shlink server '{1}'" -f $_Tag, $Script:ShlinkServer),
                 "Are you sure you want to continue?",
-                ("Removing tag '{0}' from Shlink server '{1}'" -f $Tag, $Script:ShlinkServer))) {
+                ("Removing tag '{0}' from Shlink server '{1}'" -f $_Tag, $Script:ShlinkServer))) {
                     try {
                         InvokeShlinkRestMethod @Params
                     }

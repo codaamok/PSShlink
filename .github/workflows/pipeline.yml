@@ -1,4 +1,4 @@
-name: "Create GitHub release and publish to the PowerShell Gallery"
+name: "CI/CD Pipeline"
 
 on: 
   push:
@@ -7,6 +7,8 @@ on:
     branches:
       - main
       - master
+  schedule:
+    - cron: '11 7 * * *'
   workflow_dispatch:
 
 jobs:
@@ -51,17 +53,24 @@ jobs:
           Invoke-Build -File "custom.build.ps1" @Params -Task PostBuild
         shell: pwsh
 
+      - name: Pester Tests
+        if: hashFiles('tests/invoke.tests.ps1') != ''
+        run: pwsh -File "tests/invoke.tests.ps1"
+
       - name: Custom pre-release tasks
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         run: Invoke-Build -File "custom.build.ps1" -ModuleName $env:GH_PROJECTNAME -Author $env:GH_USERNAME -Version $env:GitVersion_SemVer -NewRelease $true -Task PreRelease
         shell: pwsh
 
       - name: Publish to PowerShell Gallery
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         run: Invoke-Build -File "invoke.build.ps1" -ModuleName $env:GH_PROJECTNAME -Task "PublishModule"
         shell: pwsh
         env:
           PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
 
       - name: Create release
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -74,6 +83,7 @@ jobs:
           prerelease: false
 
       - name: Upload release asset
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         id: upload_release_asset
         uses: actions/upload-release-asset@v1
         env:
@@ -85,6 +95,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Commit CHANGELOG.md and module manifest
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
@@ -92,10 +103,12 @@ jobs:
           git commit -m "Released ${{ env.GitVersion_SemVer }}"
       
       - name: Push commit
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Custom post-release tasks
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
         run: Invoke-Build -File "custom.build.ps1" -ModuleName $env:GH_PROJECTNAME -Author $env:GH_USERNAME -Version $env:GitVersion_SemVer -NewRelease $true -Task PostRelease
         shell: pwsh

@@ -42,7 +42,7 @@
             "label": "Tests",
             "type": "process",
             "command": "pwsh",
-            "args": ["-noprofile","-command","Import-Module ${input:CodeType}; $env:ShlinkServer = '${input:ShlinkServer}'; $env:ShlinkAPIKey = '${input:ShlinkAPIKey}' | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString; Invoke-Pester -Path './tests/*' -Output Detailed"],
+            "args": ["-noprofile", "-command", "$env:ShlinkServer = '${input:ShlinkServer}'; $env:ShlinkAPIKey = '${input:ShlinkAPIKey}' | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString; ./tests/invoke.tests.ps1"],
             "group": {
                 "kind": "test",
                 "isDefault": true
@@ -63,13 +63,13 @@
             "description": "Please enter Shlink server name",
             "id": "ShlinkServer",
             "type": "promptString",
-            "default": "https://acook.io"
+            "default": "http://psshlink.codaamok"
         },
         {
             "description": "Please enter Shlink API key",
             "id": "ShlinkAPIKey",
             "type": "promptString",
-            "default": "",
+            "default": "18c65bc9-e4fb-449d-b3e0-c6427cbac735",
             "password": true,
         },
         {
@@ -80,7 +80,7 @@
                 "./src/PSShlink.psd1",
                 "./build/PSShlink/PSShlink.psd1"
             ],
-            "default": "./src/PSShlink.psd1"
+            "default": "./build/PSShlink/PSShlink.psd1"
         },
     ]
 }
