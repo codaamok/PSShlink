@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.9.4] - 2022-02-26
 ### Added
 - New parameter `-PassThru` added to function `Save-ShlinkUrlQrCode` which will return a `System.IO.FileSystemInfo` object for each QR code image file it creates when used. Default behaviour has not changed (return no object if successful).
 
@@ -124,7 +126,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.9.1..HEAD
+[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.9.4..HEAD
+[0.9.4]: https://github.com/codaamok/PSShlink/compare/0.9.1..0.9.4
 [0.9.1]: https://github.com/codaamok/PSShlink/compare/0.9.0..0.9.1
 [0.9.0]: https://github.com/codaamok/PSShlink/compare/0.8.2..0.9.0
 [0.8.2]: https://github.com/codaamok/PSShlink/compare/0.8.1..0.8.2

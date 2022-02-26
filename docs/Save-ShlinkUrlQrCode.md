@@ -15,14 +15,14 @@ Save a QR code to disk for a short code.
 ### InputObject
 ```
 Save-ShlinkUrlQrCode -InputObject <PSObject[]> [-Path <String>] [-Size <Int32>] [-Format <String>]
- [-Margin <Int32>] [-ErrorCorrection <String>] [-RoundBlockSize <Boolean>] [<CommonParameters>]
+ [-Margin <Int32>] [-ErrorCorrection <String>] [-RoundBlockSize <Boolean>] [-PassThru] [<CommonParameters>]
 ```
 
 ### SpecifyProperties
 ```
 Save-ShlinkUrlQrCode -ShortCode <String> [-Domain <String>] [-Path <String>] [-Size <Int32>] [-Format <String>]
  [-Margin <Int32>] [-ErrorCorrection <String>] [-RoundBlockSize <Boolean>] [-ShlinkServer <String>]
- [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+ [-ShlinkApiKey <SecureString>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -233,6 +233,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -PassThru
+Returns a System.IO.FileSystemInfo object of each QR image file it creates
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -242,7 +257,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### Expects PSObjects with PSTypeName of 'PSTypeName', typically from Get-ShlinkUrl.
 ## OUTPUTS
 
-### System.Management.Automation.PSObject
+### System.IO.FileSystemInfo
 ## NOTES
 
 ## RELATED LINKS

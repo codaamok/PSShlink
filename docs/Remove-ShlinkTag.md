@@ -13,7 +13,7 @@ Remove a tag from an existing Shlink server.
 ## SYNTAX
 
 ```
-Remove-ShlinkTag [-Tags] <String[]> [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [-WhatIf]
+Remove-ShlinkTag [-Tag] <String[]> [[-ShlinkServer] <String>] [[-ShlinkApiKey] <SecureString>] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
@@ -52,7 +52,7 @@ Removes all the tags which are associated with the short code "profile" from the
 
 ## PARAMETERS
 
-### -Tags
+### -Tag
 Name(s) of the tag(s) you want to remove.
 
 ```yaml
