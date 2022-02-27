@@ -55,12 +55,14 @@ jobs:
             ModuleName = $env:GH_PROJECTNAME
             Author     = $env:GH_USERNAME
             Version    = $env:GitVersion_SemVer
-            NewRelease = $true
+            NewRelease = ('push','workflow_dispatch' -contains $env:EVENT_NAME)
           }
           Invoke-Build -File "custom.build.ps1" @Params -Task PreBuild
           Invoke-Build -File "invoke.build.ps1" @Params
           Invoke-Build -File "custom.build.ps1" @Params -Task PostBuild
         shell: pwsh
+        env:
+          EVENT_NAME: ${{ github.event_name }}
 
       - name: Modify DNS
         run: echo "127.0.0.1 psshlink.codaamok" | sudo tee -a /etc/hosts
