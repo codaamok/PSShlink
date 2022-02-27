@@ -1,3 +1,4 @@
+# This workflow has been modified from the default supplied in codaamok.build
 name: "CI/CD Pipeline"
 
 on: 
@@ -8,7 +9,7 @@ on:
       - main
       - master
   schedule:
-    - cron: '59 8 * * *'
+    - cron: '30 7 * * *'
   workflow_dispatch:
 
 jobs:
