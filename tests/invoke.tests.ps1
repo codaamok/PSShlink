@@ -8,7 +8,7 @@ $PesterConfig = New-PesterConfiguration -Hashtable @{
             "{0}/Public/Set-ShlinkTag.Acceptance.Tests.ps1" -f $PSScriptRoot
             "{0}/Public/Remove-*.Acceptance.Tests.ps1" -f $PSScriptRoot
         )
-        Exit = $true
+        Throw = $true
         SkipRemainingOnFailure = 'Block'
     }
     Output = @{
