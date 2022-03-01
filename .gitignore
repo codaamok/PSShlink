@@ -3,3 +3,4 @@ build/*
 !*.gitkeep
 release/*
 .DS_Store
+testResults.xml
