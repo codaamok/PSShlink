@@ -1,5 +1,5 @@
 # This workflow has been modified from the default supplied in codaamok.build
-name: "CI/CD Pipeline"
+name: "Pipeline"
 
 on: 
   push:
