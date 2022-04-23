@@ -69,7 +69,7 @@
             "description": "Please enter Shlink API key",
             "id": "ShlinkAPIKey",
             "type": "promptString",
-            "default": "18c65bc9-e4fb-449d-b3e0-c6427cbac735",
+            "default": "b4791888-68ac-4e2e-bf12-5f202dd4dd36",
             "password": true,
         },
         {

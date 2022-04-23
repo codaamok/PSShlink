@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `Get-ShlinkVisits` has a new parameter set to enable you to retrieve all visits for just domains. This supports the new `GET /domains/{domain}/visits` endpoint in 3.1.0.
+
+### Changed
+- Minimum Shlink version updated 3.1.0
 
 ## [0.9.4] - 2022-02-26
 ### Added
