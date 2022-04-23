@@ -68,6 +68,13 @@ Get-ShlinkVisits -ShortCode "profile" -StartDate (Get-Date "2020-11-01") -EndDat
 
 Returns all visit data associated with the short code "profile" for the whole of November 2020
 
+### EXAMPLE 5
+```
+Get-ShlinkVisits -Domain "contoso.com"
+```
+
+Returns all visit data associated with the domain "contoso.com"
+
 ## PARAMETERS
 
 ### -ShortCode

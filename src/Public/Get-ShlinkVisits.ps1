@@ -39,6 +39,10 @@ function Get-ShlinkVisits {
         PS C:\> Get-ShlinkVisits -ShortCode "profile" -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01")
 
         Returns all visit data associated with the short code "profile" for the whole of November 2020
+    .EXAMPLE
+        PS C:\> Get-ShlinkVisits -Domain "contoso.com"
+
+        Returns all visit data associated with the domain "contoso.com"
     .INPUTS
         This function does not accept pipeline input.
     .OUTPUTS
