@@ -12,7 +12,7 @@
 RootModule = 'PSShlink.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.10.0'
+ModuleVersion = '0.10.2'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Core', 'Desktop'
@@ -107,10 +107,8 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = '# Added
-- Get-ShlinkVisits has a new parameter set to enable you to retrieve all visits for just domains. This supports the new GET /domains/{domain}/visits endpoint in 3.1.0.
-# Changed
-- Minimum Shlink version updated 3.1.0'
+        ReleaseNotes = '# Fixed
+- Updated comment based help for Get-ShlinkVisits for new domain parameter set'
 
         # Prerelease string of this module
         # Prerelease = ''
