@@ -22,6 +22,10 @@ function Get-ShlinkUrl {
         If a start date is not configured for the short code(s), this filters on the dateCreated property.
     .PARAMETER EndDate
         A datetime object to search for short codes where its end date is equal or less than this value. 
+    .PARAMETER ExcludeMaxVisitsReached
+        Short URLs which already reached their maximum amount of visits will be excluded.
+    .PARAMETER ExcludePastValidUntil
+        Short URLs which validUntil date is on the past will be excluded.
     .PARAMETER ShlinkServer
         The URL of your Shlink server (including schema). For example "https://example.com".
         It is not required to use this parameter for every use of this function. When it is used once for any of the functions in the PSShlink module, its value is retained throughout the life of the PowerShell session and its value is only accessible within the module's scope.
@@ -78,7 +82,7 @@ function Get-ShlinkUrl {
         [String]$TagsMode,
 
         [Parameter(ParameterSetName="ListShortUrls")]
-        [ValidateSet("longUrl-ASC", "longUrl-DESC", "shortCode-ASC", "shortCode-DESC", "dateCreated-ASC", "dateCreated-DESC", "visits-ASC", "visits-DESC", "title-ASC", "title-DESC")]
+        [ValidateSet("longUrl-ASC", "longUrl-DESC", "shortCode-ASC", "shortCode-DESC", "dateCreated-ASC", "dateCreated-DESC", "visits-ASC", "visits-DESC", "title-ASC", "title-DESC", "nonBotVisits-ASC", "nonBotVisits-DESC")]
         [String]$OrderBy,
 
         [Parameter(ParameterSetName="ListShortUrls")]
@@ -86,6 +90,12 @@ function Get-ShlinkUrl {
 
         [Parameter(ParameterSetName="ListShortUrls")]
         [datetime]$EndDate,
+
+        [Parameter(ParameterSetName="ListShortUrls")]
+        [Switch]$ExcludeMaxVisitsReached,
+
+        [Parameter(ParameterSetName="ListShortUrls")]
+        [Switch]$ExcludePastValidUntil,
 
         [Parameter()]
         [String]$ShlinkServer,
@@ -150,6 +160,14 @@ function Get-ShlinkUrl {
                     }
                     "EndDate" {
                         $QueryString.Add("endDate", (Get-Date $EndDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
+                    }
+                    "ExcludeMaxVisitsReached" {
+                        # TODO needs tests
+                        $QueryString.Add("excludeMaxVisitsReached", 'true')
+                    }
+                    "excludePastValidUntil" {
+                        # TODO needs tests
+                        $QueryString.Add("excludePastValidUntil", 'true')
                     }
                 }
             }

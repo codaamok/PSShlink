@@ -15,8 +15,8 @@ Get details of all short codes, or just one.
 ### ListShortUrls (Default)
 ```
 Get-ShlinkUrl [-SearchTerm <String>] [-Tags <String[]>] [-TagsMode <String>] [-OrderBy <String>]
- [-StartDate <DateTime>] [-EndDate <DateTime>] [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>]
- [<CommonParameters>]
+ [-StartDate <DateTime>] [-EndDate <DateTime>] [-ExcludeMaxVisitsReached] [-ExcludePastValidUntil]
+ [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
 ### ParseShortCode
@@ -199,6 +199,36 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludeMaxVisitsReached
+Short URLs which already reached their maximum amount of visits will be excluded.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ListShortUrls
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExcludePastValidUntil
+Short URLs which validUntil date is on the past will be excluded.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ListShortUrls
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

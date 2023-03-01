@@ -26,7 +26,7 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 ## Requirements
 
 - PowerShell 5.1 or newer (including PowerShell Core, 7.0 or newer)
-- Shlink 3.0.0 or newer
+- Shlink 3.5.0 or newer
   - If you need support for older versions of Shlink, you can still source older versions of PSShlink [here](https://github.com/codaamok/PSShlink/releases) or use the `-RequiredVersion` parameter of `Install-Module` when installed from the PowerShell Gallery
 
 ## Getting started
@@ -34,8 +34,8 @@ An unofficial PowerShell module for Shlink (https://shlink.io), an open-source s
 Install and import:
 
 ```powershell
-PS C:\> Install-Module PSShlink -Scope CurrentUser
-PS C:\> Import-Module PSShlink
+Install-Module PSShlink -Scope CurrentUser
+Import-Module PSShlink
 ```
 
 Be sure to check out the examples below.
@@ -58,14 +58,14 @@ If the first function you use after importing PSShlink requires `-ShlinkServer` 
 All functions come with complete comment based help, so it is possible to find examples for each function using `Get-Help`. For example, use the following to see detailed help including examples for `Save-ShlinkUrlQrCode`:
 
 ```powershell
-PS C:\> Get-Help Save-ShlinkUrlQrCode
+Get-Help Save-ShlinkUrlQrCode
 ```
 
 ___
 
 ```powershell
-PS C:\> $Key = "ba6c52ed-flk5-4e84-9fc7-9c7e34825da0" | ConvertTo-SecureString -AsPlainText -Force
-PS C:\> Get-ShlinkUrl -SearchTerm "oldWebsite" -ShlinkServer "https://myshlinkserver.com" -ShlinkApiKey $Key
+$Key = "ba6c52ed-flk5-4e84-9fc7-9c7e34825da0" | ConvertTo-SecureString -AsPlainText -Force
+Get-ShlinkUrl -SearchTerm "oldWebsite" -ShlinkServer "https://myshlinkserver.com" -ShlinkApiKey $Key
 ```
 
 Returns all short codes which match the search term `oldWebsite`.
@@ -73,7 +73,7 @@ Returns all short codes which match the search term `oldWebsite`.
 ___
 
 ```powershell
-PS C:\> Get-ShlinkUrl -SearchTerm "oldWebsite" | Remove-ShlinkUrl
+Get-ShlinkUrl -SearchTerm "oldWebsite" | Remove-ShlinkUrl
 ```
 
 Deletes all short codes from the Shlink server which match the search term `oldWebsite`.
@@ -81,7 +81,7 @@ Deletes all short codes from the Shlink server which match the search term `oldW
 ___
 
 ```powershell
-PS C:\> Get-ShlinkUrl -SearchTerm "newWebsite" | Save-ShlinkUrlQrCode
+Get-ShlinkUrl -SearchTerm "newWebsite" | Save-ShlinkUrlQrCode
 ```
 
 Saves QR codes for all short URLs which match the search term `newWebsite`. All files will be saved as the default values for size (300x300) and type (png). All files by default are saved in your Downloads directory using the naming convention: `ShlinkQRCode_<shortCode>_<domain>_<size>.<format>`. e.g. `ShlinkQRCode_asFk2_example-com_300.png`.
@@ -89,14 +89,14 @@ Saves QR codes for all short URLs which match the search term `newWebsite`. All 
 ___
 
 ```powershell
-PS C:\> Get-ShlinkUrl -SearchTerm "newWebsite" | Set-ShlinkUrl -Tags "newWebsite" -MaxVisits 100
+Get-ShlinkUrl -SearchTerm "newWebsite" | Set-ShlinkUrl -Tags "newWebsite" -MaxVisits 100
 ```
 
 Sets the tag `newWebsite` on all short codes matching the search term `newWebsite`. Also sets all matching short codes with a max visits value of 100.
 ___
 
 ```powershell
-PS C:\> New-ShlinkUrl -LongUrl "https://tools.ietf.org/html/rfc2549" -CustomSlug "rfc2549" -Domain "cookadam.co.uk" -DoNotValidateUrl
+New-ShlinkUrl -LongUrl "https://tools.ietf.org/html/rfc2549" -CustomSlug "rfc2549" -Domain "cookadam.co.uk" -DoNotValidateUrl
 ```
 
 Creates a new short code named `rfc2549` under the non-default domain `cookadam.co.uk`. The short code will redirect to `https://tools.ietf.org/html/rfc2549`. URL validation is not enforced.

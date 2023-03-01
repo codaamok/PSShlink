@@ -35,7 +35,7 @@ function InvokeShlinkRestMethod {
 
     $Params = @{
         Method        = $Method
-        Uri           = "{0}/rest/v2/{1}" -f $Server, $Endpoint
+        Uri           = "{0}/rest/v3/{1}" -f $Server, $Endpoint
         ContentType   = "application/json"
         Headers       = @{"X-Api-Key" = [PSCredential]::new("none", $ApiKey).GetNetworkCredential().Password}
         ErrorAction   = "Stop"

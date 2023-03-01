@@ -23,7 +23,7 @@
             "label": "Build (with docs)",
             "type": "process",
             "command": "pwsh",
-            "args": ["-noprofile","-command","Invoke-Build","-File","./invoke.build.ps1","-Author","'codaamok'","-ModuleName","'PSShlink'","-UpdateDocs"],
+            "args": ["-noprofile","-command","Invoke-Build","-File","./invoke.build.ps1","-Author","'codaamok'","-ModuleName","'PSShlink'","-UpdateDocs","$true"],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -42,7 +42,7 @@
             "label": "Build Docker container",
             "type": "process",
             "command": "docker",
-            "args": ["run", "--name", "my_shlink_psshlink", "-p", "8080:8080", "-e", "DEFAULT_DOMAIN=psshlink.codaamok", "-e", "IS_HTTPS_ENABLED=false", "-e", "INITIAL_API_KEY=18c65bc9-e4fb-449d-b3e0-c6427cbac735","shlinkio/shlink:stable"],
+            "args": ["run", "--name", "my_shlink_psshlink", "-p", "80:8080", "-e", "DEFAULT_DOMAIN=psshlink.codaamok", "-e", "IS_HTTPS_ENABLED=false", "-e", "INITIAL_API_KEY=18c65bc9-e4fb-449d-b3e0-c6427cbac735","shlinkio/shlink:stable"],
             "group": {
                 "kind": "build",
                 "isDefault": true

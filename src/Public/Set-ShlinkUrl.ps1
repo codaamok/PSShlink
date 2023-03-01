@@ -8,6 +8,12 @@ function Set-ShlinkUrl {
         The name of the short code you wish to update.
     .PARAMETER LongUrl
         The new long URL to associate with the existing short code.
+    .PARAMETER AndroidLongUrl
+        The long URL to redirect to when the short URL is visited from a device running Android.
+    .PARAMETER IOSLongUrl
+        The long URL to redirect to when the short URL is visited from a device running iOS.
+    .PARAMETER DesktopLongUrl
+        The long URL to redirect to when the short URL is visited from a desktop browser.
     .PARAMETER Tags
         The name of one or more tags to associate with the existing short code.
         Due to the architecture of Shlink's REST API, this parameter can only be used in its own parameter set.
@@ -62,6 +68,15 @@ function Set-ShlinkUrl {
         [String]$LongUrl,
 
         [Parameter()]
+        [String]$AndroidLongUrl,
+
+        [Parameter()]
+        [String]$IOSLongUrl,
+
+        [Parameter()]
+        [String]$DesktopLongUrl,
+
+        [Parameter()]
         [String[]]$Tags,
 
         [Parameter()]
@@ -114,7 +129,24 @@ function Set-ShlinkUrl {
         foreach ($Code in $ShortCode) {
             $Params["Path"] = $Code
 
+            $deviceLongUrls = @{}
+
             switch($PSBoundParameters.Keys) {
+                "AndroidLongUrl" {
+                    # TODO needs tests
+                    $deviceLongUrls["android"] = $AndroidLongUrl
+                    $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
+                }
+                "IOSLongUrl" {
+                    # TODO needs tests
+                    $deviceLongUrls["ios"] = $IOSLongUrl
+                    $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
+                }
+                "DesktopLongUrl" {
+                    # TODO needs tests
+                    $deviceLongUrls["desktop"] = $DesktopLongUrl
+                    $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
+                }
                 "LongUrl" {
                     $Params["Body"]["longUrl"] = $LongUrl
                 }

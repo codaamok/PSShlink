@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added `-AndroidLongUrl` and `-IOSLongUrl` and `-DesktopLongUrl` to `Set-Shlinkurl`
+- Added `-AndroidLongUrl` and `-IOSLongUrl` and `-DesktopLongUrl` to `New-Shlinkurl`
+- Added `-ExcludeMaxVisitsReached` and `-ExcludePastValidUntil` to `Get-ShlinkUrl`
+- Added `-OrderBy` permitted values `nonBotVisits-ASC` and `nonBotVisits-DESC` to `Get-ShlinkUrl`
+
+### Changed
+- Minimum Shlink version updated to 3.5.0
+- Deprecation warning added to `New-ShlinkUrl` for `-ValidateUrl`, which is true since Shlink 3.5.0
+- Changed API permission to 3, from 2
 
 ## [0.9.4] - 2022-02-26
 ### Added

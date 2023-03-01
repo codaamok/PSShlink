@@ -13,7 +13,8 @@ Creates a new Shlink short code on your Shlink server.
 ## SYNTAX
 
 ```
-New-ShlinkUrl [-LongUrl] <String> [[-CustomSlug] <String>] [[-Tags] <String[]>] [[-ValidSince] <DateTime>]
+New-ShlinkUrl [-LongUrl] <String> [[-AndroidLongUrl] <String>] [[-IOSLongUrl] <String>]
+ [[-DesktopLongUrl] <String>] [[-CustomSlug] <String>] [[-Tags] <String[]>] [[-ValidSince] <DateTime>]
  [[-ValidUntil] <DateTime>] [[-MaxVisits] <Int32>] [[-Title] <String>] [[-Domain] <String>]
  [[-ShortCodeLength] <Int32>] [[-FindIfExists] <Boolean>] [[-ValidateUrl] <Boolean>]
  [[-ForwardQuery] <Boolean>] [[-Crawlable] <Boolean>] [[-ShlinkServer] <String>]
@@ -60,6 +61,51 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -AndroidLongUrl
+The long URL to redirect to when the short URL is visited from a device running Android.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IOSLongUrl
+The long URL to redirect to when the short URL is visited from a device running iOS.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DesktopLongUrl
+The long URL to redirect to when the short URL is visited from a desktop browser.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -CustomSlug
 Define a custom slug for the new short code.
 
@@ -69,7 +115,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 5
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -84,7 +130,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 6
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -99,7 +145,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 7
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -114,7 +160,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 8
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -129,7 +175,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: 9
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -144,7 +190,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: 10
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -160,7 +206,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 11
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -175,7 +221,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 12
 Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -190,7 +236,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 13
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -205,7 +251,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 11
+Position: 14
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -220,7 +266,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 12
+Position: 15
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -235,7 +281,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 13
+Position: 16
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -253,7 +299,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 14
+Position: 17
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -270,7 +316,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 15
+Position: 18
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

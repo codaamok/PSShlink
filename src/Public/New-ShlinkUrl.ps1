@@ -6,6 +6,12 @@ function New-ShlinkUrl {
         Creates a new Shlink short code on your Shlink server.
     .PARAMETER LongUrl
         Define the long URL for the new short code.
+    .PARAMETER AndroidLongUrl
+        The long URL to redirect to when the short URL is visited from a device running Android.
+    .PARAMETER IOSLongUrl
+        The long URL to redirect to when the short URL is visited from a device running iOS.
+    .PARAMETER DesktopLongUrl
+        The long URL to redirect to when the short URL is visited from a desktop browser.
     .PARAMETER CustomSlug
         Define a custom slug for the new short code.
     .PARAMETER Tags
@@ -54,6 +60,15 @@ function New-ShlinkUrl {
     param (
         [Parameter(Mandatory)]
         [String]$LongUrl,
+
+        [Parameter()]
+        [String]$AndroidLongUrl,
+
+        [Parameter()]
+        [String]$IOSLongUrl,
+
+        [Parameter()]
+        [String]$DesktopLongUrl,
 
         [Parameter()]
         [String]$CustomSlug,
@@ -109,12 +124,29 @@ function New-ShlinkUrl {
         Endpoint    = "short-urls"
         Method      = "POST"
         Body        = @{
-            longUrl      = $LongUrl
+            longUrl = $LongUrl
         }
         ErrorAction = "Stop"
     }
 
+    $deviceLongUrls = @{}
+
     switch ($PSBoundParameters.Keys) {
+        "AndroidLongUrl" {
+            # TODO needs tests
+            $deviceLongUrls["android"] = $AndroidLongUrl
+            $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
+        }
+        "IOSLongUrl" {
+            # TODO needs tests
+            $deviceLongUrls["ios"] = $IOSLongUrl
+            $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
+        }
+        "DesktopLongUrl" {
+            # TODO needs tests
+            $deviceLongUrls["desktop"] = $DesktopLongUrl
+            $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
+        }
         "CustomSlug" {
             $Params["Body"]["customSlug"] = $CustomSlug
         }
@@ -143,6 +175,7 @@ function New-ShlinkUrl {
             $Params["Body"]["findIfExists"] = $FindIfExists
         }
         "ValidateUrl" {
+            Write-Warning 'validateUrl is deprecated since Shlink 3.5.0'
             $Params["Body"]["validateUrl"] = $ValidateUrl
         }
         "ForwardQuery" {
