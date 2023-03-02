@@ -16,6 +16,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deprecation warning added to `New-ShlinkUrl` for `-ValidateUrl`, which is true since Shlink 3.5.0
 - Changed API permission to 3, from 2
 
+## [0.10.2] - 2022-04-23
+### Fixed
+- Updated comment based help for `Get-ShlinkVisits` for new domain parameter set
+
+## [0.10.0] - 2022-04-23
+### Added
+- `Get-ShlinkVisits` has a new parameter set to enable you to retrieve all visits for just domains. This supports the new `GET /domains/{domain}/visits` endpoint in 3.1.0.
+
+### Changed
+- Minimum Shlink version updated 3.1.0
+
 ## [0.9.4] - 2022-02-26
 ### Added
 - New parameter `-PassThru` added to function `Save-ShlinkUrlQrCode` which will return a `System.IO.FileSystemInfo` object for each QR code image file it creates when used. Default behaviour has not changed (return no object if successful).
@@ -136,7 +147,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.9.4..HEAD
+[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.10.2..HEAD
+[0.10.2]: https://github.com/codaamok/PSShlink/compare/0.10.0..0.10.2
+[0.10.0]: https://github.com/codaamok/PSShlink/compare/0.9.4..0.10.0
 [0.9.4]: https://github.com/codaamok/PSShlink/compare/0.9.1..0.9.4
 [0.9.1]: https://github.com/codaamok/PSShlink/compare/0.9.0..0.9.1
 [0.9.0]: https://github.com/codaamok/PSShlink/compare/0.8.2..0.9.0

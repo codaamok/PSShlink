@@ -39,6 +39,10 @@ function Get-ShlinkVisits {
         PS C:\> Get-ShlinkVisits -ShortCode "profile" -StartDate (Get-Date "2020-11-01") -EndDate (Get-Date "2020-12-01")
 
         Returns all visit data associated with the short code "profile" for the whole of November 2020
+    .EXAMPLE
+        PS C:\> Get-ShlinkVisits -Domain "contoso.com"
+
+        Returns all visit data associated with the domain "contoso.com"
     .INPUTS
         This function does not accept pipeline input.
     .OUTPUTS
@@ -54,18 +58,22 @@ function Get-ShlinkVisits {
 
         [Parameter(ParameterSetName="ShortCode")]
         [Parameter(ParameterSetName="Tag")]
+        [Parameter(Mandatory, ParameterSetName="Domain")]
         [String]$Domain,
 
         [Parameter(ParameterSetName="ShortCode")]
         [Parameter(ParameterSetName="Tag")]
+        [Parameter(ParameterSetName="Domain")]
         [datetime]$StartDate,
 
         [Parameter(ParameterSetName="ShortCode")]
         [Parameter(ParameterSetName="Tag")]
+        [Parameter(ParameterSetName="Domain")]
         [datetime]$EndDate,
 
         [Parameter(ParameterSetName="ShortCode")]
         [Parameter(ParameterSetName="Tag")]
+        [Parameter(ParameterSetName="Domain")]
         [Switch]$ExcludeBots,
 
         [Parameter()]
@@ -92,14 +100,11 @@ function Get-ShlinkVisits {
         "Server" {
             $Params["Endpoint"] = "visits"
         }
-        "ShortCode|Tag" {
+        "ShortCode|Tag|Domain" {
             $Params["PropertyTree"] += "data"
             $Params["PSTypeName"] = "PSShlinkVisits"
 
             switch ($PSBoundParameters.Keys) {
-                "Domain" {
-                    $QueryString.Add("domain", $Domain)
-                }
                 "StartDate" {
                     $QueryString.Add("startDate", (Get-Date $StartDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
                 }
@@ -113,9 +118,20 @@ function Get-ShlinkVisits {
         }
         "ShortCode" {
             $Params["Endpoint"] = "short-urls/{0}/visits" -f $ShortCode
+
+            if ($PSBoundParameters.Keys -contains "Domain") {
+                $QueryString.Add("domain", $Domain)
+            }
         }
         "Tag" {
             $Params["Endpoint"] = "tags/{0}/visits" -f $Tag
+
+            if ($PSBoundParameters.Keys -contains "Domain") {
+                $QueryString.Add("domain", $Domain)
+            }
+        }
+        "Domain" {
+            $Params["Endpoint"] = "domains/{0}/visits" -f $Domain
         }
     }
 

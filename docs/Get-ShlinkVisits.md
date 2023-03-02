@@ -29,6 +29,12 @@ Get-ShlinkVisits -Tag <String> [-Domain <String>] [-StartDate <DateTime>] [-EndD
  [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
 ```
 
+### Domain
+```
+Get-ShlinkVisits -Domain <String> [-StartDate <DateTime>] [-EndDate <DateTime>] [-ExcludeBots]
+ [-ShlinkServer <String>] [-ShlinkApiKey <SecureString>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get details of visits for a Shlink server, short codes or tags.
 
@@ -61,6 +67,13 @@ Get-ShlinkVisits -ShortCode "profile" -StartDate (Get-Date "2020-11-01") -EndDat
 ```
 
 Returns all visit data associated with the short code "profile" for the whole of November 2020
+
+### EXAMPLE 5
+```
+Get-ShlinkVisits -Domain "contoso.com"
+```
+
+Returns all visit data associated with the domain "contoso.com"
 
 ## PARAMETERS
 
@@ -112,12 +125,24 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+```yaml
+Type: String
+Parameter Sets: Domain
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -StartDate
 A datetime object to filter the visit data where the start date is equal or greater than this value.
 
 ```yaml
 Type: DateTime
-Parameter Sets: ShortCode, Tag
+Parameter Sets: ShortCode, Tag, Domain
 Aliases:
 
 Required: False
@@ -132,7 +157,7 @@ A datetime object to filter the visit data where its end date is equal or less t
 
 ```yaml
 Type: DateTime
-Parameter Sets: ShortCode, Tag
+Parameter Sets: ShortCode, Tag, Domain
 Aliases:
 
 Required: False
@@ -147,7 +172,7 @@ Exclude visits from bots or crawlers.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ShortCode, Tag
+Parameter Sets: ShortCode, Tag, Domain
 Aliases:
 
 Required: False

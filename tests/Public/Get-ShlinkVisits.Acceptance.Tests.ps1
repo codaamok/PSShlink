@@ -22,6 +22,20 @@ Describe "Get-ShlinkVisits" {
         [int]$Object.visitsCount | Should -BeOfType [int]
     }
 
+    It "Get visit data for a specific domain" {
+        $Params = @{
+            Domain       = 'psshlink.codaamok'
+            ShlinkServer = $env:ShlinkServer
+            ShlinkApiKey = $env:ShlinkAPIKey | ConvertTo-SecureString
+            ErrorACtion  = 'Stop'
+        }
+        $Object = Get-ShlinkVisits @Params
+        $Count = $Object.count
+        Invoke-WebRequest 'http://psshlink.codaamok/PSShlink-Test' -ErrorAction 'Stop'
+        $Object = Get-ShlinkVisits @Params
+        $Object.Count | Should -Be ($Count + 1)
+    }
+
     It "Get visit data for a specific shortcode" {
         $Params = @{
             ShortCode    = 'PSShlink-Test'
