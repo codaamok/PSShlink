@@ -1,5 +1,4 @@
 function Invoke-ShlinkRestMethod {
-    # TODO this function needs tests
     <#
     .SYNOPSIS
         Query a Shlink server's REST API
@@ -91,6 +90,8 @@ function Invoke-ShlinkRestMethod {
         [Parameter()]
         [SecureString]$ShlinkApiKey
     )
+    
+    # TODO this function needs tests
 
     try {
         GetShlinkConnection -Server $ShlinkServer -ApiKey $ShlinkApiKey

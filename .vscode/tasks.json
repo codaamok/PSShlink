@@ -23,7 +23,7 @@
             "label": "Build (with docs)",
             "type": "process",
             "command": "pwsh",
-            "args": ["-noprofile","-command","Invoke-Build","-File","./invoke.build.ps1","-Author","'codaamok'","-ModuleName","'PSShlink'","-UpdateDocs","$true","$true"],
+            "args": ["-noprofile","-command","Invoke-Build","-File","./invoke.build.ps1","-Author","'codaamok'","-ModuleName","'PSShlink'","-UpdateDocs","$true"],
             "group": {
                 "kind": "build",
                 "isDefault": true
