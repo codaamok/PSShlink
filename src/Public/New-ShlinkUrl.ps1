@@ -133,17 +133,14 @@ function New-ShlinkUrl {
 
     switch ($PSBoundParameters.Keys) {
         "AndroidLongUrl" {
-            # TODO needs tests
             $deviceLongUrls["android"] = $AndroidLongUrl
             $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
         }
         "IOSLongUrl" {
-            # TODO needs tests
             $deviceLongUrls["ios"] = $IOSLongUrl
             $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
         }
         "DesktopLongUrl" {
-            # TODO needs tests
             $deviceLongUrls["desktop"] = $DesktopLongUrl
             $Params["Body"]["deviceLongUrls"] = $deviceLongUrls
         }

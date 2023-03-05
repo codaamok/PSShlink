@@ -162,11 +162,9 @@ function Get-ShlinkUrl {
                         $QueryString.Add("endDate", (Get-Date $EndDate -Format "yyyy-MM-ddTHH:mm:sszzzz"))
                     }
                     "ExcludeMaxVisitsReached" {
-                        # TODO needs tests
                         $QueryString.Add("excludeMaxVisitsReached", 'true')
                     }
                     "excludePastValidUntil" {
-                        # TODO needs tests
                         $QueryString.Add("excludePastValidUntil", 'true')
                     }
                 }

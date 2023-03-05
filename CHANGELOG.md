@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- New function Invoke-ShlinkRestMethod. This function will provide people with flexibility to use Shlink's REST API more directly if necessary; without the need to use this module's functions. Useful in scenarios where Shlink is updated with a breaking change or new endpoint not yet supported in PSShlink
+
+### Changed
+- Changed the way the internal function `InvokeShlinkRestMethod` discovered the pagination property; this enabled a more user friendly implementation of the new public function `Invoke-ShlinkRestMethod`
+- Deprecation warning added to `Set-ShlinkUrl` for `-ValidateUrl`, which is true since Shlink 3.5.0
 
 ## [0.11.0] - 2023-03-03
 ### Added

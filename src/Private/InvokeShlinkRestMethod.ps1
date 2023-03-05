@@ -8,6 +8,10 @@ function InvokeShlinkRestMethod {
         [SecureString]$ApiKey = $Script:ShlinkApiKey,
 
         [Parameter()]
+        [ValidateSet(1, 2, 3)]
+        [Int]$ApiVersion = 3,
+
+        [Parameter()]
         [Microsoft.PowerShell.Commands.WebRequestMethod]$Method = 'GET',
 
         [Parameter(Mandatory)]
@@ -27,15 +31,12 @@ function InvokeShlinkRestMethod {
         [String[]]$PropertyTree,
 
         [Parameter()]
-        [Int]$Page,
-
-        [Parameter()]
         [String]$PSTypeName
     )
 
     $Params = @{
         Method        = $Method
-        Uri           = "{0}/rest/v3/{1}" -f $Server, $Endpoint
+        Uri           = "{0}/rest/v{1}/{2}" -f $Server, $ApiVersion, $Endpoint
         ContentType   = "application/json"
         Headers       = @{"X-Api-Key" = [PSCredential]::new("none", $ApiKey).GetNetworkCredential().Password}
         ErrorAction   = "Stop"
@@ -125,11 +126,16 @@ function InvokeShlinkRestMethod {
             }   
         }
 
-        $PaginationData = if ($PropertyTree) {
-            Write-Output $Data.($PropertyTree[0]).pagination
-        }
-        else {
-            Write-Output $Data.pagination
+        # Pagination data typically lives within the immediate property, or 1 more level deep
+        $PaginationData = foreach ($Property in $Data.PSObject.Properties.Name) {
+            if ($Property -eq 'pagination') {
+                $Data.$Property
+                break
+            }
+            elseif (-not [String]::IsNullOrWhiteSpace($Data.$Property.pagination)) {
+                $Data.$Property.pagination
+                break
+            }
         }
         
         if ($PaginationData) {  

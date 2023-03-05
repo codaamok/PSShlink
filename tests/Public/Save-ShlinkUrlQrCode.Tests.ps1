@@ -9,7 +9,7 @@ BeforeAll {
 Describe "Save-ShlinkUrlQrCode" {
     It "Create '<Format>' QR code image file of expected SHA256 hash '<SHA256>'" -TestCases @(
         @{ Format = 'png'; SHA256 = 'A3D4EA74661878D8AB15AD864705AB43A095D5B60416F0B33F3E5212EEB527EF' }
-        @{ Format = 'svg'; SHA256 = '380E532048FD830255CF8C34579D92813CB0B78F131D0E5790257A3155943391' }
+        @{ Format = 'svg'; SHA256 = '1887BA6FB8C26BA09CFFA76D6AEF358889501501A0255F1A6DFA890C6A02BE54' }
     ) {
         $Params = @{
             Path            = $TestDrive

@@ -39,10 +39,29 @@
             "problemMatcher": []
         },
         {
-            "label": "Build Docker container",
+            "label": "Build Docker container (Windows)",
+            "type": "process",
+            "command": "cmd.exe",
+            "args": ["/C", "docker", "run", "--name", "my_shlink_psshlink", "-p", "80:8080", "-e", "DEFAULT_DOMAIN=${input:ShlinkServer}", "-e", "IS_HTTPS_ENABLED=false", "-e", "INITIAL_API_KEY=${input:ShlinkAPIKey}","shlinkio/shlink:stable"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Docker container (UNIX)",
             "type": "process",
             "command": "docker",
-            "args": ["run", "--name", "my_shlink_psshlink", "-p", "80:8080", "-e", "DEFAULT_DOMAIN=psshlink.codaamok", "-e", "IS_HTTPS_ENABLED=false", "-e", "INITIAL_API_KEY=18c65bc9-e4fb-449d-b3e0-c6427cbac735","shlinkio/shlink:stable"],
+            "args": ["run", "--name", "my_shlink_psshlink", "-p", "80:8080", "-e", "DEFAULT_DOMAIN=${input:ShlinkServer}", "-e", "IS_HTTPS_ENABLED=false", "-e", "INITIAL_API_KEY=${input:ShlinkAPIKey}","shlinkio/shlink:stable"],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -61,7 +80,7 @@
             "label": "Tests",
             "type": "process",
             "command": "pwsh",
-            "args": ["-noprofile", "-command", "$env:ShlinkServer = '${input:ShlinkServer}'; $env:ShlinkAPIKey = '${input:ShlinkAPIKey}' | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString; ./tests/invoke.tests.ps1"],
+            "args": ["-noprofile", "-command", "$env:ShlinkServer = 'http://${input:ShlinkServer}'; $env:ShlinkAPIKey = '${input:ShlinkAPIKey}' | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString; ./tests/invoke.tests.ps1"],
             "group": {
                 "kind": "test",
                 "isDefault": true
@@ -82,13 +101,13 @@
             "description": "Please enter Shlink server name",
             "id": "ShlinkServer",
             "type": "promptString",
-            "default": "http://psshlink.codaamok"
+            "default": "psshlink.codaamok"
         },
         {
             "description": "Please enter Shlink API key",
             "id": "ShlinkAPIKey",
             "type": "promptString",
-            "default": "b4791888-68ac-4e2e-bf12-5f202dd4dd36",
+            "default": "18c65bc9-e4fb-449d-b3e0-c6427cbac735",
             "password": true,
         },
         {
