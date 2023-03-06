@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.12.2] - 2023-03-06
 ### Fixed
 - Show comment based help correctly for `Invoke-ShlinkRestMethod`, mostly for PlatyPS and in-repository help markdown files
 
@@ -159,7 +161,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.12.0..HEAD
+[Unreleased]: https://github.com/codaamok/PSShlink/compare/0.12.2..HEAD
+[0.12.2]: https://github.com/codaamok/PSShlink/compare/0.12.0..0.12.2
 [0.12.0]: https://github.com/codaamok/PSShlink/compare/0.11.0..0.12.0
 [0.11.0]: https://github.com/codaamok/PSShlink/compare/0.10.2..0.11.0
 [0.10.2]: https://github.com/codaamok/PSShlink/compare/0.10.0..0.10.2
